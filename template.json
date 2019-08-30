@@ -1,0 +1,264 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "variables": {
+    "StagedDate": "20190707",
+    "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
+    "vNetAddressPrefix": "10.0.24.0/24",
+    "vNetName": "M365-vNet",
+    "vNetSubnetName": "Subnet",
+    "vSubnetRefId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vNetName'), variables('vNetSubnetName'))]",
+    "GenericNicName": "Nic",
+    "GenericPublicIpAddressName": "PublicIp",
+    "GenericDiskName": "[concat(uniqueString(resourceGroup().id), 'd')]",
+    "DcVmName": "ContosoDc",
+    "DcVmType": "Windows",
+    "DcPrivateIp": "10.0.24.4",
+    "DcVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/ContosoDcd.vhd')]",
+    "VictimVmName": "VictimPc",
+    "VictimVmType": "Windows",
+    "VictimPrivateIp": "10.0.24.10",
+    "VictimVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/VictimPcd.vhd')]",
+    "AdminPcVmName": "AdminPc",
+    "AdminVmType": "Windows",
+    "AdminPrivateIp": "10.0.24.11",
+    "AdminVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/AdminPcd.vhd')]",
+    "McasVmName": "Client01",
+    "McasVmType": "Windows",
+    "McasIpAddress": "10.0.24.12",
+    "McasVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/Client01d.vhd')]",
+    "RepeatConfigurations": {
+      "type": "array",
+      "VmName": [
+        "[variables('DcVmName')]",
+        "[variables('AdminPcVmName')]",
+        "[variables('VictimVmName')]",
+        "[variables('McasVmName')]"
+      ],
+      "DiskUris": [
+        "[variables('DcVhdUri')]",
+        "[variables('AdminVhdUri')]",
+        "[variables('VictimVhdUri')]",
+        "[variables('McasVhdUri')]"
+      ],
+      "PrivateIp": [
+        "[variables('DcPrivateIp')]",
+        "[variables('AdminPrivateIp')]",
+        "[variables('VictimPrivateIp')]",
+        "[variables('McasIpAddress')]"
+      ],
+      "OsType": [
+        "[variables('DcVmType')]",
+        "[variables('AdminVmType')]",
+        "[variables('VictimVmType')]",
+        "[variables('McasVmType')]"
+      ]
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-12-01",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('vNetName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('vNetAddressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('vNetSubnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('vNetAddressPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2018-12-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(variables('GenericPublicIpAddressName'), copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "count": 4,
+        "name": "GenericPublicIpAddressLoop"
+      },
+      "sku": {
+        "name": "Basic"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic"
+      }
+    },
+    {
+      "type": "Microsoft.Compute/disks",
+      "apiVersion": "2018-09-30",
+      "name": "[concat(variables('GenericDiskName'), copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "count": 4,
+        "name": "DiskLoop"
+      },
+      "sku": {
+        "name": "Premium_LRS"
+      },
+      "properties": {
+        "creationData": {
+          "createOption": "Import",
+          "sourceUri": "[variables('RepeatConfigurations').DiskUris[copyIndex('DiskLoop')]]"
+        },
+        "osType": "[variables('RepeatConfigurations').OsType[copyIndex('DiskLoop')]]"
+      }
+    },
+    {
+      "apiVersion": "2019-04-01",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('GenericNicName'), copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "NicLoop",
+        "count": 4
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('GenericPublicIpAddressName'), copyIndex()))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('vNetName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[variables('RepeatConfigurations').PrivateIp[copyIndex('NicLoop')]]",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('GenericPublicIpAddressName'), copyIndex()))]"
+              },
+              "subnet": {
+                "id": "[variables('vSubnetRefId')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2018-10-01",
+      "name": "[variables('DcVmName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 0))]",
+        "[resourceId('Microsoft.Compute/disks', concat(variables('GenericDiskName'),0))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_B4ms"
+        },
+        "storageProfile": {
+          "osDisk": {
+            "osType": "[variables('RepeatConfigurations').OsType[0]]",
+            "createOption": "Attach",
+            "managedDisk": {
+              "id": "[resourceId('Microsoft.Compute/disks', concat(variables('GenericDiskName'),0))]"
+            }
+          }
+        },
+        "licenseType": "Windows_Server",
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 0))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": false
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "name": "[variables('DeploymentVnetDnsName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('DcVmName'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/ciberesponce/AatpAttackSimulationPlaybook/master/Nested/VNetConfiguration.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualNetworkName": {
+            "value": "[variables('vNetName')]"
+          },
+          "dnsServers": {
+            "value": "[array(variables('DcPrivateIp'))]"
+          },
+          "addressPrefix": {
+            "value": "[variables('vNetAddressPrefix')]"
+          },
+          "subnets": {
+            "value": [
+              {
+                "name": "[variables('vNetSubnetName')]",
+                "properties": {
+                  "addressPrefix": "[variables('vNetAddressPrefix')]"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2018-10-01",
+      "name": "[concat(variables('RepeatConfigurations').VmName[copyIndex('VmLoop', 1)])]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "VmLoop",
+        "count": 3
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), copyIndex('VmLoop', 1)))]",
+        "[resourceId('Microsoft.Compute/disks', concat(variables('GenericDiskName'), copyIndex('VmLoop', 1)))]",
+        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_B4ms"
+        },
+        "storageProfile": {
+          "osDisk": {
+            "osType": "[variables('RepeatConfigurations').OsType[copyIndex('VmLoop', 1)]]",
+            "createOption": "Attach",
+            "managedDisk": {
+              "id": "[resourceId('Microsoft.Compute/disks', concat(variables('GenericDiskName'), copyIndex('VmLoop', 1)))]"
+            }
+          }
+        },
+        "licenseType": "Windows_Server",
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), copyIndex('VmLoop', 1)))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": false
+          }
+        }
+      }
+    }
+  ]
+}

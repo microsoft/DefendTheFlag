@@ -1,0 +1,44 @@
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "addressPrefix": {
+        "type": "string"
+      },
+      "dnsServers": {
+        "type": "array",
+        "defaultValue": [ ]
+      },
+      "subnets": {
+        "type": "array"
+      },
+      "virtualNetworkName": {
+        "type": "string"
+      }
+    },
+    "variables": {
+    },
+    "resources": [
+      {
+        "comments": "Modify VNet's DNS after DC is configured",
+        "type": "Microsoft.Network/virtualNetworks",
+        "name": "[parameters('virtualNetworkName')]",
+        "apiVersion": "2019-02-01",
+        "location": "[resourcegroup().location]",
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes": [
+              "[parameters('addressPrefix')]"
+            ]
+          },
+          "dhcpOptions": {
+            "dnsServers": "[parameters('dnsServers')]"
+          },
+          "subnets": "[parameters('subnets')]"
+        }
+      }
+    ],
+    "outputs": {
+    }
+  }

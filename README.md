@@ -1,49 +1,29 @@
----
-page_type: sample
-languages:
-- csharp
-products:
-- dotnet
-description: "Add 150 character max description"
-urlFragment: "update-this-to-unique-url-stub"
----
+# Defend the Flag
 
-# Official Microsoft Sample
+Want to test out Microsoft Security products (and others) but don't have the environment to thoroughly test? Want to simulate Active Directory, privileged users, to learn more about credential exposure and credential abuse? Want to learn more about attack tools so you can become a better computer and network defender?
 
-<!-- 
-Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
+This project aims at lowering the friction to get started.  By leveraging Azure Resource Manager (ARM) and Desired State Configuration (DSC), we can build this entire environment within 40 minutes--the majority of that time is performing a DC promo.  
 
-Guidance on onboarding samples to docs.microsoft.com/samples: https://review.docs.microsoft.com/help/onboard/admin/samples/process/onboarding?branch=master
+This project also includes code to then take the VMs and snapshot their disks.  This allows you to later have deployment tasks on those disks which take roughly 2 minutes.
 
-Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
--->
-
-Give a short description for your sample here. What does it do and why is it important?
 
 ## Contents
 
 Outline the file contents of the repository. It helps users navigate the codebase, build configuration and any related assets.
 
-| File/folder       | Description                                |
-|-------------------|--------------------------------------------|
-| `src`             | Sample source code.                        |
-| `.gitignore`      | Define what to ignore at commit time.      |
-| `CHANGELOG.md`    | List of changes to the sample.             |
-| `CONTRIBUTING.md` | Guidelines for contributing to the sample. |
-| `README.md`       | This README file.                          |
-| `LICENSE`         | The license for the sample.                |
-
-## Prerequisites
-
-Outline the required components and tools that a user might need to have on their machine in order to run the sample. This can be anything from frameworks, SDKs, OS versions or IDE releases.
+| File/folder       | Description                                                                       |
+|-------------------|-----------------------------------------------------------------------------------|
+| `Downloads`       | Staged code.                                                                      |
+| `Nested`          | Nested ARM scripts for ARM deployment. Extends azuredeploy.json                   |
+| `Stage`           | Scripts to help *snapshot* resources. Convert them to images for easy deployment  |
+| `Troubleshoot`    | Helper scripts to help troubleshoot and build-out ARM and DSC environment         |
+| `DSC`             | Desired State Configuration which configure the resources after ARM provisioning  |
+| `CHANGELOG.md`    | List of changes to the sample.                                                    |
 
 ## Setup
 
-Explain how to prepare the sample once the user clones or downloads the repository. The section should outline every step necessary to install dependencies and set up any settings (for example, API keys and output folders).
+To build from scratch (**Phase 0**):
 
-## Runnning the sample
-
-Outline step-by-step instructions to execute the sample and see its output. Include steps for executing the sample from the IDE, starting specific services in the Azure portal or anything related to the overall launch of the code.
 
 ## Key concepts
 

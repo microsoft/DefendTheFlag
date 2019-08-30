@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {
+        "securitySettings": "On"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Security/autoProvisioningSettings",
+            "name": "default",
+            "apiVersion": "2017-08-01-preview",
+            "properties": {
+                "autoProvision": "On"
+            }
+        },
+        {
+            "type": "Microsoft.Security/policies",
+            "apiVersion": "2015-06-01-preview",
+            "name": "default",
+            "properties": {
+                "policyLevel": "Subscription",
+                "name": "default",
+                "unique": "Off",
+                "logCollection": "Off",
+                "recommendations": {
+                    "patch": "[variables('securitySettings')]",
+                    "baseline": "[variables('securitySettings')]",
+                    "antimalware": "[variables('securitySettings')]",
+                    "diskEncryption": "[variables('securitySettings')]",
+                    "acls": "[variables('securitySettings')]",
+                    "nsgs": "[variables('securitySettings')]",
+                    "waf": "[variables('securitySettings')]",
+                    "sqlAuditing": "[variables('securitySettings')]",
+                    "sqlTde": "[variables('securitySettings')]",
+                    "ngfw": "[variables('securitySettings')]",
+                    "vulnerabilityAssessment": "[variables('securitySettings')]",
+                    "storageEncryption": "[variables('securitySettings')]",
+                    "jitNetworkAccess": "[variables('securitySettings')]"
+                },
+                "pricingConfiguration": {
+                    "selectedPricingTier": "Standard"
+                }
+            }
+        }
+    ]
+}
