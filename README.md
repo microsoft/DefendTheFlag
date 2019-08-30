@@ -2,14 +2,15 @@
 
 Want to test out Microsoft Security products (and others) but don't have the environment to thoroughly test? Want to simulate Active Directory, privileged users, to learn more about credential exposure and credential abuse? Want to learn more about attack tools so you can become a better computer and network defender?
 
-This project aims at lowering the friction to get started.  By leveraging Azure Resource Manager (ARM) and Desired State Configuration (DSC), we can build this entire environment within 40 minutes--the majority of that time is performing a DC promo.  
+This project aims at lowering the friction to get started.  By leveraging Azure Resource Manager (ARM; `azuredeploy.json` and `Nested`) and Desired State Configuration (DSC; `DSC`), we can build this entire environment within 40 minutes--the majority of that time is performing a DC promo.  
 
-This project also includes code to then take the VMs and snapshot their disks.  This allows you to later have deployment tasks on those disks which take roughly 2 minutes.
+This project also includes code to then take the VMs and snapshot their disks (`Stage`).  This allows you to later have deployment tasks on those disks which take roughly 2 minutes.
+
+> DISCLAIMER
+> These VMs should not be placed in production environments or used in production workloads. The settings of the VMs have antivirus purposefully disabled, updates disabled (after provisioning), and attack tools stagged.  
 
 
 ## Contents
-
-Outline the file contents of the repository. It helps users navigate the codebase, build configuration and any related assets.
 
 | File/folder       | Description                                                                       |
 |-------------------|-----------------------------------------------------------------------------------|
