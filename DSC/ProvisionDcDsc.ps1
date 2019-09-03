@@ -54,8 +54,6 @@ Configuration CreateADForest
 
 	[PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosName}\$($AdminCreds.UserName)", $AdminCreds.Password)
 	
-	[string]$AadConnectProductId = '{6069C45A-B2D7-488C-AEC6-9364D11D4314}'
-
 	Node localhost
 	{
 		LocalConfigurationManager
@@ -329,53 +327,7 @@ Configuration CreateADForest
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
         }
 
-		Script DownloadAadMsi
-		{
-			SetScript = 
-            {
-				if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\') -ne $true){
-					New-Item -Path 'C:\LabTools\' -ItemType Directory
-				}
-				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-				$ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-				Invoke-WebRequest -Uri 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AzureADConnect.msi?raw=true' -Outfile 'C:\LabTools\aadconnect.msi'
-            }
-			GetScript = 
-            {
-				if ((Test-Path -LiteralPath 'C:\LabTools\aadconnect.msi') -eq $true){
-					return @{
-						result = $true
-					}
-				}
-				else {
-					return @{
-						result = $false
-					}
-				}
-            }
-            TestScript = 
-            {
-				if ((Test-Path -LiteralPath 'C:\LabTools\aadconnect.msi') -eq $true){
-					return $true
-				}
-				else {
-					return $false
-				}
-			}
-			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
-		}
-
-		Package InstallAadConnect
-		{
-			Name = 'Microsoft Azure AD Connect'
-			ProductId = $AadConnectProductId
-			Ensure = 'Present'
-			Path = 'C:\LabTools\aadconnect.msi'
-			Arguments = '/quiet'
-			DependsOn = @("[Script]DownloadAadMsi","[xADForestProperties]ForestProps","[xWaitForADDomain]DscForestWait")
-		}
-
-		xADUser SamiraA
+				xADUser SamiraA
 		{
 			DomainName = $DomainName
 			UserName = 'SamiraA'
