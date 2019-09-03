@@ -387,7 +387,7 @@ Configuration SetupVictimPc
 				}
                 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
                 $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ciberesponce/AatpAttackSimulationPlaybook/master/Downloads/Zone3.reg' -Outfile 'C:\LabTools\RegkeyZone3.reg'
+                Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/microsoft/DefendTheFlag/master/Downloads/Zone3.reg' -Outfile 'C:\LabTools\RegkeyZone3.reg'
             }
 			GetScript = 
             {
@@ -460,7 +460,7 @@ Configuration SetupVictimPc
 					New-Item -Path 'C:\LabTools\' -ItemType Directory
 				}
 				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                Start-BitsTransfer -Source 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/AzInfoProtection_ul_MSI_for_central_deployment.msi?raw=true' -Destination 'C:\LabTools\aip_ul_installer.msi'
+                Start-BitsTransfer -Source 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AzInfoProtection_ul_MSI_for_central_deployment.msi?raw=true' -Destination 'C:\LabTools\aip_ul_installer.msi'
             }
 			GetScript = 
             {
@@ -510,7 +510,6 @@ Configuration SetupVictimPc
                 $tools = @(
                     ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Mimikatz.zip'),
                     ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\PowerSploit.zip'),
-                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\NetSess.zip'),
                     ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\kekeo.zip'),
                     ('')
                 )
@@ -525,7 +524,6 @@ Configuration SetupVictimPc
                 $tools = @(
                     ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Mimikatz.zip'),
                     ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\PowerSploit.zip'),
-                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\NetSess.zip'),
                     ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\kekeo.zip')
                 )
                 $AllToolsThere = $true

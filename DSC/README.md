@@ -1,6 +1,6 @@
 # What's the resources for?
 
-ARM does a lot of heavy lifting, but DSC does even more.  In these DSC configurations, (Choco)[https://chocolatey.org/] is also leveraged on all the VMs.
+ARM does a lot of heavy lifting, but DSC does even more.  In these DSC configurations, [Choco](https://chocolatey.org/) is also leveraged on all the VMs.
 
 ## ContosoDC
 
@@ -18,10 +18,13 @@ ContosoDC is the Domain Controller.  It's default Forest is 'Contoso.Azure'.  It
 This is where majority of attack tools are staged. VictimPC is where the adversary starts.
 
 Note that these attack tools are for research purposes, and really aren't "malicious" but can be used maliciously based on *intent*.  Those tools include:
-* Mimikatz (thanks (Benjamin Delpy)[https://twitter.com/gentilkiwi])
-* PowerSploit (thanks (Will)[https://twitter.com/HarmJ0y])
-* JoeWare's NetSess
-* Kekeo thanks (Benjamin Delpy)[https://twitter.com/gentilkiwi]
+* Mimikatz (thanks [Benjamin Delpy](https://twitter.com/gentilkiwi]))
+* PowerSploit (thanks [Will](https://twitter.com/HarmJ0y))
+* Kekeo (thanks [Benjamin Delpy](https://twitter.com/gentilkiwi))
+
+>**Note**
+>
+>[JoeWare's NetSess.exe](http://www.joeware.net/freetools/tools/netsess/index.htm) explicitly prevents us from including this automatically in the build.  You can however, add this yourself by grabbing it from their site.
 
 ## AdminPC
 
