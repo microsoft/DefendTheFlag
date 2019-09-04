@@ -84,7 +84,7 @@
         "10.0.24.50"
       ]
     },
-    "NumberVmsNicStorage": "6",
+    "NumberVmsNicStorage": 5,
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
     "vNetAddressPrefix": "10.0.24.0/24",
     "vNetName": "AatpSaPlaybook-vNet",
@@ -106,8 +106,7 @@
     "McasDscName": "SetupMcasClient",
     "AipDomainServiceAccount": "AipScanner",
     "AipDomainServiceAccountPassword": "Somepass1",
-    "McasDscUrl": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionClient01.zip?raw=true",
-    "KaliVmName": "Kali"
+    "McasDscUrl": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionClient01.zip?raw=true"
   },
   "resources": [
     {
@@ -646,50 +645,6 @@
           "networkinterfaces": [
             {
               "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 4))]"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "apiVersion": "2018-10-01",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('KaliVmName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 5))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),5))]",
-        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
-      ],
-      "properties": {
-        "hardwareprofile": {
-          "vmsize": "Standard_DS1_v2"
-        },
-        "osProfile": {
-          "computerName": "[concat(variables('KaliVmName'))]",
-          "adminusername": "[parameters('builtinAdministratorAccount')]",
-          "adminpassword": "[parameters('builtinAdministratorPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "kali-linux",
-            "offer": "kali-linux",
-            "sku": "kali",
-            "version": "latest"
-          },
-          "osdisk": {
-            "name": "[concat(variables('GenericStorageAccountName'), 5)]",
-            "createOption": "FromImage",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            },
-            "caching": "ReadWrite"
-          }
-        },
-        "networkprofile": {
-          "networkinterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 5))]"
             }
           ]
         }
