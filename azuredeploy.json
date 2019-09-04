@@ -97,15 +97,15 @@
     "AscLinuxName": "Linux-Ubuntu",
     "VictimVmName": "VictimPc",
     "VictimDscName": "VictimDsc",
-    "VictimDscUrl": "https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/DSC/ProvisionVictimPcDsc.zip?raw=true",
+    "VictimDscUrl": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionVictimPcDsc.zip?raw=true",
     "AdminPcVmName": "AdminPc",
-    "AdminPcDscUrl": "https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/DSC/ProvisionAdminPcDsc.zip?raw=true",
+    "AdminPcDscUrl": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionAdminPcDsc.zip?raw=true",
     "AdminPcDscName": "AdminPcDsc",
     "McasVmName": "Client01",
     "McasDscName": "SetupMcasClient",
     "AipDomainServiceAccount": "AipScanner",
     "AipDomainServiceAccountPassword": "Somepass1",
-    "McasDscUrl": "https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/DSC/ProvisionClient01.zip?raw=true"
+    "McasDscUrl": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionClient01.zip?raw=true"
   },
   "resources": [
     {
@@ -281,7 +281,7 @@
             "publisher": "Microsoft.Powershell",
             "settings": {
               "configuration": {
-                "url": "https://github.com/ciberesponce/AatpAttackSimulationPlaybook/raw/master/DSC/ProvisionDcDsc.zip",
+                "url": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionDcDsc.zip?raw=true",
                 "script": "ProvisionDcDsc.ps1",
                 "function": "CreateADForest"
               },
@@ -308,7 +308,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "https://raw.githubusercontent.com/ciberesponce/AatpAttackSimulationPlaybook/master/Nested/VNetConfiguration.json",
+          "uri": "https://raw.githubusercontent.com/microsoft/DefendTheFlag/master/Nested/VNetConfiguration.json",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
