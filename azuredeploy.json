@@ -84,6 +84,7 @@
         "10.0.24.50"
       ]
     },
+    "NumberVmsNicStorage": "6",
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
     "vNetAddressPrefix": "10.0.24.0/24",
     "vNetName": "AatpSaPlaybook-vNet",
@@ -136,7 +137,7 @@
       "name": "[concat(variables('GenericPublicIpAddressName'), copyIndex())]",
       "location": "[resourceGroup().location]",
       "copy": {
-        "count": 6,
+        "count": "[variables('NumberVmsNicStorage')]",
         "name": "GenericPublicIpAddressLoop"
       },
       "sku": {
@@ -152,7 +153,7 @@
       "name": "[concat(variables('GenericStorageAccountName'), copyIndex())]",
       "location": "[resourceGroup().location]",
       "copy": {
-        "count": 6,
+        "count": "[variables('NumberVmsNicStorage')]",
         "name": "GenericStorageAccountLoop"
       },
       "sku": {
@@ -168,7 +169,7 @@
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "NicLoop",
-        "count": 6
+        "count": "[variables('NumberVmsNicStorage')]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('GenericPublicIpAddressName'), copyIndex()))]",
