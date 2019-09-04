@@ -456,8 +456,8 @@ Configuration SetupVictimPc
                     ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/VictimPC/ctf-a.zip?raw=true', 'C:\LabScripts\ctf-a.zip'),
                     ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/VictimPC/aatpsaplaybook.zip?raw=true', 'C:\LabScripts\aatpsaplaybook.zip')
                 )
-                foreach ($tool in $tools){
-                    Invoke-WebRequest -Uri $tool[0] -OutFile $tool[1]
+                foreach ($script in $scripts){
+                    Invoke-WebRequest -Uri $script[0] -OutFile $script[1]
                 }
             }
             GetScript = 

@@ -20,7 +20,7 @@
     "VictimVmType": "Windows",
     "VictimPrivateIp": "10.0.24.10",
     "VictimVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/VictimPcd.vhd')]",
-    "AdminPcVmName": "AdminPc",
+    "AdminPcVmName": "AdminPc", 
     "AdminVmType": "Windows",
     "AdminPrivateIp": "10.0.24.11",
     "AdminVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/AdminPcd.vhd')]",
