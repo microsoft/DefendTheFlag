@@ -27,7 +27,7 @@ Configuration SetupVictimPc
         [PSCredential]$RonHdCred
     )
     #region COE
-    Import-DscResource -ModuleName PSDesiredStateConfiguration, xDefender, ComputerManagementDsc, NetworkingDsc, xSystemSecurity, cChoco, `
+    Import-DscResource -ModuleName PSDesiredStateConfiguration, xPSDesiredStateConfiguration, xDefender, ComputerManagementDsc, NetworkingDsc, xSystemSecurity, cChoco, `
         xPendingReboot
 
     [PSCredential]$Creds = New-Object System.Management.Automation.PSCredential ("${NetBiosName}\$($AdminCred.UserName)", $AdminCred.Password)
@@ -43,7 +43,6 @@ Configuration SetupVictimPc
         {
             ConfigurationMode = 'ApplyOnly'
             RebootNodeIfNeeded = $true
-            AllowModuleOverwrite = $true
             ActionAfterReboot = 'ContinueConfiguration'
         }
 
@@ -542,13 +541,12 @@ Configuration SetupVictimPc
             DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
 		}
 
-		Package InstallAipClient
+		xMsiPackage InstallAipClient
 		{
-			Name = 'Microsoft Azure Information Protection'
 			Ensure = 'Present'
 			Path = 'C:\LabTools\aip_ul_installer.msi'
-			ProductId = '{3C393E78-A1A6-43E8-86C0-E9B22AB83143}'
-			Arguments = '/quiet'
+			ProductId = '3C393E78-A1A6-43E8-86C0-E9B22AB83143'
+            Arguments = '/quiet'
 			DependsOn = @('[Script]DownloadAipUlMsi','[Computer]JoinDomain','[Script]ExecuteZone3Override')
 		}
         

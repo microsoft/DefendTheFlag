@@ -40,7 +40,7 @@ Configuration SetupAdminPc
 
     )
     #region COE
-    Import-DscResource -ModuleName PSDesiredStateConfiguration, xDefender, ComputerManagementDsc, NetworkingDsc, `
+    Import-DscResource -ModuleName PSDesiredStateConfiguration, xPSDesiredStateConfiguration, xDefender, ComputerManagementDsc, NetworkingDsc, `
         xSystemSecurity, SqlServerDsc, cChoco, xPendingReboot, xSmbShare
 
     [PSCredential]$Creds = New-Object System.Management.Automation.PSCredential ("${NetBiosName}\$($AdminCred.UserName)", $AdminCred.Password)
@@ -541,9 +541,8 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             DependsOn = @('[Registry]DisableSmartScreen','[Computer]JoinDomain', '[Script]ExecuteZone3Override')
 		}
 
-		Package InstallAipClient
+		xMsiPackage InstallAipClient
 		{
-			Name = 'Microsoft Azure Information Protection'
 			Ensure = 'Present'
 			Path = 'C:\LabTools\aip_installer.msi'
 			ProductId = '{48A06F18-951C-42CA-86F1-3046AF06D15E}'
