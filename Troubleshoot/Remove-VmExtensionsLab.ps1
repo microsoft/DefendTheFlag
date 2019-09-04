@@ -2,7 +2,7 @@ param(
     # ResourceGroupName
     [Parameter(Mandatory = $false)]
     [string]
-    $resourceGroup = 'cxe-lab-test'
+    $resourceGroup = 'DefendTheFlag-Public-Test'
 )
 Write-Host "[!] Remove VM Extensions from the `'$resourceGroup`' RG" -ForegroundColor Cyan
 #array showing VMName, DSC name

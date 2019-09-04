@@ -2,7 +2,7 @@ param(
     # resource group name; defaults to andrew-test
     [Parameter(Mandatory=$false)]
     [string]
-    $ResourceGroupName = 'cxe-lab-test'
+    $ResourceGroupName = 'DefendTheFlag-Public-Test'
 )
 Write-Host "[!] Getting VM info for the `'$ResourceGroupName`' RG" -ForegroundColor Cyan
 
