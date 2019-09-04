@@ -442,7 +442,62 @@ Configuration SetupVictimPc
             DependsOn = '[Script]DownloadRegkeyZone3Workaround'
         }
 
+        #region AttackScripts
+        Script DownloadAttackScripts
+        {
+            SetScript = 
+            {
+                if ((Test-Path -PathType Container -LiteralPath 'C:\LabScripts') -ne $true){
+                    New-Item -Path 'C:\LabScripts\' -ItemType Directory | Out-Null
+                }
+                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
+                $scripts = @(
+                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/VictimPC/ctf-a.zip?raw=true', 'C:\LabScripts\ctf-a.zip'),
+                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/VictimPC/aatpsaplaybook.zip?raw=true', 'C:\LabScripts\aatpsaplaybook.zip')
+                )
+                foreach ($tool in $tools){
+                    Invoke-WebRequest -Uri $tool[0] -OutFile $tool[1]
+                }
+            }
+            GetScript = 
+            {
+                if (Test-Path -Path 'C:\LabScripts'){
+                    return @{ result = $true }
+                }
+                else {
+                    return @{ result = $false }
+                }
+            }
+            TestScript = 
+            {
+                if (Test-Path -Path 'C:\LabScripts'){
+                    return $true
+                }
+                else {
+                    return $false
+                }
+            }
+            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
+        }
+        Archive UnzipCtfA
+        {
+            Path = 'C:\LabScripts\ctf-a.zip'
+            Destination = 'C:\LabScripts\ctf-a'
+            Ensure = 'Present'
+            Force = $true
+            DependsOn = '[Script]DownloadAttackScripts'
+        }
+        Archive UnzipPowerSploit
+        {
+            Path = 'C:\LabScripts\aatpsaplaybook.zip'
+            Destination = 'C:\LabScripts\AatpSaPlaybook'
+            Ensure = 'Present'
+            Force = $true
+            DependsOn = '[Script]DownloadAttackScripts'
+        }
         #endregion
+        
         xMpPreference DefenderSettings
         {
             Name = 'DefenderSettings'
@@ -573,14 +628,6 @@ Configuration SetupVictimPc
         {
             Path = 'C:\Tools\PowerSploit.zip'
             Destination = 'C:\Tools\PowerSploit'
-            Ensure = 'Present'
-            Force = $true
-            DependsOn = '[Script]DownloadHackTools'
-        }
-        Archive UnzipNetSess
-        {
-            Path = 'C:\Tools\NetSess.zip'
-            Destination = 'C:\Tools\NetSess'
             Ensure = 'Present'
             Force = $true
             DependsOn = '[Script]DownloadHackTools'
