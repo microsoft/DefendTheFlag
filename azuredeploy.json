@@ -341,7 +341,8 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 1))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),1))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),1))]",
+        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -429,7 +430,8 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 2))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),2))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),2))]",
+        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -521,7 +523,8 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 3))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),3))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),3))]",
+        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -609,7 +612,8 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 4))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),4))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),4))]",
+        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
       ],
       "properties": {
         "hardwareprofile": {

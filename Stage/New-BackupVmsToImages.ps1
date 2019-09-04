@@ -7,7 +7,7 @@
 param(
     [Parameter(Mandatory=$false)]
     [string]
-    $ResourceGroupName = 'cxe-lab-test',
+    $ResourceGroupName = 'DefendTheFlag-Public-Test',
 
     # location for image
     [Parameter(Mandatory=$false)]
@@ -17,7 +17,7 @@ param(
     # DestingationResourceGroup
     [Parameter(Mandatory=$false)]
     [string]
-    $DestinationResourceGroupName = 'cxe-lab-images'
+    $DestinationResourceGroupName = 'DefendTheFlag-Public'
 )
 
 $vms = Get-AzVm -ResourceGroupName $ResourceGroupName
