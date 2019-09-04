@@ -488,7 +488,7 @@ Configuration SetupVictimPc
             Force = $true
             DependsOn = '[Script]DownloadAttackScripts'
         }
-        Archive UnzipPowerSploit
+        Archive UnzipAatpSaPlaybook
         {
             Path = 'C:\LabScripts\aatpsaplaybook.zip'
             Destination = 'C:\LabScripts\AatpSaPlaybook'
