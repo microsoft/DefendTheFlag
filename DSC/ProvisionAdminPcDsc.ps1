@@ -504,52 +504,6 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
         }
         #endregion
 
-        #region AIP
-        Script DownloadAipMsi
-		{
-			SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\') -ne $true){
-					New-Item -Path 'C:\LabTools\' -ItemType Directory
-				}
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AzInfoProtection_MSI_for_central_deployment.msi?raw=true' -Outfile 'C:\LabTools\aip_installer.msi'
-            }
-			GetScript = 
-            {
-				if ((Test-Path 'C:\LabTools\aip_installer.msi') -eq $true){
-					return @{
-						result = $true
-					}
-				}
-				else {
-					return @{
-						result = $false
-					}
-				}
-            }
-            TestScript = 
-            {
-				if ((Test-Path 'C:\LabTools\aip_installer.msi') -eq $true){
-					return $true
-				}
-				else {
-					return $false
-				}
-            }
-            DependsOn = @('[Registry]DisableSmartScreen','[Computer]JoinDomain', '[Script]ExecuteZone3Override')
-		}
-
-		xMsiPackage InstallAipClient
-		{
-			Ensure = 'Present'
-			Path = 'C:\LabTools\aip_installer.msi'
-			ProductId = '{48A06F18-951C-42CA-86F1-3046AF06D15E}'
-			Arguments = '/quiet'
-			DependsOn = '[Script]DownloadAipMsi'
-        }
-
         # need customer script do to issue with SmbShare
         Script SharePublicDocuments
         {

@@ -95,7 +95,7 @@
     "GenericStorageAccountName": "[concat(uniqueString(resourceGroup().id), 'sa')]",
     "DcVmName": "ContosoDc",
     "DcPromoteDcDscName": "DcPromoDsc",
-    "AscLinuxName": "Linux-Ubuntu",
+    "AscLinuxName": "Ubuntu-Katoolin",
     "VictimVmName": "VictimPc",
     "VictimDscName": "VictimDsc",
     "VictimDscUrl": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionVictimPcDsc.zip?raw=true",
