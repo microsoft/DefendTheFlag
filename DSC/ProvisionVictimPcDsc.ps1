@@ -506,13 +506,49 @@ Configuration SetupVictimPc
         }
         #endregion
 
+        Script DownloadAipUlMsi
+		{
+			SetScript = 
+            {
+                if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\') -ne $true){
+					New-Item -Path 'C:\LabTools\' -ItemType Directory
+				}
+				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+                Start-BitsTransfer -Source 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AzInfoProtection_ul_MSI_for_central_deployment.msi?raw=true' -Destination 'C:\LabTools\aip_ul_installer.msi'
+            }
+			GetScript = 
+            {
+				if (Test-Path 'C:\LabTools\aip_ul_installer.msi'){
+					return @{
+						result = $true
+					}
+				}
+				else {
+					return @{
+						result = $false
+					}
+				}
+            }
+            TestScript = 
+            {
+				if (Test-Path 'C:\LabTools\aip_ul_installer.msi'){
+					return $true
+				}
+				else {
+					return $false
+				}
+            }
+            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
+		}
+
 		xMsiPackage InstallAipClient
 		{
 			Ensure = 'Present'
-			Path = 'http://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AzInfoProtection_ul_MSI_for_central_deployment.msi?raw=true'
+			Path = 'file://C:\LabTools\aip_ul_installer.msi'
 			ProductId = '3C393E78-A1A6-43E8-86C0-E9B22AB83143'
             Arguments = '/quiet'
-            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
+            
+			DependsOn = @('[Script]DownloadAipUlMsi','[Computer]JoinDomain','[Script]ExecuteZone3Override')
 		}
         
         #region HackTools
@@ -528,7 +564,8 @@ Configuration SetupVictimPc
                 $tools = @(
                     ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Mimikatz.zip'),
                     ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\PowerSploit.zip'),
-                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\kekeo.zip')
+                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\kekeo.zip'),
+                    ('')
                 )
                 foreach ($tool in $tools){
                     Invoke-WebRequest -Uri $tool[0] -OutFile $tool[1]

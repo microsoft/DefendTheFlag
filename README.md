@@ -72,6 +72,8 @@ Want to skip Phase 0?  Feel free to grab our VHDs from an open Azure Storage acc
 > NOTE:
 > Ubuntu-Katoolin will leverage Ubuntu since it supports ```cloud-init``` and the [Katoolin](https://github.com/LionSec/katoolin) project.  No work has been done to automate on top of this **yet**, however, scripts exist in the ```Downloads``` > ```Katoolin``` folder.  Until automation exists, grabbing the VHD for Ubuntu-Katoolin adds very little.  The scripts are more important here as grabbing the necessary files is fairly easy with the right distro.
 
+Don't want to download them?  See guidance on ```Phase 2```; those scripts automatically pull from these public Azure Storage Containers.
+
 
 ## Linked content
 
