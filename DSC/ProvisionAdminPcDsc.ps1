@@ -544,7 +544,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
 		xMsiPackage InstallAipClient
 		{
 			Ensure = 'Present'
-			Path = 'file://C:\LabTools\aip_installer.msi'
+			Path = 'file://C:/LabTools/aip_installer.msi'
 			ProductId = '{48A06F18-951C-42CA-86F1-3046AF06D15E}'
 			Arguments = '/quiet'
 			DependsOn = '[Script]DownloadAipMsi'
