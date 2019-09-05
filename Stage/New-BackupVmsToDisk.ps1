@@ -18,7 +18,7 @@ param(
     # location
     [Parameter(Mandatory=$false)]
     [string]
-    $Location = 'East US2',
+    $Location = 'East US 2',
 
     # Force stop?
     [Parameter(Mandatory=$false)]
@@ -26,7 +26,7 @@ param(
     $StopVm = $true
 )
 $vms = Get-AzVm -ResourceGroupName $ResourceGroupName
-$date = Get-Date -Format yyyyMMdd
+#$date = Get-Date -Format yyyyMMdd
 
 # stop VMs
 if ($StopVm){
@@ -45,7 +45,9 @@ else {
 Write-Host "[ ] Taking snapshots of $($vms.Count) VMs" -ForegroundColor Yellow
 foreach ($vm in $vms){
     Write-Host "`t[$($vm.Name)] Taking snapshot" -ForegroundColor Cyan
-    $snapshotName = "$($vm.Name)$date"
+#   $snapshotName = "$($vm.Name)$date"
+    $snapshotName = "$($vm.Name)"
+
     $disk = Get-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $vm.StorageProfile.OsDisk.Name
 
     $snapshotConfig = New-AzSnapshotConfig -SourceUri $disk.Id `

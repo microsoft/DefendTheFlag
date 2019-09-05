@@ -15,44 +15,52 @@
     "DcVmName": "ContosoDc",
     "DcVmType": "Windows",
     "DcPrivateIp": "10.0.24.4",
-    "DcVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/ContosoDcd.vhd')]",
+    "DcVhdUri": "[concat('https://publicdefendtheflag.blob.core.windows.net/public/ContosoDcd.vhd')]",
     "VictimVmName": "VictimPc",
     "VictimVmType": "Windows",
     "VictimPrivateIp": "10.0.24.10",
-    "VictimVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/VictimPcd.vhd')]",
+    "VictimVhdUri": "[concat('https://publicdefendtheflag.blob.core.windows.net/public/VictimPcd.vhd')]",
     "AdminPcVmName": "AdminPc", 
     "AdminVmType": "Windows",
     "AdminPrivateIp": "10.0.24.11",
-    "AdminVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/AdminPcd.vhd')]",
+    "AdminVhdUri": "[concat('https://publicdefendtheflag.blob.core.windows.net/public/AdminPcd.vhd')]",
     "McasVmName": "Client01",
     "McasVmType": "Windows",
     "McasIpAddress": "10.0.24.12",
-    "McasVhdUri": "[concat('https://caiseclabimages.blob.core.windows.net/assets/Client01d.vhd')]",
+    "McasVhdUri": "[concat('https://publicdefendtheflag.blob.core.windows.net/public/Client01d.vhd')]",
+    "UbuntuVmName": "Ubuntu-Katoolin",
+    "UbuntuVmType": "Linux",
+    "UbuntuIpAddress": "10.0.24.50",
+    "UbuntuVhdUri": "[concat('https://publicdefendtheflag.blob.core.windows.net/public/Ubuntu-Katoolind.vhd')]",
     "RepeatConfigurations": {
       "type": "array",
       "VmName": [
         "[variables('DcVmName')]",
         "[variables('AdminPcVmName')]",
         "[variables('VictimVmName')]",
-        "[variables('McasVmName')]"
+        "[variables('McasVmName')]",
+        "[variables('UbuntuVmName')]"
       ],
       "DiskUris": [
         "[variables('DcVhdUri')]",
         "[variables('AdminVhdUri')]",
         "[variables('VictimVhdUri')]",
-        "[variables('McasVhdUri')]"
+        "[variables('McasVhdUri')]",
+        "[variables('UbuntuVhdUri')]"
       ],
       "PrivateIp": [
         "[variables('DcPrivateIp')]",
         "[variables('AdminPrivateIp')]",
         "[variables('VictimPrivateIp')]",
-        "[variables('McasIpAddress')]"
+        "[variables('McasIpAddress')]",
+        "[variables('UbuntuIpAddress')]"
       ],
       "OsType": [
         "[variables('DcVmType')]",
         "[variables('AdminVmType')]",
         "[variables('VictimVmType')]",
-        "[variables('McasVmType')]"
+        "[variables('McasVmType')]",
+        "[variables('UbuntuVmType')]"
       ]
     }
   },
@@ -84,7 +92,7 @@
       "name": "[concat(variables('GenericPublicIpAddressName'), copyIndex())]",
       "location": "[resourceGroup().location]",
       "copy": {
-        "count": 4,
+        "count": 5,
         "name": "GenericPublicIpAddressLoop"
       },
       "sku": {
@@ -100,7 +108,7 @@
       "name": "[concat(variables('GenericDiskName'), copyIndex())]",
       "location": "[resourceGroup().location]",
       "copy": {
-        "count": 4,
+        "count": 5,
         "name": "DiskLoop"
       },
       "sku": {
@@ -121,7 +129,7 @@
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "NicLoop",
-        "count": 4
+        "count": 5
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('GenericPublicIpAddressName'), copyIndex()))]",
@@ -250,6 +258,43 @@
           "networkInterfaces": [
             {
               "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), copyIndex('VmLoop', 1)))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": false
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2018-10-01",
+      "name": "[concat(variables('RepeatConfigurations').VmName[4])]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 4))]",
+        "[resourceId('Microsoft.Compute/disks', concat(variables('GenericDiskName'), 4))]",
+        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_B4ms"
+        },
+        "storageProfile": {
+          "osDisk": {
+            "osType": "[variables('RepeatConfigurations').OsType[4]]",
+            "createOption": "Attach",
+            "managedDisk": {
+              "id": "[resourceId('Microsoft.Compute/disks', concat(variables('GenericDiskName'), 4))]"
+            }
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 4))]"
             }
           ]
         },
