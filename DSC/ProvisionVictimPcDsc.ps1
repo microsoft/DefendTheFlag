@@ -512,9 +512,7 @@ Configuration SetupVictimPc
 			Path = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AzInfoProtection_ul_MSI_for_central_deployment.msi?raw=true'
 			ProductId = '3C393E78-A1A6-43E8-86C0-E9B22AB83143'
             Arguments = '/quiet'
-            
-
-			DependsOn = @('[Script]DownloadAipUlMsi','[Computer]JoinDomain','[Script]ExecuteZone3Override')
+            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
 		}
         
         #region HackTools

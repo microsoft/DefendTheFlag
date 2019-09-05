@@ -511,7 +511,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
 			Path = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AzInfoProtection_MSI_for_central_deployment.msi?raw=true'
 			ProductId = '{48A06F18-951C-42CA-86F1-3046AF06D15E}'
 			Arguments = '/quiet'
-			DependsOn = '[Script]DownloadAipMsi'
+            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
         }
 
         # need customer script do to issue with SmbShare
