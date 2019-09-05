@@ -24,6 +24,12 @@ This project also includes code to then take the VMs and snapshot their disks (`
 
 Primer for PowerShell Az cmdlets: [here](https://docs.microsoft.com/en-us/powershell/azure/get-started-azureps?view=azps-2.6.0)
 
+## About the environment
+
+This creates VMs, one of those VMs being a Domain Controller which hydrates users in an AD environment.  Those users are also configured appropriately on the respective VMs to simulate management and administrative activities.
+
+For more information refer to ```DSC``` [folder](./Dsc/README.md).
+
 ### Phase 0 (build from absolute scratch)
 To build from scratch (**Phase 0**):
 
