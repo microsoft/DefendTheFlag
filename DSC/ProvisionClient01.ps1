@@ -410,49 +410,5 @@ Configuration SetupAipScannerCore
             DependsOn = @('[Script]DownloadMcasData','[Computer]JoinDomain')
             Force = $true
         }
-
-        Script DownloadAipUlMsi
-		{
-			SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\') -ne $true){
-					New-Item -Path 'C:\LabTools\' -ItemType Directory
-				}
-				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                Start-BitsTransfer -Source  -Destination 'C:\LabTools\aip_ul_installer.msi'
-            }
-			GetScript = 
-            {
-				if (Test-Path 'C:\LabTools\aip_ul_installer.msi'){
-					return @{
-						result = $true
-					}
-				}
-				else {
-					return @{
-						result = $false
-					}
-				}
-            }
-            TestScript = 
-            {
-				if (Test-Path 'C:\LabTools\aip_ul_installer.msi'){
-					return $true
-				}
-				else {
-					return $false
-				}
-            }
-            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
-		}
-
-		xMsiPackage InstallAipClient
-		{
-			Ensure = 'Present'
-			Path = 'file://C:/LabTools/aip_ul_installer.msi'
-			ProductId = '{3C393E78-A1A6-43E8-86C0-E9B22AB83143}'
-			Arguments = '/quiet'
-			DependsOn = @('[Script]DownloadAipUlMsi','[Computer]JoinDomain','[Script]ExecuteZone3Override')
-		}
     }
 }
