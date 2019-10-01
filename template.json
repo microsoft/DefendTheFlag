@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {},
   "variables": {
-    "StagedDate": "20190707",
+    "StagedDate": "20191001",
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
     "vNetAddressPrefix": "10.0.24.0/24",
     "vNetName": "M365-vNet",
