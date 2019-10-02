@@ -402,7 +402,7 @@ Configuration SetupAipScannerCore
         }
 
         # Place on all Users Desktops; can't put in LisaV's else her profile changes since she never logged in yet...
-        Archive McasDataToP
+        Archive McasDataTop
         {
             Path = 'C:\LabData\McasData.zip'
             Destination = 'C:\Users\Public\Desktop\DemoFiles'
