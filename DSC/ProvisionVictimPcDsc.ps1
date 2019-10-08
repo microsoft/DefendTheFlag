@@ -570,9 +570,9 @@ Configuration SetupVictimPc
             {
                 #copy of above $tools; needed as these functions aren't aware of each other at runtime
                 $tools = @(
-                    ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Mimikatz.zip'),
-                    ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\PowerSploit.zip'),
-                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\kekeo.zip')
+                    ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Backup\Mimikatz.zip'),
+                    ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\Backup\PowerSploit.zip'),
+                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip')
                 )
                 $AllToolsThere = $true
                 foreach ($tool in $tools){
@@ -586,11 +586,11 @@ Configuration SetupVictimPc
                 }
                 return $AllToolsThere
             }
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Script]ExecuteZone3Override')
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
         }
         Archive UnzipMimikatz
         {
-            Path = 'C:\Tools\Mimikatz.zip'
+            Path = 'C:\Tools\Backup\Mimikatz.zip'
             Destination = 'C:\Tools\Mimikatz'
             Ensure = 'Present'
             Force = $true
@@ -598,7 +598,7 @@ Configuration SetupVictimPc
         }
         Archive UnzipPowerSploit
         {
-            Path = 'C:\Tools\PowerSploit.zip'
+            Path = 'C:\Tools\Backup\PowerSploit.zip'
             Destination = 'C:\Tools\PowerSploit'
             Ensure = 'Present'
             Force = $true
@@ -606,7 +606,7 @@ Configuration SetupVictimPc
         }
         Archive UnzipKekeo
         {
-            Path = 'C:\Tools\kekeo.zip'
+            Path = 'C:\Tools\Backup\kekeo.zip'
             Destination = 'C:\Tools\Kekeo'
             Ensure = 'Present'
             Force = $true
@@ -627,7 +627,7 @@ Configuration SetupVictimPc
 			Path = 'C:\LabTools\aip_ul_installer.msi'
 			ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
 			Arguments = '/quiet'
-			DependsOn = @('[xRemoteFile]AipUlMsi','[Computer]JoinDomain','[Script]ExecuteZone3Override')
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
 		}
     }
 }
