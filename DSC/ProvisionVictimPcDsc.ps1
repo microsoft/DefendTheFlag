@@ -512,20 +512,6 @@ Configuration SetupVictimPc
         #endregion
         
         #region HackTools
-        xRemoteFile NetSess
-        {
-            DestinationPath = 'C:\Tools\Backup\NetSess.zip'
-            Uri = 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Script]ExecuteZone3Override')
-        }
-        Archive UnzipNetSess
-        {
-            Path = 'C:\Tools\Backup\NetSess.zip'
-            Destination = 'C:\Tools\NetSess'
-            Ensure = 'Present'
-            Force = $true
-            DependsOn = '[xRemoteFile]NetSess'
-        }
         Script DownloadHackTools
         {
             SetScript = 
@@ -536,9 +522,11 @@ Configuration SetupVictimPc
                 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
                 $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
                 $tools = @(
-                    ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Mimikatz.zip'),
-                    ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\PowerSploit.zip'),
-                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\kekeo.zip')
+                    ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Backup\Mimikatz.zip'),
+                    ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\Backup\PowerSploit.zip'),
+                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip'),
+                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\Backup\NetSess.zip'),
+                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
                 )
                 foreach ($tool in $tools){
                     Invoke-WebRequest -Uri $tool[0] -OutFile $tool[1]
@@ -551,7 +539,9 @@ Configuration SetupVictimPc
                 $tools = @(
                     ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Backup\Mimikatz.zip'),
                     ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\Backup\PowerSploit.zip'),
-                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip')
+                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip'),
+                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\Backup\NetSess.zip'),
+                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
                 )
                 $AllToolsThere = $true
                 foreach ($tool in $tools){
@@ -572,7 +562,9 @@ Configuration SetupVictimPc
                 $tools = @(
                     ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Backup\Mimikatz.zip'),
                     ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\Backup\PowerSploit.zip'),
-                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip')
+                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip'),
+                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\Backup\NetSess.zip'),
+                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
                 )
                 $AllToolsThere = $true
                 foreach ($tool in $tools){
@@ -612,22 +604,24 @@ Configuration SetupVictimPc
             Force = $true
             DependsOn = '[Script]DownloadHackTools'
         }
+        Archive UnzipNetSess
+        {
+            Path = 'C:\Tools\Backup\NetSess.zip'
+            Destination = 'C:\Tools\NetSess'
+            Ensure = 'Present'
+            Force = $true
+            DependsOn = '[Script]DownloadHackTools'
+        }
         #endregion
 
         #region AIP
-        xRemoteFile AipUlMsi
-        {
-            DestinationPath = 'C:\LabTools\aip_ul_installer.msi'
-            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
-            DependsOn = '[Script]DownloadHackTools'
-        }
 		xMsiPackage InstallAipClient
 		{
 			Ensure = 'Present'
 			Path = 'C:\LabTools\aip_ul_installer.msi'
 			ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
 			Arguments = '/quiet'
-            DependsOn = '[ScrxRemoteFileipt]AipUlMsi'
+            DependsOn = '[Script]DownloadHackTools'
 		}
     }
 }
