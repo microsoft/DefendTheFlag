@@ -457,8 +457,8 @@ Configuration SetupVictimPc
                 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
                 $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
                 $scripts = @(
-                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/VictimPC/ctf-a.zip?raw=true', 'C:\LabScripts\ctf-a.zip'),
-                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/VictimPC/aatpsaplaybook.zip?raw=true', 'C:\LabScripts\aatpsaplaybook.zip')
+                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/ctf-a.zip?raw=true', 'C:\LabScripts\ctf-a.zip'),
+                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/aatpsaplaybook.zip?raw=true', 'C:\LabScripts\aatpsaplaybook.zip')
                 )
                 foreach ($script in $scripts){
                     Invoke-WebRequest -Uri $script[0] -OutFile $script[1]
