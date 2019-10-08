@@ -549,9 +549,9 @@ Configuration SetupVictimPc
             {
                 #copy of above $tools; needed as these functions aren't aware of each other at runtime
                 $tools = @(
-                    ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Mimikatz.zip'),
-                    ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\PowerSploit.zip'),
-                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\kekeo.zip')
+                    ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Backup\Mimikatz.zip'),
+                    ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\Backup\PowerSploit.zip'),
+                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip')
                 )
                 $AllToolsThere = $true
                 foreach ($tool in $tools){
@@ -619,7 +619,7 @@ Configuration SetupVictimPc
         {
             DestinationPath = 'C:\LabTools\aip_ul_installer.msi'
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
+            DependsOn = '[Script]DownloadHackTools'
         }
 		xMsiPackage InstallAipClient
 		{
@@ -627,7 +627,7 @@ Configuration SetupVictimPc
 			Path = 'C:\LabTools\aip_ul_installer.msi'
 			ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
 			Arguments = '/quiet'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
+            DependsOn = '[ScrxRemoteFileipt]AipUlMsi'
 		}
     }
 }
