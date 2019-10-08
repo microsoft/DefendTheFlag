@@ -619,7 +619,7 @@ Configuration SetupVictimPc
         {
             DestinationPath = 'C:\LabTools\aip_ul_installer.msi'
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Script]ExecuteZone3Override')
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
         }
 		xMsiPackage InstallAipClient
 		{
