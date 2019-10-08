@@ -524,9 +524,8 @@ Configuration SetupVictimPc
             Destination = 'C:\Tools\NetSess'
             Ensure = 'Present'
             Force = $true
-            DependsOn = '[Script]DownloadHackTools'
+            DependsOn = '[xRemoteFile]NetSess'
         }
-
         Script DownloadHackTools
         {
             SetScript = 
@@ -552,7 +551,6 @@ Configuration SetupVictimPc
                 $tools = @(
                     ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Mimikatz.zip'),
                     ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\PowerSploit.zip'),
-                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\NetSess.zip'),
                     ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\kekeo.zip')
                 )
                 $AllToolsThere = $true
@@ -615,5 +613,21 @@ Configuration SetupVictimPc
             DependsOn = '[Script]DownloadHackTools'
         }
         #endregion
+
+        #region AIP
+        xRemoteFile AipUlMsi
+        {
+            DestinationPath = 'C:\LabTools\aip_ul_installer.msi'
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Script]ExecuteZone3Override')
+        }
+		xMsiPackage InstallAipClient
+		{
+			Ensure = 'Present'
+			Path = 'C:\LabTools\aip_ul_installer.msi'
+			ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
+			Arguments = '/quiet'
+			DependsOn = @('[xRemoteFile]AipUlMsi','[Computer]JoinDomain','[Script]ExecuteZone3Override')
+		}
     }
 }
