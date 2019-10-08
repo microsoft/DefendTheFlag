@@ -46,8 +46,14 @@ Configuration CreateADForest
 		[int]$RetryIntervalSec=30
 	)
 
-	Import-DscResource -ModuleName PSDesiredStateConfiguration, xActiveDirectory, xPendingReboot, `
-		xNetworking, xStorage, xDefender, cChoco, ComputerManagementDsc
+	Import-DscResource -ModuleName PSDesiredStateConfiguration
+	Import-DscResource -ModuleName xActiveDirectory
+	Import-DscResource -ModuleName xPendingReboot
+	Import-DscResource -ModuleName xNetworking
+	Import-DscResource -ModuleName xStorage
+	Import-DscResource -ModuleName xDefender
+	Import-DscResource -ModuleName cChoco
+	Import-DscResource -ModuleName ComputerManagementDsc
 
 	$Interface=Get-NetAdapter | Where-Object Name -Like "Ethernet*"|Select-Object -First 1
 	$InterfaceAlias=$($Interface.Name)
