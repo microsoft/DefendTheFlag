@@ -27,8 +27,13 @@ Configuration SetupVictimPc
         [PSCredential]$RonHdCred
     )
     #region COE
-    Import-DscResource -ModuleName PSDesiredStateConfiguration, xPSDesiredStateConfiguration, xDefender, ComputerManagementDsc, NetworkingDsc, xSystemSecurity, cChoco, `
-        xPendingReboot
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration
+    Import-DscResource -ModuleName xDefender
+    Import-DscResource -ModuleName ComputerManagementDsc
+    Import-DscResource -ModuleName NetworkingDsc
+    Import-DscResource -ModuleName xSystemSecurity
+    Import-DscResource -ModuleName cChoco
+    Import-DscResource -ModuleName xPendingReboot
 
     [PSCredential]$Creds = New-Object System.Management.Automation.PSCredential ("${NetBiosName}\$($AdminCred.UserName)", $AdminCred.Password)
     #endregion
@@ -47,7 +52,7 @@ Configuration SetupVictimPc
         }
 
         #region COE
-        Service DisableWindowsUpdate
+        xService DisableWindowsUpdate
         {
             Name = 'wuauserv'
             State = 'Stopped'
@@ -79,7 +84,7 @@ Configuration SetupVictimPc
             Credential = $Creds
         }
 
-        Group AddAdmins
+        xGroup AddAdmins
         {
             GroupName = 'Administrators'
             MembersToInclude = @("$NetBiosName\Helpdesk", "$NetBiosName\JeffL")
@@ -87,7 +92,7 @@ Configuration SetupVictimPc
             DependsOn = '[Computer]JoinDomain'
         }
 
-        Registry HideServerManager
+        xRegistry HideServerManager
         {
             Key = 'HKLM:\SOFTWARE\Microsoft\ServerManager'
             ValueName = 'DoNotOpenServerManagerAtLogon'
@@ -98,7 +103,7 @@ Configuration SetupVictimPc
             DependsOn = '[Computer]JoinDomain'
         }
 
-        Registry HideInitialServerManager
+        xRegistry HideInitialServerManager
         {
             Key = 'HKLM:\SOFTWARE\Microsoft\ServerManager\Oobe'
             ValueName = 'DoNotOpenInitialConfigurationTasksAtLogon'
@@ -507,6 +512,21 @@ Configuration SetupVictimPc
         #endregion
         
         #region HackTools
+        xRemoteFile NetSess
+        {
+            DestinationPath = 'C:\Tools\Backup\NetSess.zip'
+            Uri = 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true'
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Script]ExecuteZone3Override')
+        }
+        Archive UnzipNetSess
+        {
+            Path = 'C:\Tools\Backup\NetSess.zip'
+            Destination = 'C:\Tools\NetSess'
+            Ensure = 'Present'
+            Force = $true
+            DependsOn = '[Script]DownloadHackTools'
+        }
+
         Script DownloadHackTools
         {
             SetScript = 
@@ -519,7 +539,6 @@ Configuration SetupVictimPc
                 $tools = @(
                     ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Mimikatz.zip'),
                     ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\PowerSploit.zip'),
-                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\NetSess.zip'),
                     ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\kekeo.zip')
                 )
                 foreach ($tool in $tools){
@@ -570,14 +589,6 @@ Configuration SetupVictimPc
                 return $AllToolsThere
             }
             DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Script]ExecuteZone3Override')
-        }
-        Archive UnzipNetSess
-        {
-            Path = 'C:\Tools\NetSess.zip'
-            Destination = 'C:\Tools\NetSess'
-            Ensure = 'Present'
-            Force = $true
-            DependsOn = '[Script]DownloadHackTools'
         }
         Archive UnzipMimikatz
         {
