@@ -261,8 +261,7 @@ Configuration SetupVictimPc
 				}
             }
             DependsOn = @('[Script]DownloadBginfo','[cChocoPackageInstaller]InstallSysInternals')
-		}
-
+        }
 
         #endregion
         Script TurnOnNetworkDiscovery
@@ -529,7 +528,7 @@ Configuration SetupVictimPc
         xRemoteFile GetAatpSaPlaybook
         {
             DestinationPath = 'C:\LabScripts\Backup\aatpsaplaybook.zip'
-            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/aatpsaplaybook.zip?raw=true'
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AATP/aatpsaplaybook.zip?raw=true'
             DependsOn = '[Computer]JoinDomain'
         }
 
