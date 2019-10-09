@@ -40,16 +40,15 @@ Configuration SetupAdminPc
 
     )
     #region COE
-    Import-DscResource -ModuleName PSDesiredStateConfiguration
-    Import-DscResource -ModuleName xPSDesiredStateConfiguration
-    Import-DscResource -ModuleName xDefender
-    Import-DscResource -ModuleName ComputerManagementDsc
-    Import-DscResource -ModuleName NetworkingDsc
-    Import-DscResource -ModuleName xSystemSecurity
-    Import-DscResource -ModuleName SqlServerDsc
-    Import-DscResource -ModuleName cChoco
-    Import-DscResource -ModuleName xPendingReboot
-    Import-DscResource -ModuleName xSmbShare
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
+    Import-DscResource -ModuleName xDefender -ModuleVersion 0.2.0.0
+    Import-DscResource -ModuleName ComputerManagementDsc -ModuleVersion 6.5.0.0
+    Import-DscResource -ModuleName NetworkingDsc -ModuleVersion 7.4.0.0
+    Import-DscResource -ModuleName xSystemSecurity -ModuleVersion 1.4.0.0
+    Import-DscResource -ModuleName cChoco -ModuleVersion 2.4.0.0
+    Import-DscResource -ModuleName xPendingReboot -ModuleVersion 0.4.0.0
+    Import-DscResource -ModuleName SqlServerDsc -ModuleVersion 13.2.0.0
+    Import-DscResource -ModuleName xSmbShare -ModuleVersion 2.2.0.0
 
     [PSCredential]$Creds = New-Object System.Management.Automation.PSCredential ("${NetBiosName}\$($AdminCred.UserName)", $AdminCred.Password)
     
