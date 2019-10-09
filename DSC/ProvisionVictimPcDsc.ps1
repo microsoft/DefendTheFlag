@@ -149,6 +149,7 @@ Configuration SetupVictimPc
             Ensure = 'Present'
             DependsOn = '[Computer]JoinDomain'
         }
+        #endregion
 
         #region Choco
         cChocoInstaller InstallChoco
@@ -441,74 +442,6 @@ Configuration SetupVictimPc
         }
         #endregion
 
-        #region Modify IE Zone 3 Settings
-        # needed to download files via IE from GitHub and other sources
-        # can't just modify regkeys, need to export/import reg
-        # ref: https://support.microsoft.com/en-us/help/182569/internet-explorer-security-zones-registry-entries-for-advanced-users
-        # Script DownloadRegkeyZone3Workaround
-        # {
-        #     SetScript = 
-        #     {
-        #         if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\') -ne $true){
-		# 			New-Item -Path 'C:\LabTools\' -ItemType Directory
-		# 		}
-        #         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        #         $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-        #         Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/microsoft/DefendTheFlag/master/Downloads/Zone3.reg' -Outfile 'C:\LabTools\RegkeyZone3.reg'
-        #     }
-		# 	GetScript = 
-        #     {
-		# 		if (Test-Path -Path 'C:\LabTools\RegkeyZone3.reg' -PathType Leaf){
-		# 			return @{
-		# 				result = $true
-		# 			}
-		# 		}
-		# 		else {
-		# 			return @{
-		# 				result = $false
-		# 			}
-		# 		}
-        #     }
-        #     TestScript = 
-        #     {
-		# 		if (Test-Path -Path 'C:\LabTools\RegkeyZone3.reg' -PathType Leaf){
-		# 			return $true
-		# 		}
-		# 		else {
-		# 			return $false
-		# 		}
-        #     }
-        #     DependsOn = '[Registry]DisableSmartScreen'
-        # }
-
-        # Script ExecuteZone3Override
-        # {
-        #     SetScript = 
-        #     {
-        #         reg import "C:\LabTools\RegkeyZone3.reg" > $null 2>&1 
-        #     }
-		# 	GetScript = 
-        #     {
-		# 		# this should be set to 0; if its 3, its default value still
-		# 		if ((Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3' -Name 'DisplayName') -eq 'Internet Zone - Modified (@ciberesponce)'){
-		# 			return @{ result = $true }
-		# 		}
-		# 		else{
-		# 			return @{ result = $false }
-		# 		}
-        #     }
-        #     TestScript = 
-        #     {
-		# 		if ((Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3' -Name 'DisplayName') -eq 'Internet Zone - Modified (@ciberesponce)'){
-		# 			return $true
-		# 		}
-		# 		else{
-		# 			return $false
-		# 		}
-        #     }
-        #     DependsOn = '[Script]DownloadRegkeyZone3Workaround'
-        # }
-
         #region AttackScripts
         xRemoteFile GetCtfA
         {
@@ -552,6 +485,7 @@ Configuration SetupVictimPc
         }
         #endregion
 
+        #region AipClient
         xRemoteFile AipClient
         {
             DestinationPath = 'C:\LabTools\aip_ul_installer.msi'

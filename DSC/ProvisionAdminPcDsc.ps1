@@ -85,6 +85,9 @@ Configuration SetupAdminPc
             Name = 'AdminPC'
             DomainName = $DomainName
             Credential = $Creds
+            DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
+                '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
+                '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
 
         xIEEsc DisableAdminIeEsc
@@ -155,75 +158,67 @@ Configuration SetupAdminPc
             DependsOn = '[Computer]JoinDomain'
         }
 
-        #region Modify IE Zone 3 Settings
-        # needed to download files via IE from GitHub and other sources
-        # can't just modify regkeys, need to export/import reg
-        # ref: https://support.microsoft.com/en-us/help/182569/internet-explorer-security-zones-registry-entries-for-advanced-users
-        Script DownloadRegkeyZone3Workaround
+        #region Enable TLS1.2
+        # REF: https://support.microsoft.com/en-us/help/3140245/update-to-enable-tls-1-1-and-tls-1-2-as-default-secure-protocols-in-wi
+        # Enable TLS 1.2 SChannel
+        Registry EnableTls12ServerEnabled
         {
-            SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\') -ne $true){
-					New-Item -Path 'C:\LabTools\' -ItemType Directory
-				}
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/microsoft/DefendTheFlag/master/Downloads/Zone3.reg' -Outfile 'C:\LabTools\RegkeyZone3.reg'
-            }
-			GetScript = 
-            {
-				if (Test-Path -Path 'C:\LabTools\RegkeyZone3.reg' -PathType Leaf){
-					return @{
-						result = $true
-					}
-				}
-				else {
-					return @{
-						result = $false
-					}
-				}
-            }
-            TestScript = 
-            {
-				if (Test-Path -Path 'C:\LabTools\RegkeyZone3.reg' -PathType Leaf){
-					return $true
-				}
-				else {
-					return $false
-				}
-            }
-            DependsOn = '[Registry]DisableSmartScreen'
+            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
+            ValueName = 'DisabledByDefault'
+            ValueType = 'Dword'
+            ValueData = 0
+            Ensure = 'Present'
+        }
+        # Enable Internet Settings
+        Registry EnableTlsInternetExplorerLM
+        {
+            Key = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings'
+            ValueName = 'SecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0xA80'
+            Ensure = 'Present'
+            Hex = $true
+        }
+        #enable for WinHTTP
+        Registry EnableTls12WinHttp
+        {
+            Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
+            ValueName = 'DefaultSecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0x00000800'
+            Ensure = 'Present'
+            Hex = $true
+        }
+        Registry EnableTls12WinHttp64
+        {
+            Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
+            ValueName = 'DefaultSecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0x00000800'
+            Hex = $true
+            Ensure = 'Present'
+        }
+        #powershell defaults
+        Registry SchUseStrongCrypto
+        {
+            Key = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
+            ValueName = 'SchUseStrongCrypto'
+            ValueType = 'Dword'
+            ValueData =  '1'
+            Ensure = 'Present'
         }
 
-        Script ExecuteZone3Override
+        Registry SchUseStrongCrypto64
         {
-            SetScript = 
-            {
-                reg import "C:\LabTools\RegkeyZone3.reg" > $null 2>&1
-            }
-			GetScript = 
-            {
-				# this should be set to 0; if its 3, its default value still
-				if ((Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3' -Name 'DisplayName') -eq 'Internet Zone - Modified (@ciberesponce)'){
-					return @{ result = $true }
-				}
-				else{
-					return @{ result = $false }
-				}
-            }
-            TestScript = 
-            {
-				if ((Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3' -Name 'DisplayName') -eq 'Internet Zone - Modified (@ciberesponce)'){
-					return $true
-				}
-				else{
-					return $false
-				}
-            }
-            DependsOn = '[Script]DownloadRegkeyZone3Workaround'
+            Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
+            ValueName = 'SchUseStrongCrypto'
+            ValueType = 'Dword'
+            ValueData =  '1'
+            Ensure = 'Present'
         }
         #endregion
 
+        #region SQL
         Script MSSqlFirewall
         {
             SetScript = 
@@ -355,6 +350,7 @@ Configuration SetupAdminPc
                 }
             }
         }
+        #endregion
 
         #region Choco
         cChocoInstaller InstallChoco
@@ -389,42 +385,13 @@ Configuration SetupAdminPc
         }
         #endregion
 
-        Script DownloadBginfo
+        xRemoteFile GetBgInfo
         {
-            SetScript =
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\BgInfo\') -ne $true){
-					New-Item -Path 'C:\BgInfo\' -ItemType Directory
-				}
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/adminpc.bgi?raw=true' -Outfile 'C:\BgInfo\BgInfoConfig.bgi'
-			}
-            GetScript =
-            {
-                if (Test-Path -LiteralPath 'C:\BgInfo\BgInfoConfig.bgi' -PathType Leaf){
-                    return @{
-                        result = $true
-                    }
-                }
-                else {
-                    return @{
-                        result = $false
-                    }
-                }
-            }
-            TestScript = 
-            {
-                if (Test-Path -LiteralPath 'C:\BgInfo\BgInfoConfig.bgi' -PathType Leaf){
-                    return $true
-                }
-                else {
-                    return $false
-                }
-			}
+            DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/adminpc.bgi?raw=true'
             DependsOn = '[cChocoPackageInstaller]InstallSysInternals'
         }
-        
+
         Script MakeShortcutForBgInfo
 		{
 			SetScript = 
@@ -458,7 +425,7 @@ Configuration SetupAdminPc
 					return $false
 				}
             }
-            DependsOn = @('[Script]DownloadBginfo','[cChocoPackageInstaller]InstallSysInternals')
+            DependsOn = @('[xRemoteFile]GetBgInfo','[cChocoPackageInstaller]InstallSysInternals')
 		}
 
         Registry AuditModeSamr
@@ -585,12 +552,13 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             DependsOn = '[Computer]JoinDomain'
         }
 
+        #region AipClient
         xRemoteFile AipClient
         {
             DestinationPath = 'C:\LabTools\aip_ul_installer.msi'
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
-            DependsOn = @('[Script]ExecuteZone3Override','[Computer]JoinDomain')
-
+            DependsOn = '[Computer]JoinDomain'
+            TimeoutSec = 120
         }
 		xMsiPackage InstallAipClient
 		{
@@ -600,84 +568,30 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             Arguments = '/quiet'
             DependsOn = '[xRemoteFile]AipClient'
         }
+        #endregion
+
+        xRemoteFile GetAipData
+        {
+            DestinationPath = 'C:\PII\data.zip'
+            Uri = 'https://github.com/InfoProtectionTeam/Files/blob/master/Scripts/AIPScanner/docs.zip?raw=true'
+            DependsOn = '[Computer]JoinDomain'
+        }
         
-        # Stage AIP data
-        Script DownloadAipData
+        xRemoteFile GetAipScripts
         {
-            SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\PII\') -ne $true){
-					New-Item -Path 'C:\PII\' -ItemType Directory
-                }
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://github.com/InfoProtectionTeam/Files/blob/master/Scripts/AIPScanner/docs.zip?raw=true' -Outfile 'C:\PII\data.zip'
-            }
-            TestScript =
-            {
-                if ((Test-Path -PathType Leaf -LiteralPath 'C:\PII\data.zip') -eq $true){
-                    return $true
-                } 
-                else { 
-                    return $false
-                }
-            }
-            
-            GetScript = 
-            {
-                if ((Test-Path -PathType Leaf -LiteralPath 'C:\PII\data.zip') -eq $true){
-                    return @{result = $true} 
-                }
-                else { 
-                    return @{result = $false}
-                }
-                
-            }
-            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
+            DestinationPath = 'C:\Scripts\Scripts.zip'
+            Uri = 'https://github.com/InfoProtectionTeam/Files/blob/master/Scripts/Scripts.zip?raw=true'
+            DependsOn = '[Computer]JoinDomain'
         }
 
-        # Stage AIP Scripts
-        Script DownloadAipScripts
-        {
-            SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\Scripts\') -ne $true){
-					New-Item -Path 'C:\Scripts\' -ItemType Directory
-                }
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://github.com/InfoProtectionTeam/Files/blob/master/Scripts/Scripts.zip?raw=true' -Outfile 'C:\Scripts\Scripts.zip'
-            }
-            TestScript =
-            {
-                if ((Test-Path -PathType Leaf -LiteralPath 'C:\Scripts\Scripts.zip') -eq $true){
-                    return $true
-                } 
-                else { 
-                    return $false
-                }
-            }
-            
-            GetScript = 
-            {
-                if ((Test-Path -PathType Leaf -LiteralPath 'C:\Scripts\Scripts.zip') -eq $true){
-                    return @{result = $true} 
-                }
-                else { 
-                    return @{result = $false}
-                }
-                
-            }
-            DependsOn = @('[Script]ExecuteZone3Override','[Computer]JoinDomain')
-        }
-
+        
         Archive AipDataToPii
         {
             Path = 'C:\PII\data.zip'
             Destination = 'C:\PII'
             Ensure = 'Present'
             Force = $true
-            DependsOn = @('[Script]DownloadAipData')
+            DependsOn = @('[xRemoteFile]GetAipData')
         }
 
         Archive AipDataToPublicDocuments
@@ -686,7 +600,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             Destination = 'C:\Users\Public\Documents'
             Ensure = 'Present'
             Force = $true
-            DependsOn = '[Script]DownloadAipData'
+            DependsOn = '[xRemoteFile]GetAipData'
         }
 
         Archive AipScriptsToScripts
@@ -695,7 +609,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             Destination = 'C:\Scripts'
             Ensure = 'Present'
             Force = $true
-            DependsOn = @('[Script]DownloadAipScripts')
+            DependsOn = @('[xRemoteFile]GetAipScripts')
         }
         #endregion
     }
