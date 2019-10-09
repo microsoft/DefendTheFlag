@@ -249,6 +249,13 @@ Configuration SetupAdminPc
             }
             DependsOn = '[Computer]JoinDomain'
         }
+
+        xRemoteFile StageSqlServer2017Dev
+        {
+            DestinationPath = 'C:\SQL\SQLServer2017.exe'
+            Uri = 'https://go.microsoft.com/fwlink/?linkid=853016'
+            DependsOn = '[Computer]JoinDomain'
+        }
         #endregion
 
         #region AATP
