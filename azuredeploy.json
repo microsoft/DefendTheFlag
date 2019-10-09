@@ -86,6 +86,7 @@
     },
     "NumberVmsNicStorage": 5,
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
+    "GithubBranch": "v1.0",
     "vNetAddressPrefix": "10.0.24.0/24",
     "vNetName": "AatpSaPlaybook-vNet",
     "vNetSubnetName": "Subnet",
@@ -98,15 +99,15 @@
     "AscLinuxName": "Ubuntu-Katoolin",
     "VictimVmName": "VictimPc",
     "VictimDscName": "VictimDsc",
-    "VictimDscUrl": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionVictimPcDsc.zip?raw=true",
+    "VictimDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionVictimPcDsc.zip?raw=true')]",
     "AdminPcVmName": "AdminPc",
-    "AdminPcDscUrl": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionAdminPcDsc.zip?raw=true",
+    "AdminPcDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionAdminPcDsc.zip?raw=true')]",
     "AdminPcDscName": "AdminPcDsc",
     "McasVmName": "Client01",
     "McasDscName": "SetupMcasClient",
+    "McasDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionClient01.zip?raw=true')]",
     "AipDomainServiceAccount": "AipScanner",
-    "AipDomainServiceAccountPassword": "Somepass1",
-    "McasDscUrl": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionClient01.zip?raw=true"
+    "AipDomainServiceAccountPassword": "Somepass1"
   },
   "resources": [
     {
