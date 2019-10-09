@@ -512,59 +512,65 @@ Configuration SetupVictimPc
         #endregion
 
         #region AIP
-        Script DownloadAIP
+        # Script DownloadAIP
+        # {
+        #     SetScript = 
+        #     {
+        #         if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\Backup') -ne $true){
+        #             New-Item -Path 'C:\LabTools\Backup' -ItemType Directory | Out-Null
+        #         }
+        #         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        #         $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
+        #         $tools = @(
+        #             ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
+        #         )
+        #         foreach ($tool in $tools){
+        #             Invoke-WebRequest -Uri $tool[0] -OutFile $tool[1]
+        #         }
+        #     }
+        #     GetScript = 
+        #     {
+        #         #copy of above $tools; needed as these functions aren't aware of each other at runtime
+        #         $tools = @(
+        #             ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
+        #         )
+        #         $AllToolsThere = $true
+        #         foreach ($tool in $tools){
+        #             if (Test-Path $tool[1]){
+        #                 continue 
+        #             }
+        #             else {
+        #                 $AllToolsThere = $false
+        #                 break # stop assessing
+        #             }
+        #         }
+        #         return @{ result = $AllToolsThere }
+        #     }
+        #     TestScript = 
+        #     {
+        #         #copy of above $tools; needed as these functions aren't aware of each other at runtime
+        #         $tools = @(
+        #             ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
+        #         )
+        #         $AllToolsThere = $true
+        #         foreach ($tool in $tools){
+        #             if (Test-Path $tool[1]){
+        #                 continue 
+        #             }
+        #             else {
+        #                 $AllToolsThere = $false
+        #                 break # stop assessing
+        #             }
+        #         }
+        #         return $AllToolsThere
+        #     }
+        #     DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
+        # }
+
+        xRemoteFile AipClient
         {
-            SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\Backup') -ne $true){
-                    New-Item -Path 'C:\LabTools\Backup' -ItemType Directory | Out-Null
-                }
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                $tools = @(
-                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
-                )
-                foreach ($tool in $tools){
-                    Invoke-WebRequest -Uri $tool[0] -OutFile $tool[1]
-                }
-            }
-            GetScript = 
-            {
-                #copy of above $tools; needed as these functions aren't aware of each other at runtime
-                $tools = @(
-                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
-                )
-                $AllToolsThere = $true
-                foreach ($tool in $tools){
-                    if (Test-Path $tool[1]){
-                        continue 
-                    }
-                    else {
-                        $AllToolsThere = $false
-                        break # stop assessing
-                    }
-                }
-                return @{ result = $AllToolsThere }
-            }
-            TestScript = 
-            {
-                #copy of above $tools; needed as these functions aren't aware of each other at runtime
-                $tools = @(
-                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
-                )
-                $AllToolsThere = $true
-                foreach ($tool in $tools){
-                    if (Test-Path $tool[1]){
-                        continue 
-                    }
-                    else {
-                        $AllToolsThere = $false
-                        break # stop assessing
-                    }
-                }
-                return $AllToolsThere
-            }
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
+            DestinationPath = 'C:\LabTools\aip_ul_installer.msi'
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
         }
 		xMsiPackage InstallAipClient
 		{
@@ -572,7 +578,7 @@ Configuration SetupVictimPc
 			Path = 'C:\LabTools\aip_ul_installer.msi'
             ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
             Arguments = '/quiet'
-            DependsOn = '[Script]DownloadAIP'
+            DependsOn = '[xRemoteFile]AipClient'
         }
         #endregion
 
