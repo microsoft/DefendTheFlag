@@ -400,11 +400,12 @@ Configuration SetupVictimPc
         # Enable Internet Settings
         Registry EnableTlsInternetExplorerLM
         {
-            Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings'
+            Key = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings'
             ValueName = 'SecureProtocols'
             ValueType = 'Dword'
             ValueData = '0xA80'
             Ensure = 'Present'
+            Hex = $true
         }
         #enable for WinHTTP
         Registry EnableTls12WinHttp
@@ -414,6 +415,7 @@ Configuration SetupVictimPc
             ValueType = 'Dword'
             ValueData = '0x00000800'
             Ensure = 'Present'
+            Hex = $true
         }
         Registry EnableTls12WinHttp64
         {
