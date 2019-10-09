@@ -447,42 +447,10 @@ Configuration SetupVictimPc
         }
 
         #region AttackScripts
-        Script DownloadAttackScripts
+        xRemoteFile ctf-a
         {
-            SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabScripts\Backup') -ne $true){
-                    New-Item -Path 'C:\LabScripts\Backup' -ItemType Directory | Out-Null
-                }
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                $scripts = @(
-                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/ctf-a.zip?raw=true', 'C:\LabScripts\Backup\ctf-a.zip'),
-                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/aatpsaplaybook.zip?raw=true', 'C:\LabScripts\Backup\aatpsaplaybook.zip')
-                )
-                foreach ($script in $scripts){
-                    Invoke-WebRequest -Uri $script[0] -OutFile $script[1]
-                }
-            }
-            GetScript = 
-            {
-                if (Test-Path -Path 'C:\LabScripts\Backup'){
-                    return @{ result = $true }
-                }
-                else {
-                    return @{ result = $false }
-                }
-            }
-            TestScript = 
-            {
-                if (Test-Path -Path 'C:\LabScripts\Backup'){
-                    return $true
-                }
-                else {
-                    return $false
-                }
-            }
-            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
+            DestinationPath = 'C:\LabScripts\Backup\ctf-a.zip'
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AATP/ctf-a.zip?raw=true'
         }
         Archive UnzipCtfA
         {
@@ -490,15 +458,22 @@ Configuration SetupVictimPc
             Destination = 'C:\LabScripts\ctf-a'
             Ensure = 'Present'
             Force = $true
-            DependsOn = '[Script]DownloadAttackScripts'
+            DependsOn = '[xRemoteFile]ctf-a'
         }
+
+        xRemoteFile GetAatpSaPlaybook
+        {
+            DestinationPath = 'C:\LabScripts\Backup\aatpsaplaybook.zip'
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/aatpsaplaybook.zip?raw=true'
+        }
+
         Archive UnzipAatpSaPlaybook
         {
             Path = 'C:\LabScripts\Backup\aatpsaplaybook.zip'
             Destination = 'C:\LabScripts\AatpSaPlaybook'
             Ensure = 'Present'
             Force = $true
-            DependsOn = '[Script]DownloadAttackScripts'
+            DependsOn = '[xRemoteFile]GetAatpSaPlaybook'
         }
         #endregion
         
@@ -510,62 +485,6 @@ Configuration SetupVictimPc
             DisableArchiveScanning = $true
         }
         #endregion
-
-        #region AIP
-        # Script DownloadAIP
-        # {
-        #     SetScript = 
-        #     {
-        #         if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\Backup') -ne $true){
-        #             New-Item -Path 'C:\LabTools\Backup' -ItemType Directory | Out-Null
-        #         }
-        #         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        #         $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-        #         $tools = @(
-        #             ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
-        #         )
-        #         foreach ($tool in $tools){
-        #             Invoke-WebRequest -Uri $tool[0] -OutFile $tool[1]
-        #         }
-        #     }
-        #     GetScript = 
-        #     {
-        #         #copy of above $tools; needed as these functions aren't aware of each other at runtime
-        #         $tools = @(
-        #             ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
-        #         )
-        #         $AllToolsThere = $true
-        #         foreach ($tool in $tools){
-        #             if (Test-Path $tool[1]){
-        #                 continue 
-        #             }
-        #             else {
-        #                 $AllToolsThere = $false
-        #                 break # stop assessing
-        #             }
-        #         }
-        #         return @{ result = $AllToolsThere }
-        #     }
-        #     TestScript = 
-        #     {
-        #         #copy of above $tools; needed as these functions aren't aware of each other at runtime
-        #         $tools = @(
-        #             ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true', 'C:\LabTools\aip_ul_installer.msi')
-        #         )
-        #         $AllToolsThere = $true
-        #         foreach ($tool in $tools){
-        #             if (Test-Path $tool[1]){
-        #                 continue 
-        #             }
-        #             else {
-        #                 $AllToolsThere = $false
-        #                 break # stop assessing
-        #             }
-        #         }
-        #         return $AllToolsThere
-        #     }
-        #     DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
-        # }
 
         xRemoteFile AipClient
         {

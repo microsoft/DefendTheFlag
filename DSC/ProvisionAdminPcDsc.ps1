@@ -100,7 +100,6 @@ Configuration SetupAdminPc
             UserRole = 'Users'
             IsEnabled = $false
             DependsOn = "[Computer]JoinDomain"
-
         }
 
         xUAC DisableUac
@@ -587,50 +586,19 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             DependsOn = '[Computer]JoinDomain'
         }
 
-        Script DownloadAipUlMsi
+        xRemoteFile AipClient
+        {
+            DestinationPath = 'C:\LabTools\aip_ul_installer.msi'
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
+        }
+		xMsiPackage InstallAipClient
 		{
-			SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\') -ne $true){
-					New-Item -Path 'C:\LabTools\' -ItemType Directory
-				}
-				[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                Start-BitsTransfer -Source 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/AIP/Clients/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true' -Destination 'C:\LabTools\aip_ul_installer.msi'
-            }
-			GetScript = 
-            {
-				if (Test-Path 'C:\LabTools\aip_ul_installer.msi'){
-					return @{
-						result = $true
-					}
-				}
-				else {
-					return @{
-						result = $false
-					}
-				}
-            }
-            TestScript = 
-            {
-				if (Test-Path 'C:\LabTools\aip_ul_installer.msi'){
-					return $true
-				}
-				else {
-					return $false
-				}
-            }
-            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
-		}
-
-		Package InstallAipClient
-		{
-			Name = 'Microsoft Azure Information Protection'
-			Ensure = 'Present'
+            Ensure = 'Present'
 			Path = 'C:\LabTools\aip_ul_installer.msi'
-			ProductId = '{3C393E78-A1A6-43E8-86C0-E9B22AB83143}'
-			Arguments = '/quiet'
-			DependsOn = @('[Script]DownloadAipUlMsi','[Computer]JoinDomain','[Script]ExecuteZone3Override')
-		}
+            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
+            Arguments = '/quiet'
+            DependsOn = '[xRemoteFile]AipClient'
+        }
         
         # Stage AIP data
         Script DownloadAipData
