@@ -379,6 +379,7 @@ Configuration SetupVictimPc
         }
 
         #region Enable TLS1.2
+        # REF: https://support.microsoft.com/en-us/help/3140245/update-to-enable-tls-1-1-and-tls-1-2-as-default-secure-protocols-in-wi
         # Enable TLS 1.2 SChannel
         Registry EnableTls12ClientEnabled
         {
@@ -397,14 +398,6 @@ Configuration SetupVictimPc
             Ensure = 'Present'
         }
         # Enable Internet Settings
-        Registry EnableTlsInternetExplorerCU
-        {
-            Key = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings'
-            ValueName = 'SecureProtocols'
-            ValueType = 'Dword'
-            ValueData = '0xA80'
-            Ensure = 'Present'
-        }
         Registry EnableTlsInternetExplorerLM
         {
             Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings'
