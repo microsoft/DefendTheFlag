@@ -558,6 +558,7 @@ Configuration SetupVictimPc
             DestinationPath = 'C:\LabTools\aip_ul_installer.msi'
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
             DependsOn = '[Computer]JoinDomain'
+            TimeoutSec = 120
         }
 		xMsiPackage InstallAipClient
 		{
@@ -570,67 +571,28 @@ Configuration SetupVictimPc
         #endregion
 
         #region HackTools
-        Script DownloadHackTools
+        xRemoteFile GetMimikatz
         {
-            SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\Tools\Backup') -ne $true){
-                    New-Item -Path 'C:\Tools\Backup' -ItemType Directory - | Out-Null
-                }
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                $tools = @(
-                    ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Backup\Mimikatz.zip'),
-                    ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\Backup\PowerSploit.zip'),
-                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip'),
-                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\Backup\NetSess.zip')
-                )
-                foreach ($tool in $tools){
-                    Invoke-WebRequest -Uri $tool[0] -OutFile $tool[1]
-                }
-            }
-            GetScript = 
-            {
-                #copy of above $tools; needed as these functions aren't aware of each other at runtime
-                $tools = @(
-                    ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Backup\Mimikatz.zip'),
-                    ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\Backup\PowerSploit.zip'),
-                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip'),
-                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\Backup\NetSess.zip')
-                )
-                $AllToolsThere = $true
-                foreach ($tool in $tools){
-                    if (Test-Path $tool[1]){
-                        continue 
-                    }
-                    else {
-                        $AllToolsThere = $false
-                        break # stop assessing
-                    }
-                }
-                return @{ result = $AllToolsThere }
-            }
-            TestScript = 
-            {
-                #copy of above $tools; needed as these functions aren't aware of each other at runtime
-                $tools = @(
-                    ('https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip', 'C:\Tools\Backup\Mimikatz.zip'),
-                    ('https://github.com/PowerShellMafia/PowerSploit/archive/master.zip', 'C:\Tools\Backup\PowerSploit.zip'),
-                    ('https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip', 'C:\Tools\Backup\kekeo.zip'),
-                    ('https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true', 'C:\Tools\Backup\NetSess.zip')
-                )
-                $AllToolsThere = $true
-                foreach ($tool in $tools){
-                    if (Test-Path $tool[1]){
-                        continue 
-                    }
-                    else {
-                        $AllToolsThere = $false
-                        break # stop assessing
-                    }
-                }
-                return $AllToolsThere
-            }
+            DestinationPath = 'C:\Tools\Backup\Mimikatz.zip'
+            Uri = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip'
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
+        }
+        xRemoteFile GetPowerSploit
+        {
+            DestinationPath = 'C:\Tools\Backup\PowerSploit.zip'
+            Uri = 'https://github.com/PowerShellMafia/PowerSploit/archive/master.zip'
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
+        }
+        xRemoteFile GetKekeo
+        {
+            DestinationPath = 'C:\Tools\Backup\kekeo.zip'
+            Uri = 'https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip'
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
+        }
+        xRemoteFile GetNetSess
+        {
+            DestinationPath = 'C:\Tools\Backup\NetSess.zip'
+            Uri = 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true'
             DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain', '[Script]ExecuteZone3Override')
         }
 
@@ -640,7 +602,7 @@ Configuration SetupVictimPc
             Destination = 'C:\Tools\Mimikatz'
             Ensure = 'Present'
             Force = $true
-            DependsOn = '[Script]DownloadHackTools'
+            DependsOn = '[xRemoteFile]GetMimikatz'
         }
 
         Archive UnzipPowerSploit
@@ -649,7 +611,7 @@ Configuration SetupVictimPc
             Destination = 'C:\Tools\PowerSploit'
             Ensure = 'Present'
             Force = $true
-            DependsOn = '[Script]DownloadHackTools'
+            DependsOn = '[xRemoteFile]GetPowerSploit'
         }
 
         Archive UnzipKekeo
@@ -658,7 +620,7 @@ Configuration SetupVictimPc
             Destination = 'C:\Tools\Kekeo'
             Ensure = 'Present'
             Force = $true
-            DependsOn = '[Script]DownloadHackTools'
+            DependsOn = '[xRemoteFile]GetKekeo'
         }
 
         Archive UnzipNetSess
@@ -667,7 +629,7 @@ Configuration SetupVictimPc
             Destination = 'C:\Tools\NetSess'
             Ensure = 'Present'
             Force = $true
-            DependsOn = '[Script]DownloadHackTools'
+            DependsOn = '[xRemoteFile]GetNetSess'
         }
         #endregion
     }
