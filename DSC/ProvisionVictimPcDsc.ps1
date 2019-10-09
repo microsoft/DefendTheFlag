@@ -379,33 +379,39 @@ Configuration SetupVictimPc
         }
 
         #region Enable TLS1.2
-        # Enable TLS 1.2
+        # Enable TLS 1.2 SChannel
         Registry EnableTls12ClientEnabled
         {
-            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
-            ValueName = 'Enabled'
+            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client'
+            ValueName = 'DisabledByDefault'
             ValueType = 'Dword'
-            ValueData = 1
+            ValueData = 0
             Ensure = 'Present'
-            DependsOn = '[Computer]JoinDomain'
         }
-        Registry EnableTls12ClientDefault
+        Registry EnableTls12ServerEnabled
         {
             Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
             ValueName = 'DisabledByDefault'
             ValueType = 'Dword'
             ValueData = 0
             Ensure = 'Present'
-            DependsOn = '[Computer]JoinDomain'
         }
-        Registry EnableTls12ServerEnabled
+        # Enable Internet Settings
+        Registry EnableTlsInternetExplorerCU
         {
-            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server'
-            ValueName = 'Enabled'
+            Key = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings'
+            ValueName = 'SecureProtocols'
             ValueType = 'Dword'
-            ValueData = 1
+            ValueData = '0xA80'
             Ensure = 'Present'
-            DependsOn = '[Computer]JoinDomain'
+        }
+        Registry EnableTlsInternetExplorerLM
+        {
+            Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings'
+            ValueName = 'SecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0xA80'
+            Ensure = 'Present'
         }
         Registry EnableTls12ServerDefault
         {
@@ -414,7 +420,6 @@ Configuration SetupVictimPc
             ValueType = 'Dword'
             ValueData = 0
             Ensure = 'Present'
-            DependsOn = '[Computer]JoinDomain'
         }
         #enable for WinHTTP
         Registry EnableTls12WinHttp
@@ -422,18 +427,16 @@ Configuration SetupVictimPc
             Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
             ValueName = 'DefaultSecureProtocols'
             ValueType = 'Dword'
-            ValueData = 800
+            ValueData = '0x00000800'
             Ensure = 'Present'
-            DependsOn = '[Computer]JoinDomain'
         }
         Registry EnableTls12WinHttp64
         {
             Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
             ValueName = 'DefaultSecureProtocols'
             ValueType = 'Dword'
-            ValueData = 800
+            ValueData = '0x00000800'
             Ensure = 'Present'
-            DependsOn = '[Computer]JoinDomain'
         }
         #endregion
 
