@@ -447,10 +447,11 @@ Configuration SetupVictimPc
         }
 
         #region AttackScripts
-        xRemoteFile ctf-a
+        xRemoteFile GetCtfA
         {
             DestinationPath = 'C:\LabScripts\Backup\ctf-a.zip'
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AATP/ctf-a.zip?raw=true'
+            DependsOn = @('[Script]ExecuteZone3Override','[Computer]JoinDomain')
         }
         Archive UnzipCtfA
         {
@@ -458,13 +459,14 @@ Configuration SetupVictimPc
             Destination = 'C:\LabScripts\ctf-a'
             Ensure = 'Present'
             Force = $true
-            DependsOn = '[xRemoteFile]ctf-a'
+            DependsOn = '[xRemoteFile]GetCtfA'
         }
 
         xRemoteFile GetAatpSaPlaybook
         {
             DestinationPath = 'C:\LabScripts\Backup\aatpsaplaybook.zip'
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/aatpsaplaybook.zip?raw=true'
+            DependsOn = @('[Script]ExecuteZone3Override','[Computer]JoinDomain')
         }
 
         Archive UnzipAatpSaPlaybook
@@ -483,6 +485,7 @@ Configuration SetupVictimPc
             ExclusionPath = 'C:\Tools'
             DisableRealtimeMonitoring = $true
             DisableArchiveScanning = $true
+            DependsOn = '[Computer]JoinDomain'
         }
         #endregion
 
