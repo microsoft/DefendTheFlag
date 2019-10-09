@@ -378,6 +378,65 @@ Configuration SetupVictimPc
             DependsOn = '[Computer]JoinDomain'
         }
 
+        #region Enable TLS1.2
+        # Enable TLS 1.2
+        Registry EnableTls12ClientEnabled
+        {
+            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
+            ValueName = 'Enabled'
+            ValueType = 'Dword'
+            ValueData = 1
+            Ensure = 'Present'
+            DependsOn = '[Computer]JoinDomain'
+        }
+        Registry EnableTls12ClientDefault
+        {
+            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
+            ValueName = 'DisabledByDefault'
+            ValueType = 'Dword'
+            ValueData = 0
+            Ensure = 'Present'
+            DependsOn = '[Computer]JoinDomain'
+        }
+        Registry EnableTls12ServerEnabled
+        {
+            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server'
+            ValueName = 'Enabled'
+            ValueType = 'Dword'
+            ValueData = 1
+            Ensure = 'Present'
+            DependsOn = '[Computer]JoinDomain'
+        }
+        Registry EnableTls12ServerDefault
+        {
+            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server'
+            ValueName = 'DisabledByDefault'
+            ValueType = 'Dword'
+            ValueData = 0
+            Ensure = 'Present'
+            DependsOn = '[Computer]JoinDomain'
+        }
+        #enable for WinHTTP
+        Registry EnableTls12WinHttp
+        {
+            Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
+            ValueName = 'DefaultSecureProtocols'
+            ValueType = 'Dword'
+            ValueData = 800
+            Ensure = 'Present'
+            DependsOn = '[Computer]JoinDomain'
+        }
+        Registry EnableTls12WinHttp64
+        {
+            Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
+            ValueName = 'DefaultSecureProtocols'
+            ValueType = 'Dword'
+            ValueData = 800
+            Ensure = 'Present'
+            DependsOn = '[Computer]JoinDomain'
+        }
+        #endregion
+
         #region Modify IE Zone 3 Settings
         # needed to download files via IE from GitHub and other sources
         # can't just modify regkeys, need to export/import reg
