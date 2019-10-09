@@ -451,14 +451,14 @@ Configuration SetupVictimPc
         {
             SetScript = 
             {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabScripts') -ne $true){
-                    New-Item -Path 'C:\LabScripts\' -ItemType Directory | Out-Null
+                if ((Test-Path -PathType Container -LiteralPath 'C:\LabScripts\Backup') -ne $true){
+                    New-Item -Path 'C:\LabScripts\Backup' -ItemType Directory | Out-Null
                 }
                 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
                 $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
                 $scripts = @(
-                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/ctf-a.zip?raw=true', 'C:\LabScripts\ctf-a.zip'),
-                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/aatpsaplaybook.zip?raw=true', 'C:\LabScripts\aatpsaplaybook.zip')
+                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/ctf-a.zip?raw=true', 'C:\LabScripts\Backup\ctf-a.zip'),
+                    ('https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/aatpsaplaybook.zip?raw=true', 'C:\LabScripts\Backup\aatpsaplaybook.zip')
                 )
                 foreach ($script in $scripts){
                     Invoke-WebRequest -Uri $script[0] -OutFile $script[1]
@@ -466,7 +466,7 @@ Configuration SetupVictimPc
             }
             GetScript = 
             {
-                if (Test-Path -Path 'C:\LabScripts'){
+                if (Test-Path -Path 'C:\LabScripts\Backup'){
                     return @{ result = $true }
                 }
                 else {
@@ -475,7 +475,7 @@ Configuration SetupVictimPc
             }
             TestScript = 
             {
-                if (Test-Path -Path 'C:\LabScripts'){
+                if (Test-Path -Path 'C:\LabScripts\Backup'){
                     return $true
                 }
                 else {
@@ -486,7 +486,7 @@ Configuration SetupVictimPc
         }
         Archive UnzipCtfA
         {
-            Path = 'C:\LabScripts\ctf-a.zip'
+            Path = 'C:\LabScripts\Backup\ctf-a.zip'
             Destination = 'C:\LabScripts\ctf-a'
             Ensure = 'Present'
             Force = $true
@@ -494,7 +494,7 @@ Configuration SetupVictimPc
         }
         Archive UnzipAatpSaPlaybook
         {
-            Path = 'C:\LabScripts\aatpsaplaybook.zip'
+            Path = 'C:\LabScripts\Backup\aatpsaplaybook.zip'
             Destination = 'C:\LabScripts\AatpSaPlaybook'
             Ensure = 'Present'
             Force = $true
@@ -517,7 +517,7 @@ Configuration SetupVictimPc
             SetScript = 
             {
                 if ((Test-Path -PathType Container -LiteralPath 'C:\Tools') -ne $true){
-                    New-Item -Path 'C:\Tools\' -ItemType Directory | Out-Null
+                    New-Item -Path 'C:\Tools\Backup' -ItemType Directory | Out-Null
                 }
                 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
                 $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
