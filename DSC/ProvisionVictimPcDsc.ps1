@@ -515,7 +515,7 @@ Configuration SetupVictimPc
         {
             DestinationPath = 'C:\LabScripts\Backup\ctf-a.zip'
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AATP/ctf-a.zip?raw=true'
-            DependsOn = @('[Script]ExecuteZone3Override','[Computer]JoinDomain')
+            DependsOn = '[Computer]JoinDomain'
         }
         Archive UnzipCtfA
         {
