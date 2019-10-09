@@ -85,7 +85,7 @@ Configuration SetupVictimPc
             Credential = $Creds
             DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
             '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
-            '[Registry]EnableTls12ClientEnabled')
+            '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
 
         xGroup AddAdmins
