@@ -385,14 +385,6 @@ Configuration SetupVictimPc
         #region Enable TLS1.2
         # REF: https://support.microsoft.com/en-us/help/3140245/update-to-enable-tls-1-1-and-tls-1-2-as-default-secure-protocols-in-wi
         # Enable TLS 1.2 SChannel
-        Registry EnableTls12ClientEnabled
-        {
-            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client'
-            ValueName = 'DisabledByDefault'
-            ValueType = 'Dword'
-            ValueData = 0
-            Ensure = 'Present'
-        }
         Registry EnableTls12ServerEnabled
         {
             Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
@@ -428,6 +420,24 @@ Configuration SetupVictimPc
             ValueType = 'Dword'
             ValueData = '0x00000800'
             Hex = $true
+            Ensure = 'Present'
+        }
+        #powershell defaults
+        Registry SchUseStrongCrypto
+        {
+            Key = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
+            ValueName = 'SchUseStrongCrypto'
+            ValueType = 'Dword'
+            ValueData =  '1'
+            Ensure = 'Present'
+        }
+
+        Registry SchUseStrongCrypto64
+        {
+            Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
+            ValueName = 'SchUseStrongCrypto'
+            ValueType = 'Dword'
+            ValueData =  '1'
             Ensure = 'Present'
         }
         #endregion
