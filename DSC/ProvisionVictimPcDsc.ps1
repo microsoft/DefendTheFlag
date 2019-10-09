@@ -77,11 +77,15 @@ Configuration SetupVictimPc
             Setting = "NeverNotifyAndDisableAll"
         }
 
+        # Set settings for TLS first so we domain join and then can reboot
         Computer JoinDomain
         {
             Name = 'VictimPC'
             DomainName = $DomainName
             Credential = $Creds
+            DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
+            '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
+            '[Registry]EnableTls12ClientEnabled')
         }
 
         xGroup AddAdmins
@@ -423,6 +427,7 @@ Configuration SetupVictimPc
             ValueName = 'DefaultSecureProtocols'
             ValueType = 'Dword'
             ValueData = '0x00000800'
+            Hex = $true
             Ensure = 'Present'
         }
         #endregion
