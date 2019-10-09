@@ -530,7 +530,7 @@ Configuration SetupVictimPc
         {
             DestinationPath = 'C:\LabScripts\Backup\aatpsaplaybook.zip'
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AATP/aatpsaplaybook.zip?raw=true'
-            DependsOn = @('[Script]ExecuteZone3Override','[Computer]JoinDomain')
+            DependsOn = '[Computer]JoinDomain'
         }
 
         Archive UnzipAatpSaPlaybook
