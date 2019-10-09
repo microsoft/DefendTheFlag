@@ -406,14 +406,6 @@ Configuration SetupVictimPc
             ValueData = '0xA80'
             Ensure = 'Present'
         }
-        Registry EnableTls12ServerDefault
-        {
-            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server'
-            ValueName = 'DisabledByDefault'
-            ValueType = 'Dword'
-            ValueData = 0
-            Ensure = 'Present'
-        }
         #enable for WinHTTP
         Registry EnableTls12WinHttp
         {
