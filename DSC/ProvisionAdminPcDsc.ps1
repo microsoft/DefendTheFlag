@@ -47,15 +47,12 @@ Configuration SetupAdminPc
     Import-DscResource -ModuleName xSystemSecurity -ModuleVersion 1.4.0.0
     Import-DscResource -ModuleName cChoco -ModuleVersion 2.4.0.0
     Import-DscResource -ModuleName xPendingReboot -ModuleVersion 0.4.0.0
-    Import-DscResource -ModuleName SqlServerDsc -ModuleVersion 13.2.0.0
-    Import-DscResource -ModuleName xSmbShare -ModuleVersion 2.2.0.0
 
     [PSCredential]$Creds = New-Object System.Management.Automation.PSCredential ("${NetBiosName}\$($AdminCred.UserName)", $AdminCred.Password)
     
     #region ScheduledTask-AATP
     $SamiraASmbScriptLocation = [string]'C:\ScheduledTasks\SamiraASmbSimulation.ps1'
     [PSCredential]$SamiraADomainCred = New-Object System.Management.Automation.PSCredential ("${NetBiosName}\$($SamiraACred.UserName)", $SamiraACred.Password)
-    #endregion
     #endregion
 
     #TODO: Not used yet as installing SQLExpress is one thing we need to do manually until we figure this out...

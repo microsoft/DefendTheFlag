@@ -45,15 +45,14 @@ Configuration CreateADForest
 		[int]$RetryCount=20,
 		[int]$RetryIntervalSec=30
 	)
-
-	Import-DscResource -ModuleName PSDesiredStateConfiguration
 	Import-DscResource -ModuleName xActiveDirectory
-	Import-DscResource -ModuleName xPendingReboot
-	Import-DscResource -ModuleName xNetworking
-	Import-DscResource -ModuleName xStorage
-	Import-DscResource -ModuleName xDefender
-	Import-DscResource -ModuleName cChoco
-	Import-DscResource -ModuleName ComputerManagementDsc
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
+    Import-DscResource -ModuleName xDefender -ModuleVersion 0.2.0.0
+    Import-DscResource -ModuleName ComputerManagementDsc -ModuleVersion 6.5.0.0
+    Import-DscResource -ModuleName NetworkingDsc -ModuleVersion 7.4.0.0
+    Import-DscResource -ModuleName xSystemSecurity -ModuleVersion 1.4.0.0
+    Import-DscResource -ModuleName cChoco -ModuleVersion 2.4.0.0
+    Import-DscResource -ModuleName xPendingReboot -ModuleVersion 0.4.0.0
 
 	$Interface=Get-NetAdapter | Where-Object Name -Like "Ethernet*"|Select-Object -First 1
 	$InterfaceAlias=$($Interface.Name)
@@ -80,7 +79,7 @@ Configuration CreateADForest
 			Name = 'DNS'
 		}
 		
-		xDnsServerAddress DnsServerAddress 
+		DnsServerAddress DnsServerAddress 
 		{ 
 			Address        = '127.0.0.1'
 			InterfaceAlias = $InterfaceAlias
