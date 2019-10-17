@@ -94,7 +94,7 @@ Here is some content that builds on top of these labs:
 
 ## About the author
 
-The maintainer is a Principal PM at Microsoft for Azure and Artificial Intelligence.  You can find more of his work and thoughts at [Ciberesponce.com](https://ciberesponce.com)
+The maintainer is a Principal PM/Architect at Microsoft for the Cloud and Artificial Intelligence (C+AI) Security team.  You can find more of his work and thoughts at [Ciberesponce.com](https://ciberesponce.com).
 
 ## Contributing
 

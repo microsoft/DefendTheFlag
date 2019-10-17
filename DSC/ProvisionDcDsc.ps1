@@ -430,6 +430,65 @@ Configuration CreateADForest
 			Ensure = 'Present'
 			DependsOn = @("[xADUser]RonHD","[xWaitForADDomain]DscForestWait")
 		}
+		#region Enable TLS1.2
+        # REF: https://support.microsoft.com/en-us/help/3140245/update-to-enable-tls-1-1-and-tls-1-2-as-default-secure-protocols-in-wi
+        # Enable TLS 1.2 SChannel
+        Registry EnableTls12ServerEnabled
+        {
+            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
+            ValueName = 'DisabledByDefault'
+            ValueType = 'Dword'
+            ValueData = 0
+            Ensure = 'Present'
+        }
+        # Enable Internet Settings
+        Registry EnableTlsInternetExplorerLM
+        {
+            Key = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings'
+            ValueName = 'SecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0xA80'
+            Ensure = 'Present'
+            Hex = $true
+        }
+        #enable for WinHTTP
+        Registry EnableTls12WinHttp
+        {
+            Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
+            ValueName = 'DefaultSecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0x00000800'
+            Ensure = 'Present'
+            Hex = $true
+        }
+        Registry EnableTls12WinHttp64
+        {
+            Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
+            ValueName = 'DefaultSecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0x00000800'
+            Hex = $true
+            Ensure = 'Present'
+        }
+        #powershell defaults
+        Registry SchUseStrongCrypto
+        {
+            Key = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
+            ValueName = 'SchUseStrongCrypto'
+            ValueType = 'Dword'
+            ValueData =  '1'
+            Ensure = 'Present'
+        }
+
+        Registry SchUseStrongCrypto64
+        {
+            Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
+            ValueName = 'SchUseStrongCrypto'
+            ValueType = 'Dword'
+            ValueData =  '1'
+            Ensure = 'Present'
+        }
+        #endregion
 
 		Registry DisableSmartScreen
         {
@@ -441,24 +500,25 @@ Configuration CreateADForest
             DependsOn = '[xWaitForADDomain]DscForestWait'
         }
 
-        #region Modify IE Zone 3 Settings
-        # needed to download files via IE from GitHub and other sources
-        # can't just modify regkeys, need to export/import reg
-        # ref: https://support.microsoft.com/en-us/help/182569/internet-explorer-security-zones-registry-entries-for-advanced-users
-        Script DownloadRegkeyZone3Workaround
-        {
-            SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\') -ne $true){
-					New-Item -Path 'C:\LabTools\' -ItemType Directory
-				}
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/microsoft/DefendTheFlag/master/Downloads/Zone3.reg' -Outfile 'C:\LabTools\RegkeyZone3.reg'
-            }
+		xMpPreference DefenderSettings
+		{
+			Name = 'DefenderProperties'
+			DisableRealtimeMonitoring = $true
+			ExclusionPath = 'c:\Temp'
+		}
+
+		Script MakeCmdShortcut
+		{
+			SetScript = 
+			{
+				$s=(New-Object -COM WScript.Shell).CreateShortcut('C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk')
+				$s.TargetPath='cmd.exe'
+				$s.Description = 'Cmd.exe shortcut on everyones desktop'
+				$s.Save()
+			}
 			GetScript = 
             {
-				if (Test-Path -Path 'C:\LabTools\RegkeyZone3.reg' -PathType Leaf){
+                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
 					return @{
 						result = $true
 					}
@@ -468,53 +528,18 @@ Configuration CreateADForest
 						result = $false
 					}
 				}
-            }
+			}
+            
             TestScript = 
             {
-				if (Test-Path -Path 'C:\LabTools\RegkeyZone3.reg' -PathType Leaf){
+                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
 					return $true
 				}
 				else {
 					return $false
 				}
             }
-            DependsOn = '[Registry]DisableSmartScreen'
-		}
-		
-        Script ExecuteZone3Override
-        {
-            SetScript = 
-            {
-                reg import "C:\LabTools\RegkeyZone3.reg" > $null 2>&1 
-			}
-			GetScript = 
-            {
-				# this should be set to 0; if its 3, its default value still
-				if ((Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3' -Name 'DisplayName') -eq 'Internet Zone - Modified (@ciberesponce)'){
-					return @{ result = $true }
-				}
-				else{
-					return @{ result = $false }
-				}
-            }
-            TestScript = 
-            {
-				if ((Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3' -Name 'DisplayName') -eq 'Internet Zone - Modified (@ciberesponce)'){
-					return $true
-				}
-				else{
-					return $false
-				}
-            }
-            DependsOn = '[Script]DownloadRegkeyZone3Workaround'
-        }
-        #endregion
-
-		xMpPreference DefenderSettings
-		{
-			Name = 'DefenderProperties'
-			DisableRealtimeMonitoring = $true
-			ExclusionPath = 'c:\Temp'
+            DependsOn = '[xWaitForADDomain]DscForestWait'
 		}
 	} #end of node
 } #end of configuration

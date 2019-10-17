@@ -191,6 +191,41 @@ Configuration SetupAipScannerCore
 				}
             }
             DependsOn = @('[Script]DownloadBginfo','[cChocoPackageInstaller]InstallSysInternals')
+        }
+        
+        Script MakeCmdShortcut
+		{
+			SetScript = 
+			{
+				$s=(New-Object -COM WScript.Shell).CreateShortcut('C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk')
+				$s.TargetPath='cmd.exe'
+				$s.Description = 'Cmd.exe shortcut on everyones desktop'
+				$s.Save()
+			}
+			GetScript = 
+            {
+                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
+					return @{
+						result = $true
+					}
+				}
+				else {
+					return @{
+						result = $false
+					}
+				}
+			}
+            
+            TestScript = 
+            {
+                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
+					return $true
+				}
+				else {
+					return $false
+				}
+            }
+            DependsOn = '[Computer]JoinDomain'
 		}
 
 
