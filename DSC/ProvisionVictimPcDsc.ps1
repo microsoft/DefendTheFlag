@@ -193,41 +193,12 @@ Configuration SetupVictimPc
         }
         #endregion
 
-        Script DownloadBginfo
-        {
-            SetScript =
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\BgInfo\') -ne $true){
-					New-Item -Path 'C:\BgInfo\' -ItemType Directory
-				}
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/victimpc.bgi?raw=true' -Outfile 'C:\BgInfo\BgInfoConfig.bgi'
-			}
-            GetScript =
-            {
-                if ((Test-Path -LiteralPath 'C:\BgInfo\BgInfoConfig.bgi' -PathType Leaf) -eq $true){
-                    return @{
-                        result = $true
-                    }
-                }
-                else {
-                    return @{
-                        result = $false
-                    }
-                }
-            }
-            TestScript = 
-            {
-                if ((Test-Path -LiteralPath 'C:\BgInfo\BgInfoConfig.bgi' -PathType Leaf) -eq $true){
-                    return $true
-                }
-                else {
-                    return $false
-                }
-			}
-            DependsOn = '[cChocoPackageInstaller]InstallSysInternals'
-        }
+        xRemoteFile DownloadBginfo
+		{
+			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
+			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/contosodc.bgi?raw=true'
+            DependsOn = '[Computer]JoinDomain'
+		}
         
         Script MakeShortcutForBgInfo
 		{
@@ -262,7 +233,7 @@ Configuration SetupVictimPc
 					return $false
 				}
             }
-            DependsOn = @('[Script]DownloadBginfo','[cChocoPackageInstaller]InstallSysInternals')
+            DependsOn = @('[xRemoteFile]DownloadBginfo','[cChocoPackageInstaller]InstallSysInternals')
         }
 
         #endregion

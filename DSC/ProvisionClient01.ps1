@@ -68,6 +68,9 @@ Configuration SetupAipScannerCore
             Name = 'Client01'
             DomainName = $DomainName
             Credential = $Creds
+            DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
+                '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
+                '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
 
         Group AddAdmins
@@ -122,41 +125,72 @@ Configuration SetupAipScannerCore
         }
         #endregion
 
-        Script DownloadBginfo
+        #region Enable TLS1.2
+        # REF: https://support.microsoft.com/en-us/help/3140245/update-to-enable-tls-1-1-and-tls-1-2-as-default-secure-protocols-in-wi
+        # Enable TLS 1.2 SChannel
+        Registry EnableTls12ServerEnabled
         {
-            SetScript =
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\BgInfo\') -ne $true){
-					New-Item -Path 'C:\BgInfo\' -ItemType Directory
-				}
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/aippc.bgi?raw=true' -Outfile 'C:\BgInfo\BgInfoConfig.bgi'
-			}
-            GetScript =
-            {
-                if (Test-Path -LiteralPath 'C:\BgInfo\BgInfoConfig.bgi' -PathType Leaf){
-                    return @{
-                        result = $true
-                    }
-                }
-                else {
-                    return @{
-                        result = $false
-                    }
-                }
-            }
-            TestScript = 
-            {
-                if (Test-Path -LiteralPath 'C:\BgInfo\BgInfoConfig.bgi' -PathType Leaf){
-                    return $true
-                }
-                else {
-                    return $false
-                }
-			}
-            DependsOn = '[cChocoPackageInstaller]InstallSysInternals'
+            Key = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client'
+            ValueName = 'DisabledByDefault'
+            ValueType = 'Dword'
+            ValueData = 0
+            Ensure = 'Present'
         }
+        # Enable Internet Settings
+        Registry EnableTlsInternetExplorerLM
+        {
+            Key = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings'
+            ValueName = 'SecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0xA80'
+            Ensure = 'Present'
+            Hex = $true
+        }
+        #enable for WinHTTP
+        Registry EnableTls12WinHttp
+        {
+            Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
+            ValueName = 'DefaultSecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0x00000800'
+            Ensure = 'Present'
+            Hex = $true
+        }
+        Registry EnableTls12WinHttp64
+        {
+            Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Internet Settings\WinHttp'
+            ValueName = 'DefaultSecureProtocols'
+            ValueType = 'Dword'
+            ValueData = '0x00000800'
+            Hex = $true
+            Ensure = 'Present'
+        }
+        #powershell defaults
+        Registry SchUseStrongCrypto
+        {
+            Key = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
+            ValueName = 'SchUseStrongCrypto'
+            ValueType = 'Dword'
+            ValueData =  '1'
+            Ensure = 'Present'
+        }
+
+        Registry SchUseStrongCrypto64
+        {
+            Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
+            ValueName = 'SchUseStrongCrypto'
+            ValueType = 'Dword'
+            ValueData =  '1'
+            Ensure = 'Present'
+        }
+        #endregion
+
+        xRemoteFile DownloadBginfo
+		{
+			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
+			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/contosodc.bgi?raw=true'
+            DependsOn = '[Computer]JoinDomain'
+		}
         
         Script MakeShortcutForBgInfo
 		{
@@ -191,7 +225,7 @@ Configuration SetupAipScannerCore
 					return $false
 				}
             }
-            DependsOn = @('[Script]DownloadBginfo','[cChocoPackageInstaller]InstallSysInternals')
+            DependsOn = @('[xRemoteFile]DownloadBginfo','[cChocoPackageInstaller]InstallSysInternals')
         }
         
         Script MakeCmdShortcut
@@ -338,15 +372,6 @@ Configuration SetupAipScannerCore
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
             DependsOn = '[Computer]JoinDomain'
         }
-        
-		MsiPackage InstallAipClient
-		{
-            Ensure = 'Present'
-            Path = 'C:\LabTools\aip_ul_installer.msi'
-            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
-            Arguments = '/quiet'
-            DependsOn = '[xRemoteFile]AipClient'
-        }
         #endregion
 
         Registry DisableSmartScreen
@@ -359,35 +384,10 @@ Configuration SetupAipScannerCore
             DependsOn = '[Computer]JoinDomain'
         }
 
-        Script DownloadMcasData
+        xRemoteFile GetMcasData
         {
-            SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabData\') -ne $true){
-					New-Item -Path 'C:\LabData\' -ItemType Directory
-                }
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/MCAS/Demo%20files.zip?raw=true' -Outfile 'C:\LabData\McasData.zip'
-            }      
-            GetScript = 
-            {
-                if ((Test-Path -PathType Leaf -LiteralPath 'C:\LabData\McasData.zip') -eq $true){
-                    return @{result = $true} 
-                }
-                else { 
-                    return @{result = $false}
-                }
-            }
-            TestScript =
-            {
-                if ((Test-Path -PathType Leaf -LiteralPath 'C:\LabData\McasData.zip') -eq $true){
-                    return $true
-                } 
-                else { 
-                    return $false
-                }
-            }
+            DestinationPath = 'C:\LabData\McasData.zip'
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/MCAS/Demo%20files.zip?raw=true'
             DependsOn = @('[Computer]JoinDomain')
         }
 
@@ -397,7 +397,7 @@ Configuration SetupAipScannerCore
             Path = 'C:\LabData\McasData.zip'
             Destination = 'C:\Users\Public\Desktop\DemoFiles'
             Ensure = 'Present'
-            DependsOn = @('[Script]DownloadMcasData','[Computer]JoinDomain')
+            DependsOn = '[xRemoteFile]GetMcasData'
             Force = $true
         }
     }

@@ -98,6 +98,9 @@ Configuration CreateADForest
 		{
 			Ensure = 'Present'
 			Name = 'AD-Domain-Services'
+			DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
+				'[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
+				'[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
 		}
 
 		WindowsFeature ADDSTools
@@ -182,39 +185,10 @@ Configuration CreateADForest
 		}
 		#endegion
 	
-        Script DownloadBginfo
-        {
-            SetScript =
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\BgInfo\') -ne $true){
-					New-Item -Path 'C:\BgInfo\' -ItemType Directory
-				}
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/contosodc.bgi?raw=true' -Outfile 'C:\BgInfo\BgInfoConfig.bgi'
-			}
-            GetScript =
-            {
-                if ((Test-Path -LiteralPath 'C:\BgInfo\BgInfoConfig.bgi' -PathType Leaf) -eq $true){
-                    return @{
-                        result = $true
-                    }
-                }
-                else {
-                    return @{
-                        result = $false
-                    }
-                }
-            }
-            TestScript = 
-            {
-                if ((Test-Path -LiteralPath 'C:\BgInfo\BgInfoConfig.bgi' -PathType Leaf) -eq $true){
-                    return $true
-                }
-                else {
-                    return $false
-                }
-			}
+		xRemoteFile DownloadBginfo
+		{
+			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
+			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/contosodc.bgi?raw=true'
 			DependsOn = @('[xWaitForADDomain]DscForestWait','[cChocoPackageInstaller]InstallSysInternals')
 		}
 
@@ -251,7 +225,7 @@ Configuration CreateADForest
 					return $false
 				}
             }
-            DependsOn = @('[Script]DownloadBginfo','[cChocoPackageInstaller]InstallSysInternals')
+            DependsOn = @('[xRemoteFile]DownloadBginfo','[cChocoPackageInstaller]InstallSysInternals')
 		}
 
 		Script TurnOnNetworkDiscovery
