@@ -329,6 +329,25 @@ Configuration SetupAipScannerCore
         }
         #endregion
 
+        
+        #region AipClient
+        # xRemoteFile AipClient
+        # {
+        #     DestinationPath = 'C:\LabTools\aip_ul_installer.msi'
+        #     Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
+        #     DependsOn = '[Computer]JoinDomain'
+        # }
+        
+		xMsiPackage InstallAipClient
+		{
+            Ensure = 'Present'
+            Path = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
+            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
+            Arguments = '/quiet'
+            DependsOn = '[Computer]JoinDomain'
+        }
+        #endregion
+
         Registry DisableSmartScreen
         {
             Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer'
