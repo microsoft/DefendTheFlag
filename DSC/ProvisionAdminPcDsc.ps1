@@ -92,20 +92,17 @@ Configuration SetupAdminPc
         {
             UserRole = 'Administrators'
             IsEnabled = $false
-            DependsOn = "[Computer]JoinDomain"
         }
 
         xIEEsc DisableUserIeEsc
         {
             UserRole = 'Users'
             IsEnabled = $false
-            DependsOn = "[Computer]JoinDomain"
         }
 
         xUAC DisableUac
         {
             Setting = "NeverNotifyAndDisableAll"
-            DependsOn = "[Computer]JoinDomain"
         }
 
         Group AddAdmins
@@ -130,8 +127,8 @@ Configuration SetupAdminPc
             ValueName = 'DoNotOpenServerManagerAtLogon'
             ValueType = 'Dword'
             ValueData = '1'
-            Force = $true
             Ensure = 'Present'
+            Force = $true
             DependsOn = '[Computer]JoinDomain'
         }
 
@@ -141,8 +138,8 @@ Configuration SetupAdminPc
             ValueName = 'DoNotOpenInitialConfigurationTasksAtLogon'
             ValueType = 'Dword'
             ValueData = '1'
-            Force = $true
             Ensure = 'Present'
+            Force = $true
             DependsOn = '[Computer]JoinDomain'
         }
 
@@ -153,6 +150,7 @@ Configuration SetupAdminPc
             ValueType = 'String'
             ValueData = 'Off'
             Ensure = 'Present'
+            Force = $true
             DependsOn = '[Computer]JoinDomain'
         }
 
@@ -166,6 +164,7 @@ Configuration SetupAdminPc
             ValueType = 'Dword'
             ValueData = 0
             Ensure = 'Present'
+            Force = $true
         }
         # Enable Internet Settings
         Registry EnableTlsInternetExplorerLM
@@ -176,6 +175,7 @@ Configuration SetupAdminPc
             ValueData = '0xA80'
             Ensure = 'Present'
             Hex = $true
+            Force = $true
         }
         #enable for WinHTTP
         Registry EnableTls12WinHttp
@@ -186,6 +186,7 @@ Configuration SetupAdminPc
             ValueData = '0x00000800'
             Ensure = 'Present'
             Hex = $true
+            Force = $true
         }
         Registry EnableTls12WinHttp64
         {
@@ -195,6 +196,7 @@ Configuration SetupAdminPc
             ValueData = '0x00000800'
             Hex = $true
             Ensure = 'Present'
+            Force = $true
         }
         #powershell defaults
         Registry SchUseStrongCrypto
@@ -204,6 +206,7 @@ Configuration SetupAdminPc
             ValueType = 'Dword'
             ValueData =  '1'
             Ensure = 'Present'
+            Force = $true
         }
 
         Registry SchUseStrongCrypto64
@@ -213,6 +216,7 @@ Configuration SetupAdminPc
             ValueType = 'Dword'
             ValueData =  '1'
             Ensure = 'Present'
+            Force = $true
         }
         #endregion
 
@@ -439,9 +443,9 @@ Configuration SetupAdminPc
             ValueName = 'RestrictRemoteSamAuditOnlyMode'
             ValueType = 'Dword'
             ValueData = '1'
-            Force = $true
             Ensure = 'Present'
             DependsOn = '[Computer]JoinDomain'
+            Force = $true
         }
 
         xMpPreference DefenderSettings

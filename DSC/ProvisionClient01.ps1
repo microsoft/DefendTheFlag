@@ -56,6 +56,11 @@ Configuration SetupAipScannerCore
             IsEnabled = $false
         }
 
+        xUAC DisableUac
+        {
+            Setting = "NeverNotifyAndDisableAll"
+        }
+
         Service DisableWindowsUpdate
         {
             Name = 'wuauserv'
@@ -87,8 +92,8 @@ Configuration SetupAipScannerCore
             ValueName = 'DoNotOpenServerManagerAtLogon'
             ValueType = 'Dword'
             ValueData = '1'
-            Force = $true
             Ensure = 'Present'
+            Force = $true
             DependsOn = '[Computer]JoinDomain'
         }
 
@@ -135,6 +140,7 @@ Configuration SetupAipScannerCore
             ValueType = 'Dword'
             ValueData = 0
             Ensure = 'Present'
+            Force = $true
         }
         # Enable Internet Settings
         Registry EnableTlsInternetExplorerLM
@@ -145,6 +151,7 @@ Configuration SetupAipScannerCore
             ValueData = '0xA80'
             Ensure = 'Present'
             Hex = $true
+            Force = $true
         }
         #enable for WinHTTP
         Registry EnableTls12WinHttp
@@ -155,6 +162,7 @@ Configuration SetupAipScannerCore
             ValueData = '0x00000800'
             Ensure = 'Present'
             Hex = $true
+            Force = $true
         }
         Registry EnableTls12WinHttp64
         {
@@ -164,6 +172,7 @@ Configuration SetupAipScannerCore
             ValueData = '0x00000800'
             Hex = $true
             Ensure = 'Present'
+            Force = $true
         }
         #powershell defaults
         Registry SchUseStrongCrypto
@@ -173,6 +182,7 @@ Configuration SetupAipScannerCore
             ValueType = 'Dword'
             ValueData =  '1'
             Ensure = 'Present'
+            Force = $true
         }
 
         Registry SchUseStrongCrypto64
@@ -182,6 +192,7 @@ Configuration SetupAipScannerCore
             ValueType = 'Dword'
             ValueData =  '1'
             Ensure = 'Present'
+            Force = $true
         }
         #endregion
 
@@ -347,8 +358,8 @@ Configuration SetupAipScannerCore
             ValueName = 'DoNotOpenInitialConfigurationTasksAtLogon'
             ValueType = 'Dword'
             ValueData = '1'
-            Force = $true
             Ensure = 'Present'
+            Force = $true
             DependsOn = '[Computer]JoinDomain'
         }
 
@@ -358,8 +369,8 @@ Configuration SetupAipScannerCore
             ValueName = 'RestrictRemoteSamAuditOnlyMode'
             ValueType = 'Dword'
             ValueData = '1'
-            Force = $true
             Ensure = 'Present'
+            Force = $true
             DependsOn = '[Computer]JoinDomain'
         }
         #endregion
@@ -381,6 +392,7 @@ Configuration SetupAipScannerCore
             ValueType = 'String'
             ValueData = 'Off'
             Ensure = 'Present'
+            Force = $true
             DependsOn = '[Computer]JoinDomain'
         }
 

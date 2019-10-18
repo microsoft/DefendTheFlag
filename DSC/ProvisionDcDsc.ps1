@@ -151,8 +151,8 @@ Configuration CreateADForest
             ValueName = 'DoNotOpenServerManagerAtLogon'
             ValueType = 'Dword'
             ValueData = '1'
-            Force = $true
             Ensure = 'Present'
+            Force = $true
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
 
@@ -162,8 +162,8 @@ Configuration CreateADForest
             ValueName = 'DoNotOpenInitialConfigurationTasksAtLogon'
             ValueType = 'Dword'
             ValueData = '1'
-            Force = $true
             Ensure = 'Present'
+            Force = $true
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
 
@@ -412,7 +412,8 @@ Configuration CreateADForest
             ValueName = 'DisabledByDefault'
             ValueType = 'Dword'
             ValueData = 0
-            Ensure = 'Present'
+			Ensure = 'Present'
+			Force = $true
         }
         # Enable Internet Settings
         Registry EnableTlsInternetExplorerLM
@@ -422,7 +423,8 @@ Configuration CreateADForest
             ValueType = 'Dword'
             ValueData = '0xA80'
             Ensure = 'Present'
-            Hex = $true
+			Hex = $true
+			Force = $true
         }
         #enable for WinHTTP
         Registry EnableTls12WinHttp
@@ -432,7 +434,8 @@ Configuration CreateADForest
             ValueType = 'Dword'
             ValueData = '0x00000800'
             Ensure = 'Present'
-            Hex = $true
+			Hex = $true
+			Force = $true
         }
         Registry EnableTls12WinHttp64
         {
@@ -441,7 +444,8 @@ Configuration CreateADForest
             ValueType = 'Dword'
             ValueData = '0x00000800'
             Hex = $true
-            Ensure = 'Present'
+			Ensure = 'Present'
+			Force = $true
         }
         #powershell defaults
         Registry SchUseStrongCrypto
@@ -450,7 +454,8 @@ Configuration CreateADForest
             ValueName = 'SchUseStrongCrypto'
             ValueType = 'Dword'
             ValueData =  '1'
-            Ensure = 'Present'
+			Ensure = 'Present'
+			Force = $true
         }
 
         Registry SchUseStrongCrypto64
@@ -459,7 +464,8 @@ Configuration CreateADForest
             ValueName = 'SchUseStrongCrypto'
             ValueType = 'Dword'
             ValueData =  '1'
-            Ensure = 'Present'
+			Ensure = 'Present'
+			Force = $true
         }
         #endregion
 
@@ -470,7 +476,8 @@ Configuration CreateADForest
             ValueType = 'String'
             ValueData = 'Off'
             Ensure = 'Present'
-            DependsOn = '[xWaitForADDomain]DscForestWait'
+			Force = $true
+			DependsOn = '[xWaitForADDomain]DscForestWait'
         }
 
 		xMpPreference DefenderSettings

@@ -72,7 +72,6 @@ Configuration SetupVictimPc
             IsEnabled = $false
         }
         
-
         xUAC DisableUac
         {
             Setting = "NeverNotifyAndDisableAll"
