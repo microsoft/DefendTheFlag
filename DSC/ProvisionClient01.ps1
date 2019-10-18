@@ -23,7 +23,7 @@ Configuration SetupAipScannerCore
     )
     
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
-    Import-DscResource -ModuleName PSDesiredStateConfiguration -ModuleVersion 1.1
+    Import-DscResource -ModuleName PSDscResources
     Import-DscResource -ModuleName xDefender -ModuleVersion 0.2.0.0
     Import-DscResource -ModuleName ComputerManagementDsc -ModuleVersion 6.5.0.0
     Import-DscResource -ModuleName NetworkingDsc -ModuleVersion 7.4.0.0
