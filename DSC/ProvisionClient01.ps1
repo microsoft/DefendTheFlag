@@ -23,6 +23,7 @@ Configuration SetupAipScannerCore
     )
     
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
+    Import-DscResource -ModuleName PSDesiredStateConfiguration -ModuleVersion 1.1
     Import-DscResource -ModuleName xDefender -ModuleVersion 0.2.0.0
     Import-DscResource -ModuleName ComputerManagementDsc -ModuleVersion 6.5.0.0
     Import-DscResource -ModuleName NetworkingDsc -ModuleVersion 7.4.0.0
@@ -116,7 +117,7 @@ Configuration SetupAipScannerCore
             Name = 'microsoft-office-deployment'
             Ensure = 'Present'
             AutoUpgrade = $false
-            Params = '/Product=O365ProPlusRetail'
+            Params = '/Product=O365ProPlusRetail /64Bit'
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
         #endregion
@@ -338,7 +339,7 @@ Configuration SetupAipScannerCore
         #     DependsOn = '[Computer]JoinDomain'
         # }
         
-		xMsiPackage InstallAipClient
+		MsiPackage InstallAipClient
 		{
             Ensure = 'Present'
             Path = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
