@@ -131,9 +131,7 @@ Configuration CreateADForest
 		{
 			ForestName = $DomainName
 			UserPrincipalNameSuffixToAdd = $UserPrincipalName
-			DependsOn = @('[xADDomain]ContosoDC','[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
-			'[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
-			'[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
+			DependsOn = @('[xADDomain]ContosoDC')
 		}
 
 		xWaitForADDomain DscForestWait
@@ -142,8 +140,27 @@ Configuration CreateADForest
 				DomainUserCredential = $DomainCreds
 				RetryCount = $RetryCount
 				RetryIntervalSec = $RetryIntervalSec
-				DependsOn = "[xADDomain]ContosoDC"
+				DependsOn = @('[xADDomain]ContosoDC','[xADDomain]ContosoDC','[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
+					'[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
+					'[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
 		}
+
+		xIEEsc DisableAdminIeEsc
+        {
+            UserRole = 'Administrators'
+            IsEnabled = $false
+        }
+
+        xIEEsc DisableUserIeEsc
+        {
+            UserRole = 'Users'
+            IsEnabled = $false
+        }
+        
+        xUAC DisableUac
+        {
+            Setting = "NeverNotifyAndDisableAll"
+        }
 
 		Registry HideServerManager
         {
