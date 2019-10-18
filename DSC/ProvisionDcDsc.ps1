@@ -73,7 +73,7 @@ Configuration CreateADForest
     Import-DscResource -ModuleName NetworkingDsc -ModuleVersion 7.4.0.0
     Import-DscResource -ModuleName xSystemSecurity -ModuleVersion 1.4.0.0
     Import-DscResource -ModuleName cChoco -ModuleVersion 2.4.0.0
-    Import-DscResource -ModuleName xPendingReboot -ModuleVersion 0.4.0.0
+	Import-DscResource -ModuleName xPendingReboot -ModuleVersion 0.4.0.0
 
 	$Interface=Get-NetAdapter | Where-Object Name -Like "Ethernet*"|Select-Object -First 1
 	$InterfaceAlias=$($Interface.Name)
@@ -180,7 +180,7 @@ Configuration CreateADForest
         
         xUAC DisableUac
         {
-            Setting = "NeverNotifyAndDisableAll"
+			Setting = "NeverNotifyAndDisableAll"
         }
 
 		Registry HideServerManager

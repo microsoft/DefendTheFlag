@@ -64,20 +64,17 @@ Configuration SetupVictimPc
         {
             UserRole = 'Administrators'
             IsEnabled = $false
-            DependsOn = '[Computer]JoinDomain'
         }
 
         xIEEsc DisableUserIeEsc
         {
             UserRole = 'Users'
             IsEnabled = $false
-            DependsOn = '[Computer]JoinDomain'
         }
         
         xUAC DisableUac
         {
             Setting = "NeverNotifyAndDisableAll"
-            DependsOn = '[Computer]JoinDomain'
         }
 
         # Set settings for TLS first so we domain join and then can reboot

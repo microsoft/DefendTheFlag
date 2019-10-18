@@ -93,21 +93,18 @@ Configuration SetupAdminPc
         {
             UserRole = 'Administrators'
             IsEnabled = $false
-            DependsOn = '[Computer]JoinDomain'
         }
 
         xIEEsc DisableUserIeEsc
         {
             UserRole = 'Users'
             IsEnabled = $false
-            DependsOn = '[Computer]JoinDomain'
 
         }
 
         xUAC DisableUac
         {
             Setting = "NeverNotifyAndDisableAll"
-            DependsOn = '[Computer]JoinDomain'
 
         }
 
