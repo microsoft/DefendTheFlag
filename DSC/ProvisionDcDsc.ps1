@@ -45,7 +45,7 @@ Configuration CreateADForest
 		[int]$RetryCount=20,
 		[int]$RetryIntervalSec=30
 	)
-	Import-DscResource -ModuleName xActiveDirectory
+	Import-DscResource -ModuleName xActiveDirectory -ModuleVersion 3.0.0.0
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
     Import-DscResource -ModuleName xDefender -ModuleVersion 0.2.0.0
     Import-DscResource -ModuleName ComputerManagementDsc -ModuleVersion 6.5.0.0
@@ -98,9 +98,6 @@ Configuration CreateADForest
 		{
 			Ensure = 'Present'
 			Name = 'AD-Domain-Services'
-			DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
-				'[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
-				'[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
 		}
 
 		WindowsFeature ADDSTools
@@ -134,7 +131,9 @@ Configuration CreateADForest
 		{
 			ForestName = $DomainName
 			UserPrincipalNameSuffixToAdd = $UserPrincipalName
-			DependsOn = '[xADDomain]ContosoDC'
+			DependsOn = @('[xADDomain]ContosoDC','[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
+			'[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
+			'[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
 		}
 
 		xWaitForADDomain DscForestWait
@@ -189,7 +188,7 @@ Configuration CreateADForest
 		{
 			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
 			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/contosodc.bgi?raw=true'
-			DependsOn = @('[xWaitForADDomain]DscForestWait','[cChocoPackageInstaller]InstallSysInternals')
+			DependsOn = '[xWaitForADDomain]DscForestWait'
 		}
 
 		Script MakeShortcutForBgInfo
@@ -306,7 +305,7 @@ Configuration CreateADForest
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
         }
 
-				xADUser SamiraA
+		xADUser SamiraA
 		{
 			DomainName = $DomainName
 			UserName = 'SamiraA'
