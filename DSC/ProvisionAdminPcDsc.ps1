@@ -563,6 +563,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
             DependsOn = '[Computer]JoinDomain'
         }
+        
 		xMsiPackage InstallAipClient
 		{
             Ensure = 'Present'
@@ -615,18 +616,19 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             DependsOn = @('[xRemoteFile]GetAipScripts')
         }
         #endregion
+        
         Script MakeCmdShortcut
 		{
 			SetScript = 
 			{
-				$s=(New-Object -COM WScript.Shell).CreateShortcut('C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk')
+				$s=(New-Object -COM WScript.Shell).CreateShortcut('C:\Users\Public\Desktop\Cmd.lnk')
 				$s.TargetPath='cmd.exe'
 				$s.Description = 'Cmd.exe shortcut on everyones desktop'
 				$s.Save()
 			}
 			GetScript = 
             {
-                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
+                if (Test-Path -LiteralPath 'C:\Users\Public\Desktop\Cmd.lnk'){
 					return @{
 						result = $true
 					}
@@ -640,14 +642,14 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             
             TestScript = 
             {
-                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
+                if (Test-Path -LiteralPath 'C:\Users\Public\Desktop\Cmd.lnk'){
 					return $true
 				}
 				else {
 					return $false
 				}
             }
-            DependsOn = '[Computer]JoinDomain'
+            DependsOn = '[xWaitForADDomain]DscForestWait'
 		}
     }
 }

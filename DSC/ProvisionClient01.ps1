@@ -197,14 +197,14 @@ Configuration SetupAipScannerCore
 		{
 			SetScript = 
 			{
-				$s=(New-Object -COM WScript.Shell).CreateShortcut('C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk')
+				$s=(New-Object -COM WScript.Shell).CreateShortcut('C:\Users\Public\Desktop\Cmd.lnk')
 				$s.TargetPath='cmd.exe'
 				$s.Description = 'Cmd.exe shortcut on everyones desktop'
 				$s.Save()
 			}
 			GetScript = 
             {
-                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
+                if (Test-Path -LiteralPath 'C:\Users\Public\Desktop\Cmd.lnk'){
 					return @{
 						result = $true
 					}
@@ -218,16 +218,15 @@ Configuration SetupAipScannerCore
             
             TestScript = 
             {
-                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
+                if (Test-Path -LiteralPath 'C:\Users\Public\Desktop\Cmd.lnk'){
 					return $true
 				}
 				else {
 					return $false
 				}
             }
-            DependsOn = '[Computer]JoinDomain'
-		}
-
+            DependsOn = '[xWaitForADDomain]DscForestWait'
+        }
 
         Script TurnOnNetworkDiscovery
         {
@@ -339,75 +338,6 @@ Configuration SetupAipScannerCore
             Ensure = 'Present'
             DependsOn = '[Computer]JoinDomain'
         }
-
-        #region Modify IE Zone 3 Settings
-        # needed to download files via IE from GitHub and other sources
-        # can't just modify regkeys, need to export/import reg
-        # ref: https://support.microsoft.com/en-us/help/182569/internet-explorer-security-zones-registry-entries-for-advanced-users
-        Script DownloadRegkeyZone3Workaround
-        {
-            SetScript = 
-            {
-                if ((Test-Path -PathType Container -LiteralPath 'C:\LabTools\') -ne $true){
-					New-Item -Path 'C:\LabTools\' -ItemType Directory
-				}
-                [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-                $ProgressPreference = 'SilentlyContinue' # used to speed this up from 30s to 100ms
-                Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/microsoft/DefendTheFlag/master/Downloads/Zone3.reg' -Outfile 'C:\LabTools\RegkeyZone3.reg'
-            }
-			GetScript = 
-            {
-				if (Test-Path -Path 'C:\LabTools\RegkeyZone3.reg' -PathType Leaf){
-					return @{
-						result = $true
-					}
-				}
-				else {
-					return @{
-						result = $false
-					}
-				}
-            }
-            TestScript = 
-            {
-				if (Test-Path -Path 'C:\LabTools\RegkeyZone3.reg' -PathType Leaf){
-					return $true
-				}
-				else {
-					return $false
-				}
-            }
-            DependsOn = @('[Registry]DisableSmartScreen', '[Computer]JoinDomain')
-        }
-
-        Script ExecuteZone3Override
-        {
-            SetScript = 
-            {
-                reg import "C:\LabTools\RegkeyZone3.reg" > $null 2>&1 
-            }
-			GetScript = 
-            {
-				# this should be set to 0; if its 3, its default value still
-				if ((Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3' -Name 'DisplayName') -eq 'Internet Zone - Modified (@ciberesponce)'){
-					return @{ result = $true }
-				}
-				else{
-					return @{ result = $false }
-				}
-            }
-            TestScript = 
-            {
-				if ((Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3' -Name 'DisplayName') -eq 'Internet Zone - Modified (@ciberesponce)'){
-					return $true
-				}
-				else{
-					return $false
-				}
-            }
-            DependsOn = '[Script]DownloadRegkeyZone3Workaround'
-        }
-        #endregion
 
         Script DownloadMcasData
         {

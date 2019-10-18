@@ -511,14 +511,14 @@ Configuration CreateADForest
 		{
 			SetScript = 
 			{
-				$s=(New-Object -COM WScript.Shell).CreateShortcut('C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk')
+				$s=(New-Object -COM WScript.Shell).CreateShortcut('C:\Users\Public\Desktop\Cmd.lnk')
 				$s.TargetPath='cmd.exe'
 				$s.Description = 'Cmd.exe shortcut on everyones desktop'
 				$s.Save()
 			}
 			GetScript = 
             {
-                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
+                if (Test-Path -LiteralPath 'C:\Users\Public\Desktop\Cmd.lnk'){
 					return @{
 						result = $true
 					}
@@ -532,7 +532,7 @@ Configuration CreateADForest
             
             TestScript = 
             {
-                if (Test-Path -LiteralPath 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\Cmd.lnk'){
+                if (Test-Path -LiteralPath 'C:\Users\Public\Desktop\Cmd.lnk'){
 					return $true
 				}
 				else {
