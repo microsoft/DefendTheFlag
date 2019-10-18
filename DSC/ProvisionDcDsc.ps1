@@ -11,7 +11,10 @@ Configuration CreateADForest
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$AdminCreds,
+		[PSCredential]$AdminCreds=@{
+			UserName = 'ContosoAdmin'
+			Password = 'Password123!@#'
+		},
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
@@ -19,28 +22,46 @@ Configuration CreateADForest
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$JeffLCreds,
+		[PSCredential]$JeffLCreds = @{
+			UserName = 'JeffL'
+			Password = 'Password$fun'
+		},
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$SamiraACreds,
+		[PSCredential]$SamiraACreds = @{
+			UserName = 'SamiraA'
+			Password = 'NinjaCat123!@#'
+		},
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$RonHdCreds,
+		[PSCredential]$RonHdCreds = @{
+			UserName = 'RonHD'
+			Password = 'FightingTiger$'
+		},
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$LisaVCreds,
+		[PSCredential]$LisaVCreds = @{
+			UserName = 'LisaV'
+			Password = 'HighImpactUser1!'
+		},
 
 		# AATP: used for AATP Service
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PsCredential]$AatpServiceCreds,
+		[PsCredential]$AatpServiceCreds = @{
+			UserName = 'AATPservice'
+			Password = 'Password123!@#'
+		},
 
 		[Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [PsCredential]$AipServiceCreds,
+        [PsCredential]$AipServiceCreds = @{
+			Username = 'AipScanner'
+			Password = 'Somepass1'
+		},
 
 		[int]$RetryCount=20,
 		[int]$RetryIntervalSec=30
