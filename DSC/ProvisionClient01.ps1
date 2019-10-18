@@ -75,7 +75,8 @@ Configuration SetupAipScannerCore
             Credential = $Creds
             DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
                 '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
-                '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
+                '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto', '[xIEEsc]DisableAdminIeEsc',
+                '[xIEEsc]DisableUserIeEsc','[xUAC]DisableUac')
         }
 
         Group AddAdmins
