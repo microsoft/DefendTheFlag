@@ -474,7 +474,7 @@ Configuration SetupVictimPc
 					return $false
 				}
             }
-            DependsOn = '[xWaitForADDomain]DscForestWait'
+            DependsOn = '[Computer]JoinDomain'
 		}
 
         #region AttackScripts

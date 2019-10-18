@@ -648,7 +648,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
 					return $false
 				}
             }
-            DependsOn = '[xWaitForADDomain]DscForestWait'
+            DependsOn = '[Computer]JoinDomain'
 		}
     }
 }
