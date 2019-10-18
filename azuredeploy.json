@@ -88,7 +88,7 @@
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
     "GithubBranch": "v1.0",
     "vNetAddressPrefix": "10.0.24.0/24",
-    "vNetName": "AatpSaPlaybook-vNet",
+    "vNetName": "DefendTheFlag-vNet",
     "vNetSubnetName": "Subnet",
     "vSubnetRefId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vNetName'), variables('vNetSubnetName'))]",
     "GenericNicName": "Nic",

@@ -6,7 +6,7 @@
     "StagedDate": "20191001",
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
     "vNetAddressPrefix": "10.0.24.0/24",
-    "vNetName": "M365-vNet",
+    "vNetName": "DefendTheFlag-vNet",
     "vNetSubnetName": "Subnet",
     "vSubnetRefId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vNetName'), variables('vNetSubnetName'))]",
     "GenericNicName": "Nic",

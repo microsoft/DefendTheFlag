@@ -225,7 +225,7 @@ Configuration SetupAipScannerCore
 					return $false
 				}
             }
-            DependsOn = '[xWaitForADDomain]DscForestWait'
+            DependsOn = '[Computer]JoinDomain'
         }
 
         Script TurnOnNetworkDiscovery
@@ -368,7 +368,7 @@ Configuration SetupAipScannerCore
                     return $false
                 }
             }
-            DependsOn = @('[Computer]JoinDomain','[Script]ExecuteZone3Override')
+            DependsOn = @('[Computer]JoinDomain')
         }
 
         # Place on all Users Desktops; can't put in LisaV's else her profile changes since she never logged in yet...

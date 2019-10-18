@@ -564,7 +564,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             DependsOn = '[Computer]JoinDomain'
         }
         
-		xMsiPackage InstallAipClient
+		xPackage InstallAipClient
 		{
             Ensure = 'Present'
 			Path = 'C:\LabTools\aip_ul_installer.msi'
@@ -648,7 +648,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
 					return $false
 				}
             }
-            DependsOn = '[xWaitForADDomain]DscForestWait'
+            DependsOn = '[Computer]JoinDomain'
 		}
     }
 }
