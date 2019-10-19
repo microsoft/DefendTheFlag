@@ -35,7 +35,6 @@ Configuration SetupVictimPc
     Import-DscResource -ModuleName xSystemSecurity -ModuleVersion 1.4.0.0
     Import-DscResource -ModuleName cChoco -ModuleVersion 2.4.0.0
     Import-DscResource -ModuleName xPendingReboot -ModuleVersion 0.4.0.0
-    Import-DscResource -ModuleName ah_xUac
 
     [PSCredential]$Creds = New-Object System.Management.Automation.PSCredential ("${NetBiosName}\$($AdminCred.UserName)", $AdminCred.Password)
     #endregion
@@ -73,7 +72,7 @@ Configuration SetupVictimPc
             IsEnabled = $false
         }
         
-        ah_xUAC DisableUac
+        xUAC DisableUac
         {
             Setting = "NeverNotifyAndDisableAll"
         }
@@ -87,7 +86,7 @@ Configuration SetupVictimPc
             DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
             '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
             '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto', '[xIEEsc]DisableAdminIeEsc',
-            '[xIEEsc]DisableUserIeEsc','[ah_xUAC]DisableUac')
+            '[xIEEsc]DisableUserIeEsc','[xUAC]DisableUac')
         }
 
         xGroup AddAdmins

@@ -105,7 +105,6 @@ Configuration SetupAdminPc
         xUAC DisableUac
         {
             Setting = "NeverNotifyAndDisableAll"
-
         }
 
         Group AddAdmins

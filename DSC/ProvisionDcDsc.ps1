@@ -163,7 +163,8 @@ Configuration CreateADForest
 				RetryIntervalSec = $RetryIntervalSec
 				DependsOn = @('[xADDomain]ContosoDC','[xADDomain]ContosoDC','[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
 					'[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
-					'[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
+					'[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto', '[xIEEsc]DisableAdminIeEsc',
+					'[xIEEsc]DisableUserIeEsc', '[xUAC]DisableUac')
 		}
 
 		xIEEsc DisableAdminIeEsc
