@@ -67,6 +67,7 @@ Configuration CreateADForest
 		[int]$RetryIntervalSec=30
 	)
 	Import-DscResource -ModuleName xActiveDirectory -ModuleVersion 3.0.0.0
+	Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
     Import-DscResource -ModuleName xDefender -ModuleVersion 0.2.0.0
     Import-DscResource -ModuleName ComputerManagementDsc -ModuleVersion 6.5.0.0
