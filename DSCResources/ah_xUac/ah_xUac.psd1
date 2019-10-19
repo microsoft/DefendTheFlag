@@ -11,7 +11,7 @@
     RootModule = 'ah_xUAC.schema.psm1'
     
     # Version number of this module.
-    ModuleVersion = '1.0'
+    ModuleVersion = '0.8'
     
     # ID used to uniquely identify this module
     GUID = '{2ca86ddb-9707-4485-a335-11091e40c0a6}'
@@ -26,7 +26,7 @@
     Copyright = '(c) 2019 Microsoft Corporation. All rights reserved.'
     
     # Description of the functionality provided by this module
-    # Description = ''
+    Description = 'Builds on xUac from xSecuritySettings'
     
     # Minimum version of the Windows PowerShell engine required by this module
     # PowerShellVersion = ''

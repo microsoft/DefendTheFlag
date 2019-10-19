@@ -7,7 +7,7 @@ Configuration ah_xUac
         [System.String]
         $Setting,
 
-        [parameter(Mandaotry = $false)]
+        [parameter(Mandatory = $false)]
         [ValidateSet($true, $false)]
         [bool]
         $Force = $false
