@@ -485,7 +485,6 @@ Configuration SetupVictimPc
             ExclusionPath = 'C:\Tools'
             DisableRealtimeMonitoring = $true
             DisableArchiveScanning = $true
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
         #endregion
 
