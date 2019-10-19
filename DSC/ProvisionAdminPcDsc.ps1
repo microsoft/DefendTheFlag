@@ -86,7 +86,7 @@ Configuration SetupAdminPc
             DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
                 '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
                 '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto', '[xIEEsc]DisableAdminIeEsc',
-                '[xIEEsc]DisableUserIeEsc','[xUAC]DisableUac')
+                '[xIEEsc]DisableUserIeEsc')
         }
 
         xIEEsc DisableAdminIeEsc
@@ -102,10 +102,38 @@ Configuration SetupAdminPc
 
         }
 
-        xUAC DisableUac
-        {
-            Setting = "NeverNotifyAndDisableAll"
+        #region UAC - xSystemSecurity doesn't work properly with -Force
+        $UacKey = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System"
+        Registry ConsentPromptBehaviorAdmin
+        {       
+            Ensure = "Present"
+            Key = $UacKey
+            ValueName = "ConsentPromptBehaviorAdmin"
+            ValueData = [string]'0'
+            ValueType = "Dword"
+            Force = $true
         }
+    
+        Registry EnableLua
+        {       
+            Ensure = "Present"
+            Key = $UacKey
+            ValueName = "EnableLUA"
+            ValueData = [string]'0'
+            ValueType = "Dword"
+            Force = $true
+        }
+    
+        Registry PromptOnSecureDesktop
+        {       
+            Ensure = "Present"
+            Key = $UacKey
+            ValueName = "PromptOnSecureDesktop"
+            ValueData = [string]'0'
+            ValueType = "Dword"
+            Force = $true
+        }
+        #endregion
 
         Group AddAdmins
         {
@@ -570,7 +598,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             Path = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
             ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
             Arguments = '/quiet'
-            DependsOn = '[xRemoteFile]AipClient'
+            DependsOn = '[Computer]JoinDomain'
         }
         #endregion
 

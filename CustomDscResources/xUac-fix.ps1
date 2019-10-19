@@ -6,4 +6,4 @@ $properties = @(
     New-xDscResourceProperty -Name Force -Type Boolean -Attribute Write -ValidateSet $true,$false
 )
 
-New-xDscResource -Name ah_xSystemSecurity -Property $properties -Path
+New-xDscResource -Name ah_xSystemSecurity -Property $properties

@@ -56,10 +56,38 @@ Configuration SetupAipScannerCore
             IsEnabled = $false
         }
 
-        xUAC DisableUac
-        {
-            Setting = "NeverNotifyAndDisableAll"
-        }
+       #region UAC - xSystemSecurity doesn't work properly with -Force
+       $UacKey = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System"
+       Registry ConsentPromptBehaviorAdmin
+       {       
+           Ensure = "Present"
+           Key = $UacKey
+           ValueName = "ConsentPromptBehaviorAdmin"
+           ValueData = [string]'0'
+           ValueType = "Dword"
+           Force = $true
+       }
+   
+       Registry EnableLua
+       {       
+           Ensure = "Present"
+           Key = $UacKey
+           ValueName = "EnableLUA"
+           ValueData = [string]'0'
+           ValueType = "Dword"
+           Force = $true
+       }
+   
+       Registry PromptOnSecureDesktop
+       {       
+           Ensure = "Present"
+           Key = $UacKey
+           ValueName = "PromptOnSecureDesktop"
+           ValueData = [string]'0'
+           ValueType = "Dword"
+           Force = $true
+       }
+       #endregion
 
         Service DisableWindowsUpdate
         {
@@ -76,7 +104,7 @@ Configuration SetupAipScannerCore
             DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
                 '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
                 '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto', '[xIEEsc]DisableAdminIeEsc',
-                '[xIEEsc]DisableUserIeEsc','[xUAC]DisableUac')
+                '[xIEEsc]DisableUserIeEsc')
         }
 
         Group AddAdmins
