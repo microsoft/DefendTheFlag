@@ -183,41 +183,9 @@ Configuration CreateADForest
         xUac DisableUac
         {
             Setting = 'NeverNotifyAndDisableAll'
-        }
-       #endregion
-        
-       #region UAC - xSystemSecurity doesn't work properly with -Force
-	   $UacKey = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System"
-	   Registry ConsentPromptBehaviorAdmin
-	   {       
-		   Ensure = "Present"
-		   Key = $UacKey
-		   ValueName = "ConsentPromptBehaviorAdmin"
-		   ValueData = [string]'0'
-		   ValueType = "Dword"
-		   Force = $true
-	   }
-   
-	   Registry EnableLua
-	   {       
-		   Ensure = "Present"
-		   Key = $UacKey
-		   ValueName = "EnableLUA"
-		   ValueData = [string]'0'
-		   ValueType = "Dword"
-		   Force = $true
-	   }
-   
-	   Registry PromptOnSecureDesktop
-	   {       
-		   Ensure = "Present"
-		   Key = $UacKey
-		   ValueName = "PromptOnSecureDesktop"
-		   ValueData = [string]'0'
-		   ValueType = "Dword"
-		   Force = $true
-	   }
-	   #endregion
+		}
+		#endregion
+    
 
 		Registry HideServerManager
         {
