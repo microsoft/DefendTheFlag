@@ -108,7 +108,6 @@ Configuration SetupAdminPc
             Setting = 'NeverNotifyAndDisableAll'
             DependsOn = '[Computer]JoinDomain'
         }
-       #endregion
         #endregion
 
         Group AddAdmins
