@@ -96,6 +96,7 @@
     "GenericStorageAccountName": "[concat(uniqueString(resourceGroup().id), 'sa')]",
     "DcVmName": "ContosoDc",
     "DcPromoteDcDscName": "DcPromoDsc",
+    "DcDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionDcDsc.zip?raw=true')]",
     "AscLinuxName": "Ubuntu-Katoolin",
     "VictimVmName": "VictimPc",
     "VictimDscName": "VictimDsc",
@@ -283,7 +284,7 @@
             "publisher": "Microsoft.Powershell",
             "settings": {
               "configuration": {
-                "url": "https://github.com/microsoft/DefendTheFlag/blob/master/DSC/ProvisionDcDsc.zip?raw=true",
+                "url": "[variables('DcDscUrl')]",
                 "script": "ProvisionDcDsc.ps1",
                 "function": "CreateADForest"
               },
