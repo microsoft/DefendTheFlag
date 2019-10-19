@@ -82,10 +82,6 @@ Configuration SetupAdminPc
             Name = 'AdminPC'
             DomainName = $DomainName
             Credential = $Creds
-            DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
-            '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
-            '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto', '[xIEEsc]DisableAdminIeEsc',
-            '[xIEEsc]DisableUserIeEsc')
         }
 
         #region COE
@@ -570,15 +566,16 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
         xRemoteFile GetAipClient
         {
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
-            DestinationPath = 'C:\Lab\AIP_UL_Preview.msi'
+            DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
             DependsOn = '[Computer]JoinDomain'
         }
 
 		xMsiPackage InstallAipClient
 		{
             Ensure = 'Present'
-            Path = 'C:\Lab\AIP_UL_Preview.msi'
+            Path = 'C:\LabTools\AIP_UL_Preview.msi'
             ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
+            Arguments = '/quiet'
             DependsOn = '[xRemoteFile]GetAipClient'
         }
         #endregion
