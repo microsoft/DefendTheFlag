@@ -485,7 +485,7 @@ Configuration SetupVictimPc
             ExclusionPath = 'C:\Tools'
             DisableRealtimeMonitoring = $true
             DisableArchiveScanning = $true
-            DependsOn = '[Computer]JoinDomain'
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
         #endregion
 
@@ -519,19 +519,19 @@ Configuration SetupVictimPc
         {
             DestinationPath = 'C:\Tools\Backup\PowerSploit.zip'
             Uri = 'https://github.com/PowerShellMafia/PowerSploit/archive/master.zip'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain')
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
         xRemoteFile GetKekeo
         {
             DestinationPath = 'C:\Tools\Backup\kekeo.zip'
             Uri = 'https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain')
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
         xRemoteFile GetNetSess
         {
             DestinationPath = 'C:\Tools\Backup\NetSess.zip'
             Uri = 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain')
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
 
         Archive UnzipMimikatz
