@@ -193,7 +193,7 @@ Configuration SetupVictimPc
         xRemoteFile DownloadBginfo
 		{
 			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/contosodc.bgi?raw=true'
+			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/victimpc.bgi?raw=true'
             DependsOn = '[Computer]JoinDomain'
 		}
         

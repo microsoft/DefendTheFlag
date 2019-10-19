@@ -197,7 +197,7 @@ Configuration SetupAipScannerCore
         xRemoteFile DownloadBginfo
 		{
 			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/contosodc.bgi?raw=true'
+			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/aippc.bgi?raw=true'
             DependsOn = '[Computer]JoinDomain'
 		}
         

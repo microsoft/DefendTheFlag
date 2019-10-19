@@ -1,7 +1,8 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {},
+  "parameters": {
+  },
   "variables": {
     "StagedDate": "20191001",
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
@@ -20,7 +21,7 @@
     "VictimVmType": "Windows",
     "VictimPrivateIp": "10.0.24.10",
     "VictimVhdUri": "[concat('https://publicdefendtheflag.blob.core.windows.net/public/VictimPcd.vhd')]",
-    "AdminPcVmName": "AdminPc", 
+    "AdminPcVmName": "AdminPc",
     "AdminVmType": "Windows",
     "AdminPrivateIp": "10.0.24.11",
     "AdminVhdUri": "[concat('https://publicdefendtheflag.blob.core.windows.net/public/AdminPcd.vhd')]",
