@@ -167,7 +167,8 @@ Configuration CreateADForest
 					'[xIEEsc]DisableUserIeEsc')
 		}
 
-		xIEEsc DisableAdminIeEsc
+        #region COE
+        xIEEsc DisableAdminIeEsc
         {
             UserRole = 'Administrators'
             IsEnabled = $false
@@ -178,6 +179,12 @@ Configuration CreateADForest
             UserRole = 'Users'
             IsEnabled = $false
         }
+
+        xUac DisableUac
+        {
+            Setting = 'NeverNotifyAndDisableAll'
+        }
+       #endregion
         
        #region UAC - xSystemSecurity doesn't work properly with -Force
 	   $UacKey = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System"

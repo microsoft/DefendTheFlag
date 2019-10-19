@@ -37,7 +37,6 @@ Configuration SetupAdminPc
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
         [PsCredential]$AipServiceCred
-
     )
     #region COE
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
@@ -84,55 +83,32 @@ Configuration SetupAdminPc
             DomainName = $DomainName
             Credential = $Creds
             DependsOn = @('[Registry]EnableTls12WinHttp64','[Registry]EnableTls12WinHttp',
-                '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
-                '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto', '[xIEEsc]DisableAdminIeEsc',
-                '[xIEEsc]DisableUserIeEsc')
+            '[Registry]EnableTlsInternetExplorerLM','[Registry]EnableTls12ServerEnabled',
+            '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto', '[xIEEsc]DisableAdminIeEsc',
+            '[xIEEsc]DisableUserIeEsc')
         }
 
+        #region COE
         xIEEsc DisableAdminIeEsc
         {
             UserRole = 'Administrators'
             IsEnabled = $false
+            DependsOn = '[Computer]JoinDomain'
         }
 
         xIEEsc DisableUserIeEsc
         {
             UserRole = 'Users'
             IsEnabled = $false
-
+            DependsOn = '[Computer]JoinDomain'
         }
 
-        #region UAC - xSystemSecurity doesn't work properly with -Force
-        $UacKey = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System"
-        Registry ConsentPromptBehaviorAdmin
-        {       
-            Ensure = "Present"
-            Key = $UacKey
-            ValueName = "ConsentPromptBehaviorAdmin"
-            ValueData = [string]'0'
-            ValueType = "Dword"
-            Force = $true
+        xUac DisableUac
+        {
+            Setting = 'NeverNotifyAndDisableAll'
+            DependsOn = '[Computer]JoinDomain'
         }
-    
-        Registry EnableLua
-        {       
-            Ensure = "Present"
-            Key = $UacKey
-            ValueName = "EnableLUA"
-            ValueData = [string]'0'
-            ValueType = "Dword"
-            Force = $true
-        }
-    
-        Registry PromptOnSecureDesktop
-        {       
-            Ensure = "Present"
-            Key = $UacKey
-            ValueName = "PromptOnSecureDesktop"
-            ValueData = [string]'0'
-            ValueType = "Dword"
-            Force = $true
-        }
+       #endregion
         #endregion
 
         Group AddAdmins
@@ -282,12 +258,12 @@ Configuration SetupAdminPc
             DependsOn = '[Computer]JoinDomain'
         }
 
-        xRemoteFile StageSqlServer2017Dev
-        {
-            DestinationPath = 'C:\SQL\SQLServer2017.exe'
-            Uri = 'https://go.microsoft.com/fwlink/?linkid=853016'
-            DependsOn = '[Computer]JoinDomain'
-        }
+        # xRemoteFile StageSqlServer2017Dev
+        # {
+        #     DestinationPath = 'C:\SQL\SQLServer2017.exe'
+        #     Uri = 'https://go.microsoft.com/fwlink/?linkid=853016'
+        #     DependsOn = '[Computer]JoinDomain'
+        # }
         #endregion
 
         #region AATP
@@ -592,13 +568,19 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
         }
 
         #region AipClient
+        xRemoteFile GetAipClient
+        {
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
+            DestinationPath = 'C:\Lab\AIP_UL_Preview.msi'
+            DependsOn = '[Computer]JoinDomain'
+        }
+
 		xMsiPackage InstallAipClient
 		{
             Ensure = 'Present'
-            Path = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
+            Path = 'C:\Lab\AIP_UL_Preview.msi'
             ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
-            Arguments = '/quiet'
-            DependsOn = '[Computer]JoinDomain'
+            DependsOn = '[xRemoteFile]GetAipClient'
         }
         #endregion
 
@@ -616,7 +598,6 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             DependsOn = '[Computer]JoinDomain'
         }
 
-        
         Archive AipDataToPii
         {
             Path = 'C:\PII\data.zip'
@@ -678,6 +659,6 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
 				}
             }
             DependsOn = '[Computer]JoinDomain'
-		}
-    }
+        }
+    } #end of node
 }
