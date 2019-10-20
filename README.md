@@ -18,7 +18,7 @@ This project also includes code to then take the VMs and snapshot their disks (`
 | `Stage`           | Scripts to help *snapshot* resources. Convert them to images for easy deployment  |
 | `Troubleshoot`    | Helper scripts to help troubleshoot and build-out ARM and DSC environment         |
 | `DSC`             | Desired State Configuration which configure the resources after ARM provisioning  |
-| `CHANGELOG.md`    | List of changes to the sample.                                                    |
+| `CHANGELOG.md`    | Changelog for each version, plus current dev efforts (vNext)                      |
 
 ## Setup
 
@@ -111,4 +111,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 ## Changelog
-For full view of [whats new and comprehensive changelog, here here](.\changelog.md).
+For full view of [whats new and comprehensive changelog, here here](./changelog.md).
