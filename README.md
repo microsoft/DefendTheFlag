@@ -110,10 +110,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-## ToDo
-* [AATP] Replace NetSess.exe with [Nmap NSE script](https://nmap.org/nsedoc/scripts/smb-enum-sessions.html)
-* [AIP] Add back AIP components
-* [AATP] Merge VictimPC from previous build
-* [All] Fix issue with security settings
-* [AIP] Convert AdminPC to regular disk size
-* [AIP] Copy AdminPC, creating AdminPc2
+## Changelog
+For full view of [whats new and comprehensive changelog, here here](.\changelog.md).
