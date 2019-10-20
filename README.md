@@ -50,7 +50,7 @@ Once you have what you want, you can use the scripts in ```Stage``` folder to he
 
 Once this is done, you can do Phase 2.
 
-### Phase 2: Deploying from Stagged Chnages
+### Phase 2: Deploying from Stagged Changes
 
 Like before, but with different parameters, we can deploy VMs.
 
