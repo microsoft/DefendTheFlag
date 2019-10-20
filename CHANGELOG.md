@@ -1,6 +1,5 @@
-# Current Version
-
-## v1.0 Whats New
+# Changelog
+## v1.0 Whats New (Current version)
 * [AIP] Add back AIP (Preview) components
 * [AATP] Merge VictimPC from previous internal build
 * [All] Fix issue with security settings (IE related)

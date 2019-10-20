@@ -86,7 +86,7 @@
     },
     "NumberVmsNicStorage": 5,
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
-    "GithubBranch": "v1.0",
+    "GithubBranch": "master",
     "vNetAddressPrefix": "10.0.24.0/24",
     "vNetName": "DefendTheFlag-vNet",
     "vNetSubnetName": "Subnet",
