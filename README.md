@@ -28,7 +28,7 @@ Primer for PowerShell Az cmdlets: [here](https://docs.microsoft.com/en-us/powers
 
 This creates VMs, one of those VMs being a Domain Controller which hydrates users in an AD environment.  Those users are also configured appropriately on the respective VMs to simulate management and administrative activities.
 
-For more information refer to ```DSC``` [folder](./Dsc/README.md).
+For more information refer to ```DSC``` [folder](https://github.com/microsoft/DefendTheFlag/blob/master/CHANGELOG.md).
 
 ### Phase 0 (build from absolute scratch)
 To build from scratch (**Phase 0**):
@@ -111,4 +111,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 ## Changelog
-For full view of [whats new and comprehensive changelog, here here](./changelog.md).
+For full view of [whats new and comprehensive changelog, here here](https://github.com/microsoft/DefendTheFlag/blob/master/CHANGELOG.md).
