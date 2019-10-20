@@ -446,6 +446,7 @@ Configuration CreateADForest
 			Ensure = 'Present'
 			DependsOn = @("[xADUser]RonHD","[xWaitForADDomain]DscForestWait")
 		}
+
 		#region Enable TLS1.2
         # REF: https://support.microsoft.com/en-us/help/3140245/update-to-enable-tls-1-1-and-tls-1-2-as-default-secure-protocols-in-wi
         # Enable TLS 1.2 SChannel
@@ -500,7 +501,6 @@ Configuration CreateADForest
 			Ensure = 'Present'
 			Force = $true
         }
-
         Registry SchUseStrongCrypto64
         {
             Key = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
@@ -512,6 +512,8 @@ Configuration CreateADForest
         }
         #endregion
 
+
+		#region COE
 		Registry DisableSmartScreen
         {
             Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer'

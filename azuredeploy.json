@@ -97,18 +97,19 @@
     "DcVmName": "ContosoDc",
     "DcPromoteDcDscName": "DcPromoDsc",
     "DcDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionDcDsc.zip?raw=true')]",
-    "AscLinuxName": "Ubuntu-Katoolin",
     "VictimVmName": "VictimPc",
     "VictimDscName": "VictimDsc",
     "VictimDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionVictimPcDsc.zip?raw=true')]",
     "AdminPcVmName": "AdminPc",
-    "AdminPcDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionAdminPcDsc.zip?raw=true')]",
     "AdminPcDscName": "AdminPcDsc",
+    "AdminPcDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionAdminPcDsc.zip?raw=true')]",
     "McasVmName": "Client01",
     "McasDscName": "SetupMcasClient",
     "McasDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionClient01.zip?raw=true')]",
     "AipDomainServiceAccount": "AipScanner",
-    "AipDomainServiceAccountPassword": "Somepass1"
+    "AipDomainServiceAccountPassword": "Somepass1",
+    "AscLinuxName": "Ubuntu-Katoolin"
+
   },
   "resources": [
     {
