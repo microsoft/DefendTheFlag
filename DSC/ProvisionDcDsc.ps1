@@ -3,69 +3,49 @@ Configuration CreateADForest
 	param(
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[string]$DomainName='Contoso.Azure',
+		[string]$DomainName,
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[string]$NetBiosName='Contoso',
+		[string]$NetBiosName,
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$AdminCreds=@{
-			UserName = 'ContosoAdmin'
-			Password = 'Password123!@#'
-		},
+		[PSCredential]$AdminCreds,
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[string]$UserPrincipalName = "seccxp.ninja",
+		[string]$UserPrincipalName,
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$JeffLCreds = @{
-			UserName = 'JeffL'
-			Password = 'Password$fun'
-		},
+		[PSCredential]$JeffLCreds,
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$SamiraACreds = @{
-			UserName = 'SamiraA'
-			Password = 'NinjaCat123!@#'
-		},
+		[PSCredential]$SamiraACreds,
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$RonHdCreds = @{
-			UserName = 'RonHD'
-			Password = 'FightingTiger$'
-		},
+		[PSCredential]$RonHdCreds,
 
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PSCredential]$LisaVCreds = @{
-			UserName = 'LisaV'
-			Password = 'HighImpactUser1!'
-		},
+		[PSCredential]$LisaVCreds,
 
 		# AATP: used for AATP Service
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
-		[PsCredential]$AatpServiceCreds = @{
-			UserName = 'AATPservice'
-			Password = 'Password123!@#'
-		},
+		[PsCredential]$AatpServiceCreds,
 
 		[Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [PsCredential]$AipServiceCreds = @{
-			Username = 'AipScanner'
-			Password = 'Somepass1'
-		},
+        [PsCredential]$AipServiceCreds,
 
 		[int]$RetryCount=20,
 		[int]$RetryIntervalSec=30
 	)
+	
 	Import-DscResource -ModuleName xActiveDirectory -ModuleVersion 3.0.0.0
 	Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0

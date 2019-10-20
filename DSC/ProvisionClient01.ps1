@@ -377,17 +377,17 @@ Configuration SetupAipScannerCore
         #region AipClient
         xRemoteFile GetAipClient
         {
-            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
+            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
             DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
             DependsOn = '[Computer]JoinDomain'
         }
-
-		xMsiPackage InstallAipClient
+        
+		xPackage InstallAipClient
 		{
-            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
+            Name = 'Microsoft Azure Information Protection'
             Ensure = 'Present'
             Path = 'C:\LabTools\AIP_UL_Preview.msi'
-            Arguments = '/quiet'
+            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
             DependsOn = '[xRemoteFile]GetAipClient'
         }
         #endregion

@@ -396,7 +396,7 @@ Configuration SetupAdminPc
         xRemoteFile GetBgInfo
         {
             DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/adminpc.bgi?raw=true'
+            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/BgInfo/adminpc.bgi?raw=true"
             DependsOn = '[cChocoPackageInstaller]InstallSysInternals'
         }
 
@@ -563,17 +563,17 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
         #region AipClient
         xRemoteFile GetAipClient
         {
-            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
+            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
             DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
             DependsOn = '[Computer]JoinDomain'
         }
 
-		xMsiPackage InstallAipClient
+		xPackage InstallAipClient
 		{
-            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
+            Name = 'Microsoft Azure Information Protection'
             Ensure = 'Present'
             Path = 'C:\LabTools\AIP_UL_Preview.msi'
-            Arguments = '/quiet'
+            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
             DependsOn = '[xRemoteFile]GetAipClient'
         }
         #endregion
@@ -581,14 +581,14 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
         xRemoteFile GetAipData
         {
             DestinationPath = 'C:\PII\data.zip'
-            Uri = 'https://github.com/InfoProtectionTeam/Files/blob/master/Scripts/AIPScanner/docs.zip?raw=true'
+            Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/AIPScanner/docs.zip?raw=true"
             DependsOn = '[Computer]JoinDomain'
         }
         
         xRemoteFile GetAipScripts
         {
             DestinationPath = 'C:\Scripts\Scripts.zip'
-            Uri = 'https://github.com/InfoProtectionTeam/Files/blob/master/Scripts/Scripts.zip?raw=true'
+            Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/Scripts.zip?raw=true"
             DependsOn = '[Computer]JoinDomain'
         }
 
