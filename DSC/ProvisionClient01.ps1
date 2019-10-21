@@ -19,7 +19,12 @@ Configuration SetupAipScannerCore
 
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [PsCredential]$LisaVCred
+        [PsCredential]$LisaVCred,
+
+        # Branch
+        ## Useful when have multiple for testing
+        [Parameter(Mandatory=$false)]
+        [String]$Branch='master'
     )
     
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0

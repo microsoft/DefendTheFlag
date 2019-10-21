@@ -36,7 +36,12 @@ Configuration SetupAdminPc
         # AIP: used to install SqlServer in context of AIP Admin
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [PsCredential]$AipServiceCred
+        [PsCredential]$AipServiceCred,
+
+        # Branch
+        ## Useful when have multiple for testing
+        [Parameter(Mandatory=$false)]
+        [String]$Branch='master'
     )
     #region COE
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0

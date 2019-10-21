@@ -24,7 +24,7 @@ Configuration SetupVictimPc
         # AATP: Used to expose RonHD cred to machine
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [PSCredential]$RonHdCred
+        [PSCredential]$RonHdCred,
 
         # Branch
         ## Useful when have multiple for testing

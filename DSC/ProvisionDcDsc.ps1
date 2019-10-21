@@ -43,7 +43,12 @@ Configuration CreateADForest
         [PsCredential]$AipServiceCreds,
 
 		[int]$RetryCount=20,
-		[int]$RetryIntervalSec=30
+		[int]$RetryIntervalSec=30,
+
+		# Branch
+        ## Useful when have multiple for testing
+        [Parameter(Mandatory=$false)]
+        [String]$Branch='master'
 	)
 	
 	Import-DscResource -ModuleName xActiveDirectory -ModuleVersion 3.0.0.0
