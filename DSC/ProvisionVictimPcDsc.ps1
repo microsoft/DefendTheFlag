@@ -496,8 +496,8 @@ Configuration SetupVictimPc
         #region AipClient
         xRemoteFile GetAipClient
         {
-            Uri = "https://download.microsoft.com/download/4/9/1/491251F7-46BA-46EC-B2B5-099155DD3C27/AzInfoProtection_UL_Preview.exe"
-            DestinationPath = 'C:\LabTools\AIP_UL_Preview.exe'
+            Uri = "https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
+            DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
             DependsOn = '[Computer]JoinDomain'
         }
 
@@ -505,7 +505,7 @@ Configuration SetupVictimPc
 		{
             Name = 'Microsoft Azure Information Protection'
             Ensure = 'Present'
-            Path = 'C:\LabTools\AIP_UL_Preview.exe'
+            Path = 'C:\LabTools\AIP_UL_Preview.msi'
             ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
             DependsOn = '[xRemoteFile]GetAipClient'
         }
