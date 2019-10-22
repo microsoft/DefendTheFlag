@@ -455,7 +455,7 @@ Configuration SetupVictimPc
         xRemoteFile GetCtfA
         {
             DestinationPath = 'C:\LabScripts\Backup\ctf-a.zip'
-            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AATP/ctf-a.zip?raw=true'
+            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AATP/ctf-a.zip?raw=true"
             DependsOn = '[Computer]JoinDomain'
         }
         Archive UnzipCtfA
@@ -470,7 +470,7 @@ Configuration SetupVictimPc
         xRemoteFile GetAatpSaPlaybook
         {
             DestinationPath = 'C:\LabScripts\Backup\aatpsaplaybook.zip'
-            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/v1.0/Downloads/AATP/aatpsaplaybook.zip?raw=true'
+            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AATP/aatpsaplaybook.zip?raw=true"
             DependsOn = '[Computer]JoinDomain'
         }
 
