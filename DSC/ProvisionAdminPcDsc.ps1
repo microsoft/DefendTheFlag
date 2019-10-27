@@ -225,10 +225,15 @@ Configuration SetupAdminPc
         #endregion
 
         #IE Settings
-        xRemoteFile IeSettings
+        xRemoteFile IeSettings3
         {
-            Uri = "https://raw.githubusercontent.com/microsoft/DefendTheFlag/$Branch/Downloads/lowIe.reg"
-            
+            Uri = "https://raw.githubusercontent.com/microsoft/DefendTheFlag/$Branch/Downloads/lowIe3.reg"
+            DestinationPath = "C:\LabTools\lowIe3.reg"
+        }
+        xRemoteFile IeSettings4
+        {
+            Uri = "https://raw.githubusercontent.com/microsoft/DefendTheFlag/$Branch/Downloads/lowIe4.reg"
+            DestinationPath = "C:\LabTools\lowIe4.reg"
         }
 
         #region SQL
