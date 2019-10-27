@@ -585,9 +585,8 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
             DependsOn = '[Computer]JoinDomain'
         }
 
-		xPackage InstallAipClient
+		xMsiPackage InstallAipClient
 		{
-            Name = 'Microsoft Azure Information Protection'
             Ensure = 'Present'
             Path = 'C:\LabTools\AIP_UL_Preview.msi'
             ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
