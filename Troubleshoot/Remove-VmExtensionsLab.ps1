@@ -9,6 +9,7 @@ Write-Host "[!] Remove VM Extensions from the `'$resourceGroup`' RG" -Foreground
 $vmData = @(
     ('ContosoDc', 'DcPromoDsc'),
     ('AdminPc', 'AdminPcDsc'),
+    ('AdminPc2', 'AdminPcDsc'),
     ('VictimPc', 'VictimDsc'),
     ('Client01', 'SetupMcasClient')
 )

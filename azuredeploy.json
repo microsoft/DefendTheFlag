@@ -81,10 +81,11 @@
         "10.0.24.10",
         "10.0.24.11",
         "10.0.24.12",
+        "10.0.24.13",
         "10.0.24.50"
       ]
     },
-    "NumberVmsNicStorage": 5,
+    "NumberVmsNicStorage": 6,
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
     "GithubBranch": "master",
     "vNetAddressPrefix": "10.0.24.0/24",
@@ -103,6 +104,9 @@
     "AdminPcVmName": "AdminPc",
     "AdminPcDscName": "AdminPcDsc",
     "AdminPcDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionAdminPcDsc.zip?raw=true')]",
+    "AdminPc2VmName": "AdminPc2",
+    "AdminPc2DscName": "[variables('AdminPcDscName')]",
+    "AdminPc2DscUrl": "[variables('AdminPcDscUrl')]",
     "McasVmName": "Client01",
     "McasDscName": "SetupMcasClient",
     "McasDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionClient01.zip?raw=true')]",
@@ -523,6 +527,99 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2018-10-01",
+      "name": "[variables('AdminPc2VmName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'),4))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),4))]",
+        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_D4_v3"
+        },
+        "osProfile": {
+          "computerName": "[variables('AdminPc2VmName')]",
+          "adminUsername": "[parameters('builtinAdministratorAccount')]",
+          "adminPassword": "[parameters('builtinAdministratorPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2016-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[concat(variables('GenericStorageAccountName'), 4)]",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "licenseType": "Windows_Server",
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 4))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": false
+          }
+        }
+      },
+      "resources": [
+        {
+          "type": "extensions",
+          "apiVersion": "2018-10-01",
+          "name": "[variables('AdminPc2DscName')]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', variables('AdminPc2VmName'))]",
+            "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Powershell",
+            "type": "DSC",
+            "autoUpgradeMinorVersion": true,
+            "typeHandlerVersion": "2.77",
+            "settings": {
+              "configuration": {
+                "url": "[variables('AdminPc2DscUrl')]",
+                "script": "ProvisionAdminPcDsc.ps1",
+                "function": "SetupAdminPc"
+              },
+              "configurationArguments": {
+                "DomainName": "[parameters('DomainName')]",
+                "NetBiosName": "[parameters('NetBiosName')]",
+                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+              }
+            },
+            "protectedSettings": {
+              "configurationArguments": {
+                "AdminCred": {
+                  "UserName": "[parameters('builtinAdministratorAccount')]",
+                  "Password": "[parameters('builtinAdministratorPassword')]"
+                },
+                "SamiraACred": {
+                  "UserName": "SamiraA",
+                  "Password": "[parameters('SamiraAPassword')]"
+                },
+                "AipServiceCred": {
+                  "UserName": "[variables('AipDomainServiceAccount')]",
+                  "Password": "[variables('AipDomainServiceAccountPassword')]"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2018-10-01",
       "name": "[variables('McasVmName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
@@ -615,8 +712,8 @@
       "name": "[variables('AscLinuxName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 4))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),4))]",
+        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 5))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),5))]",
         "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
       ],
       "properties": {
@@ -636,7 +733,7 @@
             "version": "latest"
           },
           "osdisk": {
-            "name": "[concat(variables('GenericStorageAccountName'), 4)]",
+            "name": "[concat(variables('GenericStorageAccountName'), 5)]",
             "createOption": "FromImage",
             "managedDisk": {
               "storageAccountType": "Standard_LRS"
@@ -647,7 +744,7 @@
         "networkprofile": {
           "networkinterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 4))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 5))]"
             }
           ]
         }

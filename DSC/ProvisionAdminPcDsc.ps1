@@ -224,6 +224,12 @@ Configuration SetupAdminPc
         }
         #endregion
 
+        #IE Settings
+        xRemoteFile IeSettings
+        {
+            Uri = 
+        }
+
         #region SQL
         Script MSSqlFirewall
         {
