@@ -588,8 +588,8 @@
             "settings": {
               "configuration": {
                 "url": "[variables('AdminPc2DscUrl')]",
-                "script": "ProvisionAdminPcDsc.ps1",
-                "function": "SetupAdminPc"
+                "script": "ProvisionAdminPc2Dsc.ps1",
+                "function": "SetupAdminPc2"
               },
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",

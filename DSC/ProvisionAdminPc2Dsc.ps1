@@ -5,7 +5,7 @@
 #      Needs to be installed for AIP as AIP Service account
 ###
 
-Configuration SetupAdminPc
+Configuration SetupAdminPc2
 {
     param(
         # COE: Domain's name
