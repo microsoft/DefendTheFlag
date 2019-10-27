@@ -227,7 +227,8 @@ Configuration SetupAdminPc
         #IE Settings
         xRemoteFile IeSettings
         {
-            Uri = 
+            Uri = "https://raw.githubusercontent.com/microsoft/DefendTheFlag/$Branch/Downloads/lowIe.reg"
+            
         }
 
         #region SQL
