@@ -25,6 +25,8 @@ param(
     [bool]
     $StopVm = $true
 )
+Write-Host "[!] Starting backup process for $ResourceGroupName, Location: $Location" -ForegroundColor Yellow
+
 $vms = Get-AzVm -ResourceGroupName $ResourceGroupName
 #$date = Get-Date -Format yyyyMMdd
 
@@ -33,7 +35,7 @@ if ($StopVm){
     Write-Host "[!] Stopping VMs to prepare them to be Snapshotted" -Foreground Yellow
     foreach ($vm in $vms){
         $vm | Stop-AzVm -Force -AsJob -StayProvisioned | Out-Null
-        Write-Host "`t[ ] Starting to stop: $($vm.Name)" -ForegroundColor Cyan
+        Write-Host "`t[ ] Stopping VM: $($vm.Name)" -ForegroundColor Cyan
     }
     Get-Job | Wait-Job
     Write-Host "[+] All VMs Stopped... proceeding" -ForegroundColor Green

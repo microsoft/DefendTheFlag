@@ -14,7 +14,7 @@ param(
     # Container to save Images in storage account
     [Parameter(Mandatory=$false)]
     [string]
-    $AssetsContainer = 'public',
+    $AssetsContainer = 'public-v1',
 
     # StorageAccount Key
     [Parameter(Mandatory=$false)]
