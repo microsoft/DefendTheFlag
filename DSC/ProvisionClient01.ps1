@@ -378,11 +378,10 @@ Configuration SetupAipScannerCore
         }
         #endregion
 
-        
         #region AipClient
         xRemoteFile GetAipClient
         {
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
+            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
             DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
             DependsOn = '[Computer]JoinDomain'
         }

@@ -365,7 +365,8 @@
           "imageReference": {
             "publisher": "MicrosoftWindowsDesktop",
             "offer": "Windows-10",
-            "sku": "19h2-ent"
+            "sku": "19h1-ent",
+            "version": "latest"
           },
           "osDisk": {
             "name": "[concat(variables('GenericStorageAccountName'), 1)]",
