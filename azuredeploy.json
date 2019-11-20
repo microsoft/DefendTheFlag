@@ -210,7 +210,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D4_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('DcVmName')]",
@@ -354,7 +354,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D2_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('VictimVmName')]",
@@ -373,7 +373,7 @@
             "createOption": "FromImage"
           }
         },
-        "licenseType": "Windows_Server",
+        "licenseType": "Windows_Client",
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -442,7 +442,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D4_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('AdminPcVmName')]",
@@ -535,7 +535,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D4_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('AdminPc2VmName')]",
@@ -628,7 +628,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D2_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('McasVmName')]",
@@ -717,7 +717,7 @@
       ],
       "properties": {
         "hardwareprofile": {
-          "vmsize": "Standard_DS1_v2"
+          "vmsize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[concat(variables('AscLinuxName'))]",
