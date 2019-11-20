@@ -69,11 +69,11 @@ Regardless of if your in Phase 0 or Phase 2, you eventually will want to access 
 
 Want to skip Phase 0?  Feel free to grab our VHDs from an open Azure Storage account.
 
-* ContosoDC: https://publicdefendtheflag.blob.core.windows.net/public/ContosoDcd.vhd
-* VictimPC: https://publicdefendtheflag.blob.core.windows.net/public/VictimPcd.vhd
-* AdminPC: https://publicdefendtheflag.blob.core.windows.net/public/AdminPcd.vhd
-* Client01: https://publicdefendtheflag.blob.core.windows.net/public/Client01d.vhd
-* Ubuntu-Katoolin: https://publicdefendtheflag.blob.core.windows.net/public/Ubuntu-Katoolind.vhd
+* ContosoDC: https://publicdefendtheflag.blob.core.windows.net/public-v1/ContosoDcd.vhd
+* VictimPC: https://publicdefendtheflag.blob.core.windows.net/public-v1/VictimPcd.vhd
+* AdminPC: https://publicdefendtheflag.blob.core.windows.net/public-v1/AdminPcd.vhd
+* Client01: https://publicdefendtheflag.blob.core.windows.net/public-v1/Client01d.vhd
+* Ubuntu-Katoolin: https://publicdefendtheflag.blob.core.windows.net/public-v1/Ubuntu-Katoolind.vhd
 
 > NOTE:
 > Ubuntu-Katoolin will leverage Ubuntu since it supports ```cloud-init``` and the [Katoolin](https://github.com/LionSec/katoolin) project.  No work has been done to automate on top of this **yet**, however, scripts exist in the ```Downloads``` > ```Katoolin``` folder.  Until automation exists, grabbing the VHD for Ubuntu-Katoolin adds very little.  The scripts are more important here as grabbing the necessary files is fairly easy with the right distro.
