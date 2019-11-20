@@ -57,29 +57,39 @@ Configuration SetupVictimPc
             ActionAfterReboot = 'ContinueConfiguration'
         }
 
+        PowerShellExecutionPolicy AllowScripts
+        {
+            ExecutionPolicyScope = 'LocalMachine'
+            ExecutionPolicy = 'Unrestricted'
+        }
+
         #region COE
         xService DisableWindowsUpdate
         {
             Name = 'wuauserv'
             State = 'Stopped'
             StartupType = 'Disabled'
+            DependsOn = '[PowerShellExecutionPolicy]AllowScripts'
         }
 
         xIEEsc DisableAdminIeEsc
         {
             UserRole = 'Administrators'
             IsEnabled = $false
+            DependsOn = '[PowerShellExecutionPolicy]AllowScripts'
         }
 
         xIEEsc DisableUserIeEsc
         {
             UserRole = 'Users'
             IsEnabled = $false
+            DependsOn = '[PowerShellExecutionPolicy]AllowScripts'
         }
 
         xUac DisableUac
         {
             Setting = 'NeverNotifyAndDisableAll'
+            DependsOn = '[PowerShellExecutionPolicy]AllowScripts'
         }
         #endregion
 
@@ -89,6 +99,7 @@ Configuration SetupVictimPc
             Name = 'VictimPC'
             DomainName = $DomainName
             Credential = $Creds
+            DependsOn = '[PowerShellExecutionPolicy]AllowScripts'
         }
 
         xGroup AddAdmins

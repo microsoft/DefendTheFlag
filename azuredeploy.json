@@ -87,7 +87,7 @@
     },
     "NumberVmsNicStorage": 6,
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
-    "GithubBranch": "master",
+    "GithubBranch": "v1.5",
     "vNetAddressPrefix": "10.0.24.0/24",
     "vNetName": "DefendTheFlag-vNet",
     "vNetSubnetName": "Subnet",
@@ -363,10 +363,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter-smalldisk",
-            "version": "latest"
+            "publisher": "MicrosoftWindowsDesktop",
+            "offer": "Windows-10",
+            "sku": "19h2-ent"
           },
           "osDisk": {
             "name": "[concat(variables('GenericStorageAccountName'), 1)]",
