@@ -86,10 +86,10 @@ Once you have your lab, that is just when the fun *begins*.  Now its time to act
 
 Here is some content that builds on top of these labs:
 
-| Product       | Title/Link   | Description                                                                                           |
-|---------------|--------------|-------------------------------------------------------------------------------------------------------|
-| Azure ATP     | [Attack Simulation Playbook](https://aka.ms/aatpsaplaybook) | Learn about the various attacks      |
-| Azure ATP     | [Ciberesponce: Kali Pass the Ticket](https://ciberesponce.com/2019/04/16/leverage-windows-tickets-in-kali-linux/)| Learn to use harvested tickets from Windows, on Kali |
+| Product    | Title/Link   | Description                                                                                           |
+|------------|--------------|-------------------------------------------------------------------------------------------------------|
+| Azure ATP  | [Attack Simulation Playbook](https://aka.ms/aatpsaplaybook) | Learn about the various attacks                        |
+| Azure ATP  | [Ciberesponce: Kali Pass the Ticket](https://ciberesponce.com/2019/04/16/leverage-windows-tickets-in-kali-linux/)| Learn to use harvested tickets from Windows, on Kali |
 
 
 ## About the author

@@ -166,7 +166,8 @@
         "name": "Standard_LRS"
       },
       "kind": "StorageV2",
-      "properties": {}
+      "properties": {
+      }
     },
     {
       "apiVersion": "2017-09-01",
@@ -363,392 +364,392 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "MicrosoftWindowsDesktop",
-            "offer": "Windows-10",
-            "sku": "19h1-ent",
+            "publisher": "microsoftwindowsdesktop",
+            "offer": "office-365",
+            "sku": "1903-evd-o365pp",
             "version": "latest"
           },
-          "osDisk": {
-            "name": "[concat(variables('GenericStorageAccountName'), 1)]",
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
-        },
-        "licenseType": "Windows_Client",
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 1))]"
+            "osDisk": {
+              "name": "[concat(variables('GenericStorageAccountName'), 1)]",
+              "caching": "ReadWrite",
+              "createOption": "FromImage"
             }
-          ]
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-            "enabled": false
-          }
-        }
-      },
-      "resources": [
-        {
-          "type": "extensions",
-          "apiVersion": "2018-10-01",
-          "name": "[variables('VictimDscName')]",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[resourceId('Microsoft.Compute/virtualMachines', variables('VictimVmName'))]",
-            "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
-          ],
-          "properties": {
-            "publisher": "Microsoft.Powershell",
-            "type": "DSC",
-            "autoUpgradeMinorVersion": true,
-            "typeHandlerVersion": "2.77",
-            "settings": {
-              "configuration": {
-                "url": "[variables('VictimDscUrl')]",
-                "script": "ProvisionVictimPcDsc.ps1",
-                "function": "SetupVictimPc"
-              },
-              "configurationArguments": {
-                "DomainName": "[parameters('DomainName')]",
-                "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+          },
+          "licenseType": "Windows_Client",
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 1))]"
               }
-            },
-            "protectedSettings": {
-              "configurationArguments": {
-                "AdminCred": {
-                  "UserName": "[parameters('builtinAdministratorAccount')]",
-                  "Password": "[parameters('builtinAdministratorPassword')]"
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": false
+            }
+          }
+        },
+        "resources": [
+          {
+            "type": "extensions",
+            "apiVersion": "2018-10-01",
+            "name": "[variables('VictimDscName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+              "[resourceId('Microsoft.Compute/virtualMachines', variables('VictimVmName'))]",
+              "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+            ],
+            "properties": {
+              "publisher": "Microsoft.Powershell",
+              "type": "DSC",
+              "autoUpgradeMinorVersion": true,
+              "typeHandlerVersion": "2.77",
+              "settings": {
+                "configuration": {
+                  "url": "[variables('VictimDscUrl')]",
+                  "script": "ProvisionVictimPcDsc.ps1",
+                  "function": "SetupVictimPc"
                 },
-                "RonHdCred": {
-                  "UserName": "RonHD",
-                  "Password": "[parameters('RonHdPassword')]"
+                "configurationArguments": {
+                  "DomainName": "[parameters('DomainName')]",
+                  "NetBiosName": "[parameters('NetBiosName')]",
+                  "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                }
+              },
+              "protectedSettings": {
+                "configurationArguments": {
+                  "AdminCred": {
+                    "UserName": "[parameters('builtinAdministratorAccount')]",
+                    "Password": "[parameters('builtinAdministratorPassword')]"
+                  },
+                  "RonHdCred": {
+                    "UserName": "RonHD",
+                    "Password": "[parameters('RonHdPassword')]"
+                  }
                 }
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-10-01",
-      "name": "[variables('AdminPcVmName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 2))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),2))]",
-        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "Standard_A2_v2"
-        },
-        "osProfile": {
-          "computerName": "[variables('AdminPcVmName')]",
-          "adminUsername": "[parameters('builtinAdministratorAccount')]",
-          "adminPassword": "[parameters('builtinAdministratorPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter",
-            "version": "latest"
-          },
-          "osDisk": {
-            "name": "[concat(variables('GenericStorageAccountName'), 2)]",
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
-        },
-        "licenseType": "Windows_Server",
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 2))]"
-            }
-          ]
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-            "enabled": false
-          }
-        }
+        ]
       },
-      "resources": [
-        {
-          "type": "extensions",
-          "apiVersion": "2018-10-01",
-          "name": "[variables('AdminPcDscName')]",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[resourceId('Microsoft.Compute/virtualMachines', variables('AdminPcVmName'))]",
-            "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
-          ],
-          "properties": {
-            "publisher": "Microsoft.Powershell",
-            "type": "DSC",
-            "autoUpgradeMinorVersion": true,
-            "typeHandlerVersion": "2.77",
-            "settings": {
-              "configuration": {
-                "url": "[variables('AdminPcDscUrl')]",
-                "script": "ProvisionAdminPcDsc.ps1",
-                "function": "SetupAdminPc"
-              },
-              "configurationArguments": {
-                "DomainName": "[parameters('DomainName')]",
-                "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
-              }
+      {
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2018-10-01",
+        "name": "[variables('AdminPcVmName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 2))]",
+          "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),2))]",
+          "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+        ],
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "Standard_A2_v2"
+          },
+          "osProfile": {
+            "computerName": "[variables('AdminPcVmName')]",
+            "adminUsername": "[parameters('builtinAdministratorAccount')]",
+            "adminPassword": "[parameters('builtinAdministratorPassword')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "MicrosoftWindowsServer",
+              "offer": "WindowsServer",
+              "sku": "2016-Datacenter",
+              "version": "latest"
             },
-            "protectedSettings": {
-              "configurationArguments": {
-                "AdminCred": {
-                  "UserName": "[parameters('builtinAdministratorAccount')]",
-                  "Password": "[parameters('builtinAdministratorPassword')]"
+            "osDisk": {
+              "name": "[concat(variables('GenericStorageAccountName'), 2)]",
+              "caching": "ReadWrite",
+              "createOption": "FromImage"
+            }
+          },
+          "licenseType": "Windows_Server",
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 2))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": false
+            }
+          }
+        },
+        "resources": [
+          {
+            "type": "extensions",
+            "apiVersion": "2018-10-01",
+            "name": "[variables('AdminPcDscName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+              "[resourceId('Microsoft.Compute/virtualMachines', variables('AdminPcVmName'))]",
+              "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+            ],
+            "properties": {
+              "publisher": "Microsoft.Powershell",
+              "type": "DSC",
+              "autoUpgradeMinorVersion": true,
+              "typeHandlerVersion": "2.77",
+              "settings": {
+                "configuration": {
+                  "url": "[variables('AdminPcDscUrl')]",
+                  "script": "ProvisionAdminPcDsc.ps1",
+                  "function": "SetupAdminPc"
                 },
-                "SamiraACred": {
-                  "UserName": "SamiraA",
-                  "Password": "[parameters('SamiraAPassword')]"
-                },
-                "AipServiceCred": {
-                  "UserName": "[variables('AipDomainServiceAccount')]",
-                  "Password": "[variables('AipDomainServiceAccountPassword')]"
+                "configurationArguments": {
+                  "DomainName": "[parameters('DomainName')]",
+                  "NetBiosName": "[parameters('NetBiosName')]",
+                  "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                }
+              },
+              "protectedSettings": {
+                "configurationArguments": {
+                  "AdminCred": {
+                    "UserName": "[parameters('builtinAdministratorAccount')]",
+                    "Password": "[parameters('builtinAdministratorPassword')]"
+                  },
+                  "SamiraACred": {
+                    "UserName": "SamiraA",
+                    "Password": "[parameters('SamiraAPassword')]"
+                  },
+                  "AipServiceCred": {
+                    "UserName": "[variables('AipDomainServiceAccount')]",
+                    "Password": "[variables('AipDomainServiceAccountPassword')]"
+                  }
                 }
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-10-01",
-      "name": "[variables('AdminPc2VmName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'),4))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),4))]",
-        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "Standard_A2_v2"
-        },
-        "osProfile": {
-          "computerName": "[variables('AdminPc2VmName')]",
-          "adminUsername": "[parameters('builtinAdministratorAccount')]",
-          "adminPassword": "[parameters('builtinAdministratorPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter-smalldisk",
-            "version": "latest"
-          },
-          "osDisk": {
-            "name": "[concat(variables('GenericStorageAccountName'), 4)]",
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
-        },
-        "licenseType": "Windows_Server",
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 4))]"
-            }
-          ]
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-            "enabled": false
-          }
-        }
+        ]
       },
-      "resources": [
-        {
-          "type": "extensions",
-          "apiVersion": "2018-10-01",
-          "name": "[variables('AdminPc2DscName')]",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[resourceId('Microsoft.Compute/virtualMachines', variables('AdminPc2VmName'))]",
-            "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
-          ],
-          "properties": {
-            "publisher": "Microsoft.Powershell",
-            "type": "DSC",
-            "autoUpgradeMinorVersion": true,
-            "typeHandlerVersion": "2.77",
-            "settings": {
-              "configuration": {
-                "url": "[variables('AdminPc2DscUrl')]",
-                "script": "ProvisionAdminPc2Dsc.ps1",
-                "function": "SetupAdminPc2"
-              },
-              "configurationArguments": {
-                "DomainName": "[parameters('DomainName')]",
-                "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
-              }
+      {
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2018-10-01",
+        "name": "[variables('AdminPc2VmName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'),4))]",
+          "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),4))]",
+          "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+        ],
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "Standard_A2_v2"
+          },
+          "osProfile": {
+            "computerName": "[variables('AdminPc2VmName')]",
+            "adminUsername": "[parameters('builtinAdministratorAccount')]",
+            "adminPassword": "[parameters('builtinAdministratorPassword')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "MicrosoftWindowsServer",
+              "offer": "WindowsServer",
+              "sku": "2016-Datacenter-smalldisk",
+              "version": "latest"
             },
-            "protectedSettings": {
-              "configurationArguments": {
-                "AdminCred": {
-                  "UserName": "[parameters('builtinAdministratorAccount')]",
-                  "Password": "[parameters('builtinAdministratorPassword')]"
+            "osDisk": {
+              "name": "[concat(variables('GenericStorageAccountName'), 4)]",
+              "caching": "ReadWrite",
+              "createOption": "FromImage"
+            }
+          },
+          "licenseType": "Windows_Server",
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 4))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": false
+            }
+          }
+        },
+        "resources": [
+          {
+            "type": "extensions",
+            "apiVersion": "2018-10-01",
+            "name": "[variables('AdminPc2DscName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+              "[resourceId('Microsoft.Compute/virtualMachines', variables('AdminPc2VmName'))]",
+              "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+            ],
+            "properties": {
+              "publisher": "Microsoft.Powershell",
+              "type": "DSC",
+              "autoUpgradeMinorVersion": true,
+              "typeHandlerVersion": "2.77",
+              "settings": {
+                "configuration": {
+                  "url": "[variables('AdminPc2DscUrl')]",
+                  "script": "ProvisionAdminPc2Dsc.ps1",
+                  "function": "SetupAdminPc2"
                 },
-                "SamiraACred": {
-                  "UserName": "SamiraA",
-                  "Password": "[parameters('SamiraAPassword')]"
-                },
-                "AipServiceCred": {
-                  "UserName": "[variables('AipDomainServiceAccount')]",
-                  "Password": "[variables('AipDomainServiceAccountPassword')]"
+                "configurationArguments": {
+                  "DomainName": "[parameters('DomainName')]",
+                  "NetBiosName": "[parameters('NetBiosName')]",
+                  "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                }
+              },
+              "protectedSettings": {
+                "configurationArguments": {
+                  "AdminCred": {
+                    "UserName": "[parameters('builtinAdministratorAccount')]",
+                    "Password": "[parameters('builtinAdministratorPassword')]"
+                  },
+                  "SamiraACred": {
+                    "UserName": "SamiraA",
+                    "Password": "[parameters('SamiraAPassword')]"
+                  },
+                  "AipServiceCred": {
+                    "UserName": "[variables('AipDomainServiceAccount')]",
+                    "Password": "[variables('AipDomainServiceAccountPassword')]"
+                  }
                 }
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2018-10-01",
-      "name": "[variables('McasVmName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 3))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),3))]",
-        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "Standard_A2_v2"
-        },
-        "osProfile": {
-          "computerName": "[variables('McasVmName')]",
-          "adminUsername": "[parameters('builtinAdministratorAccount')]",
-          "adminPassword": "[parameters('builtinAdministratorPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter-smalldisk",
-            "version": "latest"
-          },
-          "osDisk": {
-            "name": "[concat(variables('GenericStorageAccountName'), 3)]",
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
-        },
-        "licenseType": "Windows_Server",
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 3))]"
-            }
-          ]
-        },
-        "diagnosticsProfile": {
-          "bootDiagnostics": {
-            "enabled": false
-          }
-        }
+        ]
       },
-      "resources": [
-        {
-          "type": "extensions",
-          "apiVersion": "2018-10-01",
-          "name": "[variables('McasDscName')]",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[resourceId('Microsoft.Compute/virtualMachines', variables('McasVmName'))]",
-            "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
-          ],
-          "properties": {
-            "publisher": "Microsoft.Powershell",
-            "type": "DSC",
-            "autoUpgradeMinorVersion": true,
-            "typeHandlerVersion": "2.77",
-            "settings": {
-              "configuration": {
-                "url": "[variables('McasDscUrl')]",
-                "script": "ProvisionClient01.ps1",
-                "function": "SetupAipScannerCore"
-              },
-              "configurationArguments": {
-                "DomainName": "[parameters('DomainName')]",
-                "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
-              }
+      {
+        "type": "Microsoft.Compute/virtualMachines",
+        "apiVersion": "2018-10-01",
+        "name": "[variables('McasVmName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 3))]",
+          "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),3))]",
+          "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+        ],
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "Standard_A2_v2"
+          },
+          "osProfile": {
+            "computerName": "[variables('McasVmName')]",
+            "adminUsername": "[parameters('builtinAdministratorAccount')]",
+            "adminPassword": "[parameters('builtinAdministratorPassword')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "MicrosoftWindowsServer",
+              "offer": "WindowsServer",
+              "sku": "2016-Datacenter-smalldisk",
+              "version": "latest"
             },
-            "ProtectedSettings": {
-              "configurationArguments": {
-                "AdminCred": {
-                  "UserName": "[parameters('builtinAdministratorAccount')]",
-                  "Password": "[parameters('builtinAdministratorPassword')]"
+            "osDisk": {
+              "name": "[concat(variables('GenericStorageAccountName'), 3)]",
+              "caching": "ReadWrite",
+              "createOption": "FromImage"
+            }
+          },
+          "licenseType": "Windows_Server",
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 3))]"
+              }
+            ]
+          },
+          "diagnosticsProfile": {
+            "bootDiagnostics": {
+              "enabled": false
+            }
+          }
+        },
+        "resources": [
+          {
+            "type": "extensions",
+            "apiVersion": "2018-10-01",
+            "name": "[variables('McasDscName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+              "[resourceId('Microsoft.Compute/virtualMachines', variables('McasVmName'))]",
+              "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+            ],
+            "properties": {
+              "publisher": "Microsoft.Powershell",
+              "type": "DSC",
+              "autoUpgradeMinorVersion": true,
+              "typeHandlerVersion": "2.77",
+              "settings": {
+                "configuration": {
+                  "url": "[variables('McasDscUrl')]",
+                  "script": "ProvisionClient01.ps1",
+                  "function": "SetupAipScannerCore"
                 },
-                "LisaVCred": {
-                  "UserName": "LisaV",
-                  "Password": "[parameters('LisaVPassword')]"
+                "configurationArguments": {
+                  "DomainName": "[parameters('DomainName')]",
+                  "NetBiosName": "[parameters('NetBiosName')]",
+                  "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                }
+              },
+              "ProtectedSettings": {
+                "configurationArguments": {
+                  "AdminCred": {
+                    "UserName": "[parameters('builtinAdministratorAccount')]",
+                    "Password": "[parameters('builtinAdministratorPassword')]"
+                  },
+                  "LisaVCred": {
+                    "UserName": "LisaV",
+                    "Password": "[parameters('LisaVPassword')]"
+                  }
                 }
               }
             }
           }
-        }
-      ]
-    },
-    {
-      "apiVersion": "2018-10-01",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('AscLinuxName')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 5))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),5))]",
-        "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
-      ],
-      "properties": {
-        "hardwareprofile": {
-          "vmsize": "Standard_A2_v2"
-        },
-        "osProfile": {
-          "computerName": "[concat(variables('AscLinuxName'))]",
-          "adminusername": "[parameters('builtinAdministratorAccount')]",
-          "adminpassword": "[parameters('builtinAdministratorPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "16.04-LTS",
-            "version": "latest"
+        ]
+      },
+      {
+        "apiVersion": "2018-10-01",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[variables('AscLinuxName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 5))]",
+          "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('GenericStorageAccountName'),5))]",
+          "[resourceId('Microsoft.Resources/deployments', variables('DeploymentVnetDnsName'))]"
+        ],
+        "properties": {
+          "hardwareprofile": {
+            "vmsize": "Standard_A2_v2"
           },
-          "osdisk": {
-            "name": "[concat(variables('GenericStorageAccountName'), 5)]",
-            "createOption": "FromImage",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
+          "osProfile": {
+            "computerName": "[concat(variables('AscLinuxName'))]",
+            "adminusername": "[parameters('builtinAdministratorAccount')]",
+            "adminpassword": "[parameters('builtinAdministratorPassword')]"
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "Canonical",
+              "offer": "UbuntuServer",
+              "sku": "16.04-LTS",
+              "version": "latest"
             },
-            "caching": "ReadWrite"
-          }
-        },
-        "networkprofile": {
-          "networkinterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 5))]"
+            "osdisk": {
+              "name": "[concat(variables('GenericStorageAccountName'), 5)]",
+              "createOption": "FromImage",
+              "managedDisk": {
+                "storageAccountType": "Standard_LRS"
+              },
+              "caching": "ReadWrite"
             }
-          ]
+          },
+          "networkprofile": {
+            "networkinterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('GenericNicName'), 5))]"
+              }
+            ]
+          }
         }
       }
-    }
   ]
 }
