@@ -31,6 +31,8 @@ Configuration SetupVictimPc
         [Parameter(Mandatory=$false)]
         [String]$Branch='master'
     )
+
+    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine -Force
     #region COE
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -55,6 +57,7 @@ Configuration SetupVictimPc
             ConfigurationMode = 'ApplyOnly'
             RebootNodeIfNeeded = $true
             ActionAfterReboot = 'ContinueConfiguration'
+            
         }
 
         PowerShellExecutionPolicy ExecutionPolicy
