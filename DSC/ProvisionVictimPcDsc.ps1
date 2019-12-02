@@ -512,7 +512,7 @@ Configuration SetupVictimPc
 		{
             Ensure = 'Present'
             Name = 'Microsoft Azure Information Protection'
-            Path = 'https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true'
+            Path = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
             ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
             DependsOn = '[Computer]JoinDomain'
         }
