@@ -546,9 +546,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter-smalldisk",
+            "publisher": "microsoftwindowsdesktop",
+            "offer": "office-365",
+            "sku": "1903-evd-o365pp",
             "version": "latest"
           },
           "osDisk": {
@@ -557,7 +557,7 @@
             "createOption": "FromImage"
           }
         },
-        "licenseType": "Windows_Server",
+        "licenseType": "Windows_Client",
         "networkProfile": {
           "networkInterfaces": [
             {

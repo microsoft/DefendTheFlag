@@ -43,6 +43,9 @@ Configuration SetupAdminPc2
         [Parameter(Mandatory=$false)]
         [String]$Branch='master'
     )
+    # required as Win10 clients have this off be default, unlike Servers...
+    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine -Force
+
     #region COE
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -535,19 +538,13 @@ Configuration SetupAdminPc2
         }
 
         #region AipClient
-        xRemoteFile GetAipClient
-        {
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
-            DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
-            DependsOn = '[Computer]JoinDomain'
-        }
-
-		xMsiPackage InstallAipClient
+		xPackage InstallAipClient
 		{
             Ensure = 'Present'
-            Path = 'C:\LabTools\AIP_UL_Preview.msi'
-            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
-            DependsOn = '[xRemoteFile]GetAipClient'
+            Name = 'Microsoft Azure Information Protection'
+            Path = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
+            ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
+            DependsOn = '[Computer]JoinDomain'
         }
         #endregion
 

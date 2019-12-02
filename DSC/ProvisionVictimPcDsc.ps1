@@ -31,7 +31,6 @@ Configuration SetupVictimPc
         [Parameter(Mandatory=$false)]
         [String]$Branch='master'
     )
-
     # required as Win10 clients have this off be default, unlike Servers...
     Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine -Force
 
@@ -501,13 +500,6 @@ Configuration SetupVictimPc
         #endregion
 
         #region AipClient
-        # xRemoteFile GetAipClient
-        # {
-        #     Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
-        #     DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
-        #     DependsOn = '[Computer]JoinDomain'
-        # }
-
 		xPackage InstallAipClient
 		{
             Ensure = 'Present'
