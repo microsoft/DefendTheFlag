@@ -115,9 +115,9 @@ Configuration SetupAipScannerCore
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller Chrome
+        cChocoPackageInstaller EdgeInsider
         {
-            Name = 'googlechrome'
+            Name = 'microsoft-edge-insider'
             Ensure = 'Present'
             AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
