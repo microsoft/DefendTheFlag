@@ -382,13 +382,12 @@ Configuration SetupAipScannerCore
         #endregion
 
         #region AipClient
-		xPackage InstallAipClient
+		xMsiPackage InstallAipClient
 		{
             Ensure = 'Present'
-            Name = 'Microsoft Azure Information Protection'
             Path = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
             ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
-            DependsOn = '[Computer]JoinDomain'
+            DependsOn = @('[Computer]JoinDomain', '[Registry]SchUseStrongCrypto', '[Registry]SchUseStrongCrypto64')
         }
         #endregion
 
@@ -407,7 +406,7 @@ Configuration SetupAipScannerCore
         {
             DestinationPath = 'C:\LabData\McasData.zip'
             Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/MCAS/Demo%20files.zip?raw=true'
-            DependsOn = @('[Computer]JoinDomain')
+            DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 
         # Place on all Users Desktops; can't put in LisaV's else her profile changes since she never logged in yet...

@@ -500,13 +500,12 @@ Configuration SetupVictimPc
         #endregion
 
         #region AipClient
-		xPackage InstallAipClient
+		xMsiPackage InstallAipClient
 		{
             Ensure = 'Present'
-            Name = 'Microsoft Azure Information Protection'
             Path = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
             ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
-            DependsOn = '[Computer]JoinDomain'
+            DependsOn = @('[Computer]JoinDomain', '[Registry]SchUseStrongCrypto', '[Registry]SchUseStrongCrypto64')
         }
         #endregion
 
@@ -515,7 +514,7 @@ Configuration SetupVictimPc
         {
             DestinationPath = 'C:\Tools\Backup\Mimikatz.zip'
             Uri = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain')
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
         xRemoteFile GetPowerSploit
         {

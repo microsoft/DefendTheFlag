@@ -538,13 +538,12 @@ Configuration SetupAdminPc2
         }
 
         #region AipClient
-		xPackage InstallAipClient
+		xMsiPackage InstallAipClient
 		{
             Ensure = 'Present'
-            Name = 'Microsoft Azure Information Protection'
             Path = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
             ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
-            DependsOn = '[Computer]JoinDomain'
+            DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
         #endregion
 
@@ -552,14 +551,14 @@ Configuration SetupAdminPc2
         {
             DestinationPath = 'C:\PII\data.zip'
             Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/AIPScanner/docs.zip?raw=true"
-            DependsOn = '[Computer]JoinDomain'
+            DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
         
         xRemoteFile GetAipScripts
         {
             DestinationPath = 'C:\Scripts\Scripts.zip'
             Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/Scripts.zip?raw=true"
-            DependsOn = '[Computer]JoinDomain'
+            DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 
         Archive AipDataToPii
