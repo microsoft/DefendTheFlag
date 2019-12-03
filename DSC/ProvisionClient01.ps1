@@ -205,7 +205,7 @@ Configuration SetupAipScannerCore
         xRemoteFile DownloadBginfo
 		{
 			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/aippc.bgi?raw=true'
+			Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/BgInfo/aippc.bgi"
             DependsOn = '[Computer]JoinDomain'
 		}
         
@@ -405,7 +405,7 @@ Configuration SetupAipScannerCore
         xRemoteFile GetMcasData
         {
             DestinationPath = 'C:\LabData\McasData.zip'
-            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/MCAS/Demo%20files.zip?raw=true'
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/v1.5/Downloads/MCAS/Demo%20files.zip"
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 

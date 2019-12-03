@@ -204,7 +204,7 @@ Configuration SetupVictimPc
         xRemoteFile DownloadBginfo
 		{
 			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-			Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/BgInfo/victimpc.bgi?raw=true"
+			Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/BgInfo/victimpc.bgi"
             DependsOn = '[Computer]JoinDomain'
 		}
         
@@ -500,9 +500,10 @@ Configuration SetupVictimPc
         #endregion
 
         #region AipClient
-		xMsiPackage InstallAipClient
+		xPackage InstallAipClient
 		{
             Ensure = 'Present'
+            Name = 'Microsoft Azure Information Protection'
             Path = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
             ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
             DependsOn = @('[Computer]JoinDomain', '[Registry]SchUseStrongCrypto', '[Registry]SchUseStrongCrypto64')
@@ -531,6 +532,7 @@ Configuration SetupVictimPc
         xRemoteFile GetNetSess
         {
             DestinationPath = 'C:\Tools\Backup\NetSess.zip'
+            # needs to be updated or removed eventually...
             Uri = 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true'
             DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }

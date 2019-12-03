@@ -589,7 +589,7 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
         xRemoteFile GetAipScripts
         {
             DestinationPath = 'C:\Scripts\Scripts.zip'
-            Uri = "https://github.com/microsoft/DefendTheFlag/raw/v1.5/Downloads/AIP/Scripts.zip"
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Scripts.zip"
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 

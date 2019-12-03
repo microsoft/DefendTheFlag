@@ -404,7 +404,7 @@ Configuration SetupAdminPc2
         xRemoteFile GetBgInfo
         {
             DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/BgInfo/adminpc.bgi?raw=true"
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/BgInfo/adminpc.bgi"
             DependsOn = '[cChocoPackageInstaller]InstallSysInternals'
         }
 
@@ -538,9 +538,10 @@ Configuration SetupAdminPc2
         }
 
         #region AipClient
-		xMsiPackage InstallAipClient
+		xPackage InstallAipClient
 		{
             Ensure = 'Present'
+            Name = 'Microsoft Azure Information Protection'
             Path = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
             ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
@@ -550,14 +551,14 @@ Configuration SetupAdminPc2
         xRemoteFile GetAipData
         {
             DestinationPath = 'C:\PII\data.zip'
-            Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/AIPScanner/docs.zip?raw=true"
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/docs.zip"
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
         
         xRemoteFile GetAipScripts
         {
             DestinationPath = 'C:\Scripts\Scripts.zip'
-            Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/Scripts.zip?raw=true"
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Scripts.zip"
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 
