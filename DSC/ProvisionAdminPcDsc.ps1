@@ -404,7 +404,7 @@ Configuration SetupAdminPc
         xRemoteFile GetBgInfo
         {
             DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/BgInfo/adminpc.bgi?raw=true"
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/BgInfo/adminpc.bgi"
             DependsOn = '[cChocoPackageInstaller]InstallSysInternals'
         }
 
@@ -582,14 +582,14 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
         xRemoteFile GetAipData
         {
             DestinationPath = 'C:\PII\data.zip'
-            Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/AIPScanner/docs.zip?raw=true"
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/docs.zip"
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
         
         xRemoteFile GetAipScripts
         {
             DestinationPath = 'C:\Scripts\Scripts.zip'
-            Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/Scripts.zip?raw=true"
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/v1.5/Downloads/AIP/Scripts.zip"
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 
