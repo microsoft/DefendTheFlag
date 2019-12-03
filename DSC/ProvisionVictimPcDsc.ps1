@@ -61,39 +61,38 @@ Configuration SetupVictimPc
             
         }
 
-        PowerShellExecutionPolicy ExecutionPolicy
-        {
-            ExecutionPolicyScope = 'LocalMachine'
-            ExecutionPolicy = 'Unrestricted'
-        }
-
         #region COE
-        xService DisableWindowsUpdate
+        Service DisableWindowsUpdate
         {
             Name = 'wuauserv'
             State = 'Stopped'
             StartupType = 'Disabled'
-            DependsOn = '[PowerShellExecutionPolicy]ExecutionPolicy'
+            Ensure = 'Present'
+        }
+
+        Service WmiMgt
+        {
+            Name = 'WinRM'
+            State = 'Running'
+            StartupType = 'Automatic'
+            Ensure = 'Present'
         }
 
         xIEEsc DisableAdminIeEsc
         {
             UserRole = 'Administrators'
             IsEnabled = $false
-            DependsOn = '[PowerShellExecutionPolicy]ExecutionPolicy'
         }
 
         xIEEsc DisableUserIeEsc
         {
             UserRole = 'Users'
             IsEnabled = $false
-            DependsOn = '[PowerShellExecutionPolicy]ExecutionPolicy'
         }
 
         xUac DisableUac
         {
             Setting = 'NeverNotifyAndDisableAll'
-            DependsOn = '[PowerShellExecutionPolicy]ExecutionPolicy'
         }
         #endregion
 
@@ -103,7 +102,6 @@ Configuration SetupVictimPc
             Name = 'VictimPC'
             DomainName = $DomainName
             Credential = $Creds
-            DependsOn = '[PowerShellExecutionPolicy]ExecutionPolicy'
         }
 
         xGroup AddAdmins
