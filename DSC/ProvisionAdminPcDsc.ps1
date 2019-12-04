@@ -400,7 +400,7 @@ Configuration SetupAdminPc
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller EdgeInsider
+        cChocoPackageInstaller WindowsTerminal
         {
             Name = 'microsoft-windows-terminal'
             Ensure = 'Present'
