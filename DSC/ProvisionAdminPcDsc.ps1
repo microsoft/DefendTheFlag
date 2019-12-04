@@ -400,12 +400,11 @@ Configuration SetupAdminPc
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller InstallOffice365
+        cChocoPackageInstaller EdgeInsider
         {
-            Name = 'microsoft-office-deployment'
+            Name = 'microsoft-windows-terminal'
             Ensure = 'Present'
-            AutoUpgrade = $false
-            Params = '/Product=O365ProPlusRetail /64Bit'
+            AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
         #endregion

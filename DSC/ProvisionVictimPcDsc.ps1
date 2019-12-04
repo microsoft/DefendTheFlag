@@ -197,6 +197,14 @@ Configuration SetupVictimPc
             AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
+
+        cChocoPackageInstaller EdgeInsider
+        {
+            Name = 'microsoft-windows-terminal'
+            Ensure = 'Present'
+            AutoUpgrade = $true
+            DependsOn = '[cChocoInstaller]InstallChoco'
+        }
         #endregion
 
         xRemoteFile DownloadBginfo
