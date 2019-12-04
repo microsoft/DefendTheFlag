@@ -135,14 +135,6 @@ Configuration SetupAipScannerCore
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller EdgeInsider
-        {
-            Name = 'microsoft-windows-terminal'
-            Ensure = 'Present'
-            AutoUpgrade = $true
-            DependsOn = '[cChocoInstaller]InstallChoco'
-        }
-
         cChocoPackageInstaller WindowsTerminal
         {
             Name = 'microsoft-windows-terminal'
