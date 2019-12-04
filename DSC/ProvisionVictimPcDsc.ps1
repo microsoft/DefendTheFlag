@@ -58,7 +58,7 @@ Configuration SetupVictimPc
             ConfigurationMode = 'ApplyOnly'
             RebootNodeIfNeeded = $true
             ActionAfterReboot = 'ContinueConfiguration'
-            
+            AllowModuleOverwrite = $true
         }
 
         #region COE
