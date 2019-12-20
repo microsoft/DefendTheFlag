@@ -210,6 +210,22 @@ Configuration CreateADForest
         {
 			InstallDir = 'C:\choco'
 			DependsOn = @('[xADForestProperties]ForestProps', '[xWaitForADDomain]DscForestWait')
+		}
+		
+		cChocoPackageInstaller EdgeInsider
+        {
+            Name = 'microsoft-edge-insider'
+            Ensure = 'Present'
+            AutoUpgrade = $true
+            DependsOn = '[cChocoInstaller]InstallChoco'
+		}
+		
+		cChocoPackageInstaller WindowsTerminal
+        {
+            Name = 'microsoft-windows-terminal'
+            Ensure = 'Present'
+            AutoUpgrade = $true
+            DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
         cChocoPackageInstaller InstallSysInternals
