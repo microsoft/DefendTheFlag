@@ -1,3 +1,9 @@
+<#
+ # Author: Andrew Harris (aharri@microsoft.com; @ciberesponce)
+ # Useful when needed to debug binary on Azure resource
+ # Visual Studio requires files to be in same location
+ # This script ensures that, where you can then use VS Remote Debugger properly
+#>
 param(
     #source path
     # source path
