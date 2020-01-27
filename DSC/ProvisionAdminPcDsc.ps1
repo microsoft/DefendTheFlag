@@ -101,6 +101,12 @@ Configuration SetupAdminPc
             Credential = $Creds
         }
 
+        WindowsFeature ADDSTools
+		{
+			Ensure = "Present"
+			Name = "RSAT"
+		}
+
         #region COE
         xIEEsc DisableAdminIeEsc
         {
