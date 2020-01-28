@@ -24,7 +24,7 @@ Configuration SetupAipScannerCore
         # Branch
         ## Useful when have multiple for testing
         [Parameter(Mandatory=$false)]
-        [String]$Branch='master'
+        [String]$Branch
     )    
     # required as Win10 clients have this off be default, unlike Servers...
     Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine -Force

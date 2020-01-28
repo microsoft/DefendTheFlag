@@ -48,7 +48,7 @@ Configuration CreateADForest
 		# Branch
         ## Useful when have multiple for testing
         [Parameter(Mandatory=$false)]
-        [String]$Branch='master'
+        [String]$Branch
 	)
 	
 	Import-DscResource -ModuleName xActiveDirectory -ModuleVersion 3.0.0.0
