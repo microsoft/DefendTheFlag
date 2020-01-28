@@ -101,11 +101,36 @@ Configuration SetupAdminPc
             Credential = $Creds
         }
 
-        WindowsFeature ADDSTools
-		{
-			Ensure = "Present"
-			Name = "RSAT"
-		}
+        Script InstallRsat
+        {
+            SetScript = 
+            {
+                $rsatCapabilities = Get-WindowsCapability -Online -Name RSAT* | Where-Object {$_.State -eq 'NotPresent'}
+                $rsatCapabilities | Add-WindowsCapability -Online
+                Update-Help
+            }
+            TestScript = 
+            {
+                $rsatCapabilities = Get-WindowsCapability -Online -Name RSAT* | Where-Object {$_.State -eq 'NotPresent'}
+                if ($null -eq $rsatCapabilities){
+                    return $true
+                }
+                else{
+                    return $false
+                }
+            }
+            GetScript = 
+            {
+                $rsatCapabilities = Get-WindowsCapability -Online -Name RSAT* | Where-Object {$_.State -eq 'NotPresent'}
+                if ($null -eq $rsatCapabilities){
+                    return @{ result = $true }
+                }
+                else {
+                    return @{ result = $false }
+                }
+            }
+            DependsOn = '[Computer]JoinDomain'
+        }
 
         #region COE
         xIEEsc DisableAdminIeEsc
