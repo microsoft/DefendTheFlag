@@ -297,7 +297,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "UserPrincipalName": "[parameters('UserPrincipalName')]",
-                "NetBiosName": "[parameters('NetBiosName')]"
+                "NetBiosName": "[parameters('NetBiosName')]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "type": "DSC",
@@ -413,7 +414,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "protectedSettings": {
@@ -502,7 +504,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "protectedSettings": {
@@ -595,7 +598,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "protectedSettings": {
@@ -688,7 +692,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "ProtectedSettings": {
