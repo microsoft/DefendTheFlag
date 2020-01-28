@@ -212,13 +212,13 @@ Configuration CreateADForest
 			DependsOn = @('[xADForestProperties]ForestProps', '[xWaitForADDomain]DscForestWait')
 		}
 		
-		cChocoPackageInstaller EdgeInsider
+        cChocoPackageInstaller EdgeBrowser
         {
-            Name = 'microsoft-edge-insider'
+            Name = 'microsoft-edge'
             Ensure = 'Present'
             AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
-		}
+        }
 		
 		cChocoPackageInstaller WindowsTerminal
         {

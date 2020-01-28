@@ -63,7 +63,7 @@ The most critical part of this is knowing the Domain Controller becomes the vNet
 
 ### Access your VMs
 
-Regardless of if your in Phase 0 or Phase 2, you eventually will want to access your VMs.  You can of course do this from the Azure Portal, but we also created a quick script, ```Get-VmsInfo.ps1```.  This will tell you the VMs IPs.  You can then ```mstsc /v:<<ip>>``` or, ```ssh <<ip>>``` to quickly RDP into that machine, depending on the VM type and its authentication service.
+Regardless of if your in Phase 0 or Phase 2, you eventually will want to access your VMs.  You can of course do this from the Azure Portal, but we also created a quick script, ```Get-VmsInfo.ps1 -ResourceGroupName <ResourceGroupName>```.  This will tell you the VMs IPs.  You can then ```mstsc /v:<<ip>>``` or, ```ssh <<ip>>``` to quickly RDP into that machine, depending on the VM type and its authentication service.
 
 ## Skip straight to Phase 2
 

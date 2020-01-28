@@ -392,9 +392,9 @@ Configuration SetupAdminPc2
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller EdgeInsider
+        cChocoPackageInstaller EdgeBrowser
         {
-            Name = 'microsoft-edge-insider'
+            Name = 'microsoft-edge'
             Ensure = 'Present'
             AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
@@ -546,14 +546,20 @@ Configuration SetupAdminPc2
         }
 
         #region AipClient
-		xPackage InstallAipClient
+        xRemoteFile DownloadAipClient
+		{
+			DestinationPath = 'C:\LabData\aip_client.msi'
+			Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
+            DependsOn = '[Computer]JoinDomain'
+		}
+		xMsiPackage InstallAipClient
 		{
             Ensure = 'Present'
-            Name = 'Microsoft Azure Information Protection'
-            Path = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
+            Path = 'C:\LabData\aip_client.msi'
             Arguments = '/quiet'
+            IgnoreReboot = $true
             ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
-            DependsOn = @('[Computer]JoinDomain', '[Registry]SchUseStrongCrypto', '[Registry]SchUseStrongCrypto64')
+            DependsOn = '[xRemoteFile]DownloadAipClient'
         }
         #endregion
 
