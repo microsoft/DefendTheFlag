@@ -583,21 +583,21 @@ Get-ChildItem '\\contosodc\c$'; exit(0)
         }
 
         #region AipClient
-        xRemoteFile DownloadAipClient
-		{
-			DestinationPath = 'C:\LabData\aip_client.msi'
-			Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
-            DependsOn = '[Computer]JoinDomain'
-		}
-		xMsiPackage InstallAipClient
-		{
-            Ensure = 'Present'
-            Path = 'C:\LabData\aip_client.msi'
-            Arguments = '/quiet'
-            IgnoreReboot = $true
-            ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
-            DependsOn = '[xRemoteFile]DownloadAipClient'
-        }
+        # xRemoteFile DownloadAipClient
+		# {
+		# 	DestinationPath = 'C:\LabData\aip_client.msi'
+		# 	Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
+        #     DependsOn = '[Computer]JoinDomain'
+		# }
+		# xMsiPackage InstallAipClient
+		# {
+        #     Ensure = 'Present'
+        #     Path = 'C:\LabData\aip_client.msi'
+        #     Arguments = '/quiet'
+        #     IgnoreReboot = $true
+        #     ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
+        #     DependsOn = '[xRemoteFile]DownloadAipClient'
+        # }
         #endregion
 
         xRemoteFile GetAipData
