@@ -63,17 +63,17 @@ The most critical part of this is knowing the Domain Controller becomes the vNet
 
 ### Access your VMs
 
-Regardless of if your in Phase 0 or Phase 2, you eventually will want to access your VMs.  You can of course do this from the Azure Portal, but we also created a quick script, ```Get-VmsInfo.ps1```.  This will tell you the VMs IPs.  You can then ```mstsc /v:<<ip>>``` or, ```ssh <<ip>>``` to quickly RDP into that machine, depending on the VM type and its authentication service.
+Regardless of if your in Phase 0 or Phase 2, you eventually will want to access your VMs.  You can of course do this from the Azure Portal, but we also created a quick script, ```Get-VmsInfo.ps1 -ResourceGroupName <ResourceGroupName>```.  This will tell you the VMs IPs.  You can then ```mstsc /v:<<ip>>``` or, ```ssh <<ip>>``` to quickly RDP into that machine, depending on the VM type and its authentication service.
 
 ## Skip straight to Phase 2
 
 Want to skip Phase 0?  Feel free to grab our VHDs from an open Azure Storage account.
 
-* ContosoDC: https://publicdefendtheflag.blob.core.windows.net/public/ContosoDcd.vhd
-* VictimPC: https://publicdefendtheflag.blob.core.windows.net/public/VictimPcd.vhd
-* AdminPC: https://publicdefendtheflag.blob.core.windows.net/public/AdminPcd.vhd
-* Client01: https://publicdefendtheflag.blob.core.windows.net/public/Client01d.vhd
-* Ubuntu-Katoolin: https://publicdefendtheflag.blob.core.windows.net/public/Ubuntu-Katoolind.vhd
+* ContosoDC: https://publicdefendtheflag.blob.core.windows.net/public-v1/ContosoDcd.vhd
+* VictimPC: https://publicdefendtheflag.blob.core.windows.net/public-v1/VictimPcd.vhd
+* AdminPC: https://publicdefendtheflag.blob.core.windows.net/public-v1/AdminPcd.vhd
+* Client01: https://publicdefendtheflag.blob.core.windows.net/public-v1/Client01d.vhd
+* Ubuntu-Katoolin: https://publicdefendtheflag.blob.core.windows.net/public-v1/Ubuntu-Katoolind.vhd
 
 > NOTE:
 > Ubuntu-Katoolin will leverage Ubuntu since it supports ```cloud-init``` and the [Katoolin](https://github.com/LionSec/katoolin) project.  No work has been done to automate on top of this **yet**, however, scripts exist in the ```Downloads``` > ```Katoolin``` folder.  Until automation exists, grabbing the VHD for Ubuntu-Katoolin adds very little.  The scripts are more important here as grabbing the necessary files is fairly easy with the right distro.
@@ -86,10 +86,10 @@ Once you have your lab, that is just when the fun *begins*.  Now its time to act
 
 Here is some content that builds on top of these labs:
 
-| Product       | Title/Link   | Description                                                                                           |
-|---------------|--------------|-------------------------------------------------------------------------------------------------------|
-| Azure ATP     | [Attack Simulation Playbook](https://aka.ms/aatpsaplaybook) | Learn about the various attacks      |
-| Azure ATP     | [Ciberesponce: Kali Pass the Ticket](https://ciberesponce.com/2019/04/16/leverage-windows-tickets-in-kali-linux/)| Learn to use harvested tickets from Windows, on Kali |
+| Product    | Title/Link   | Description                                                                                           |
+|------------|--------------|-------------------------------------------------------------------------------------------------------|
+| Azure ATP  | [Attack Simulation Playbook](https://aka.ms/aatpsaplaybook) | Learn about the various attacks                        |
+| Azure ATP  | [Ciberesponce: Kali Pass the Ticket](https://ciberesponce.com/2019/04/16/leverage-windows-tickets-in-kali-linux/)| Learn to use harvested tickets from Windows, on Kali |
 
 
 ## About the author

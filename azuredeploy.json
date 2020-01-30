@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "builtinAdministratorAccount": {
@@ -87,7 +87,7 @@
     },
     "NumberVmsNicStorage": 6,
     "DeploymentVnetDnsName": "vNetDnsSettingsDeployment",
-    "GithubBranch": "master",
+    "GithubBranch": "v1.5",
     "vNetAddressPrefix": "10.0.24.0/24",
     "vNetName": "DefendTheFlag-vNet",
     "vNetSubnetName": "Subnet",
@@ -166,7 +166,8 @@
         "name": "Standard_LRS"
       },
       "kind": "StorageV2",
-      "properties": {}
+      "properties": {
+      }
     },
     {
       "apiVersion": "2017-09-01",
@@ -210,7 +211,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D4_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('DcVmName')]",
@@ -296,7 +297,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "UserPrincipalName": "[parameters('UserPrincipalName')]",
-                "NetBiosName": "[parameters('NetBiosName')]"
+                "NetBiosName": "[parameters('NetBiosName')]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "type": "DSC",
@@ -354,7 +356,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D2_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('VictimVmName')]",
@@ -363,9 +365,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter-smalldisk",
+            "publisher": "microsoftwindowsdesktop",
+            "offer": "office-365",
+            "sku": "1903-evd-o365pp",
             "version": "latest"
           },
           "osDisk": {
@@ -374,7 +376,7 @@
             "createOption": "FromImage"
           }
         },
-        "licenseType": "Windows_Server",
+        "licenseType": "Windows_Client",
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -412,7 +414,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "protectedSettings": {
@@ -443,7 +446,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D4_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('AdminPcVmName')]",
@@ -452,9 +455,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter",
+            "publisher": "microsoftwindowsdesktop",
+            "offer": "office-365",
+            "sku": "1903-evd-o365pp",
             "version": "latest"
           },
           "osDisk": {
@@ -463,7 +466,7 @@
             "createOption": "FromImage"
           }
         },
-        "licenseType": "Windows_Server",
+        "licenseType": "Windows_Client",
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -501,7 +504,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "protectedSettings": {
@@ -536,7 +540,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D4_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('AdminPc2VmName')]",
@@ -545,9 +549,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter-smalldisk",
+            "publisher": "microsoftwindowsdesktop",
+            "offer": "office-365",
+            "sku": "1903-evd-o365pp",
             "version": "latest"
           },
           "osDisk": {
@@ -556,7 +560,7 @@
             "createOption": "FromImage"
           }
         },
-        "licenseType": "Windows_Server",
+        "licenseType": "Windows_Client",
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -594,7 +598,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "protectedSettings": {
@@ -629,7 +634,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "Standard_D2_v3"
+          "vmSize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[variables('McasVmName')]",
@@ -638,9 +643,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "MicrosoftWindowsServer",
-            "offer": "WindowsServer",
-            "sku": "2016-Datacenter-smalldisk",
+            "publisher": "microsoftwindowsdesktop",
+            "offer": "office-365",
+            "sku": "1903-evd-o365pp",
             "version": "latest"
           },
           "osDisk": {
@@ -649,7 +654,7 @@
             "createOption": "FromImage"
           }
         },
-        "licenseType": "Windows_Server",
+        "licenseType": "Windows_Client",
         "networkProfile": {
           "networkInterfaces": [
             {
@@ -687,7 +692,8 @@
               "configurationArguments": {
                 "DomainName": "[parameters('DomainName')]",
                 "NetBiosName": "[parameters('NetBiosName')]",
-                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]"
+                "DnsServer": "[variables('PrivateIpAddressesArray').Ip[0]]",
+                "Branch": "[variables('GithubBranch')]"
               }
             },
             "ProtectedSettings": {
@@ -718,7 +724,7 @@
       ],
       "properties": {
         "hardwareprofile": {
-          "vmsize": "Standard_DS1_v2"
+          "vmsize": "Standard_A2_v2"
         },
         "osProfile": {
           "computerName": "[concat(variables('AscLinuxName'))]",

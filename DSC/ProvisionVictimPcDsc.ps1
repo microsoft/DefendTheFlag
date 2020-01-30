@@ -29,8 +29,11 @@ Configuration SetupVictimPc
         # Branch
         ## Useful when have multiple for testing
         [Parameter(Mandatory=$false)]
-        [String]$Branch='master'
+        [String]$Branch
     )
+    # required as Win10 clients have this off be default, unlike Servers...
+    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine -Force
+
     #region COE
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -55,14 +58,24 @@ Configuration SetupVictimPc
             ConfigurationMode = 'ApplyOnly'
             RebootNodeIfNeeded = $true
             ActionAfterReboot = 'ContinueConfiguration'
+            AllowModuleOverwrite = $true
         }
 
         #region COE
-        xService DisableWindowsUpdate
+        Service DisableWindowsUpdate
         {
             Name = 'wuauserv'
             State = 'Stopped'
             StartupType = 'Disabled'
+            Ensure = 'Present'
+        }
+
+        Service WmiMgt
+        {
+            Name = 'WinRM'
+            State = 'Running'
+            StartupType = 'Automatic'
+            Ensure = 'Present'
         }
 
         xIEEsc DisableAdminIeEsc
@@ -177,20 +190,19 @@ Configuration SetupVictimPc
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller Chrome
+        cChocoPackageInstaller EdgeBrowser
         {
-            Name = 'googlechrome'
+            Name = 'microsoft-edge'
             Ensure = 'Present'
             AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller InstallOffice365
+        cChocoPackageInstaller WindowsTerminal
         {
-            Name = 'microsoft-office-deployment'
+            Name = 'microsoft-windows-terminal'
             Ensure = 'Present'
-            AutoUpgrade = $false
-            Params = '/Product=O365ProPlusRetail /64Bit'
+            AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
         #endregion
@@ -198,7 +210,7 @@ Configuration SetupVictimPc
         xRemoteFile DownloadBginfo
 		{
 			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-			Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/BgInfo/victimpc.bgi?raw=true"
+			Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/BgInfo/victimpc.bgi"
             DependsOn = '[Computer]JoinDomain'
 		}
         
@@ -494,28 +506,29 @@ Configuration SetupVictimPc
         #endregion
 
         #region AipClient
-        xRemoteFile GetAipClient
-        {
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
-            DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
-            DependsOn = '[Computer]JoinDomain'
-        }
-
-		xMsiPackage InstallAipClient
-		{
-            Ensure = 'Present'
-            Path = 'C:\LabTools\AIP_UL_Preview.msi'
-            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
-            DependsOn = '[xRemoteFile]GetAipClient'
-        }
+        # xRemoteFile DownloadAipClient
+		# {
+		# 	DestinationPath = 'C:\LabData\aip_client.msi'
+		# 	Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
+        #     DependsOn = '[Computer]JoinDomain'
+		# }
+		# xMsiPackage InstallAipClient
+		# {
+        #     Ensure = 'Present'
+        #     Path = 'C:\LabData\aip_client.msi'
+        #     Arguments = '/quiet'
+        #     IgnoreReboot = $true
+        #     ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
+        #     DependsOn = '[xRemoteFile]DownloadAipClient'
+        # }
         #endregion
 
         #region HackTools
         xRemoteFile GetMimikatz
         {
             DestinationPath = 'C:\Tools\Backup\Mimikatz.zip'
-            Uri = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20190512/mimikatz_trunk.zip'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Computer]JoinDomain')
+            Uri = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200104/mimikatz_trunk.zip'
+            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
         xRemoteFile GetPowerSploit
         {
@@ -532,6 +545,7 @@ Configuration SetupVictimPc
         xRemoteFile GetNetSess
         {
             DestinationPath = 'C:\Tools\Backup\NetSess.zip'
+            # needs to be updated or removed eventually...
             Uri = 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true'
             DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }

@@ -41,8 +41,11 @@ Configuration SetupAdminPc2
         # Branch
         ## Useful when have multiple for testing
         [Parameter(Mandatory=$false)]
-        [String]$Branch='master'
+        [String]$Branch
     )
+    # required as Win10 clients have this off be default, unlike Servers...
+    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine -Force
+
     #region COE
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -80,6 +83,15 @@ Configuration SetupAdminPc2
             Name = 'wuauserv'
             State = 'Stopped'
             StartupType = 'Disabled'
+            Ensure = 'Present'
+        }
+
+        Service WmiMgt
+        {
+            Name = 'WinRM'
+            State = 'Running'
+            StartupType = 'Automatic'
+            Ensure = 'Present'
         }
 
         Computer JoinDomain
@@ -380,20 +392,19 @@ Configuration SetupAdminPc2
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller Chrome
+        cChocoPackageInstaller EdgeBrowser
         {
-            Name = 'googlechrome'
+            Name = 'microsoft-edge'
             Ensure = 'Present'
             AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller InstallOffice365
+        cChocoPackageInstaller WindowsTerminal
         {
-            Name = 'microsoft-office-deployment'
+            Name = 'microsoft-windows-terminal'
             Ensure = 'Present'
-            AutoUpgrade = $false
-            Params = '/Product=O365ProPlusRetail /64Bit'
+            AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
         #endregion
@@ -401,7 +412,7 @@ Configuration SetupAdminPc2
         xRemoteFile GetBgInfo
         {
             DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/BgInfo/adminpc.bgi?raw=true"
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/BgInfo/adminpc.bgi"
             DependsOn = '[cChocoPackageInstaller]InstallSysInternals'
         }
 
@@ -535,34 +546,35 @@ Configuration SetupAdminPc2
         }
 
         #region AipClient
-        xRemoteFile GetAipClient
-        {
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
-            DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
-            DependsOn = '[Computer]JoinDomain'
-        }
-
-		xMsiPackage InstallAipClient
-		{
-            Ensure = 'Present'
-            Path = 'C:\LabTools\AIP_UL_Preview.msi'
-            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
-            DependsOn = '[xRemoteFile]GetAipClient'
-        }
+        # xRemoteFile DownloadAipClient
+		# {
+		# 	DestinationPath = 'C:\LabData\aip_client.msi'
+		# 	Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
+        #     DependsOn = '[Computer]JoinDomain'
+		# }
+		# xMsiPackage InstallAipClient
+		# {
+        #     Ensure = 'Present'
+        #     Path = 'C:\LabData\aip_client.msi'
+        #     Arguments = '/quiet'
+        #     IgnoreReboot = $true
+        #     ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
+        #     DependsOn = '[xRemoteFile]DownloadAipClient'
+        # }
         #endregion
 
         xRemoteFile GetAipData
         {
             DestinationPath = 'C:\PII\data.zip'
-            Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/AIPScanner/docs.zip?raw=true"
-            DependsOn = '[Computer]JoinDomain'
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/docs.zip"
+            DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
         
         xRemoteFile GetAipScripts
         {
             DestinationPath = 'C:\Scripts\Scripts.zip'
-            Uri = "https://github.com/InfoProtectionTeam/Files/blob/$Branch/Scripts/Scripts.zip?raw=true"
-            DependsOn = '[Computer]JoinDomain'
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Scripts.zip"
+            DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 
         Archive AipDataToPii

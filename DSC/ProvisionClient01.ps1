@@ -24,8 +24,11 @@ Configuration SetupAipScannerCore
         # Branch
         ## Useful when have multiple for testing
         [Parameter(Mandatory=$false)]
-        [String]$Branch='master'
-    )
+        [String]$Branch
+    )    
+    # required as Win10 clients have this off be default, unlike Servers...
+    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine -Force
+
     
     Import-DscResource -ModuleName xPSDesiredStateConfiguration -ModuleVersion 8.10.0.0
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -72,6 +75,15 @@ Configuration SetupAipScannerCore
             Name = 'wuauserv'
             State = 'Stopped'
             StartupType = 'Disabled'
+            Ensure = 'Present'
+        }
+
+        Service WmiMgt
+        {
+            Name = 'WinRM'
+            State = 'Running'
+            StartupType = 'Automatic'
+            Ensure = 'Present'
         }
 
         Computer JoinDomain
@@ -115,20 +127,19 @@ Configuration SetupAipScannerCore
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller Chrome
+        cChocoPackageInstaller EdgeBrowser
         {
-            Name = 'googlechrome'
+            Name = 'microsoft-edge'
             Ensure = 'Present'
             AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
-        cChocoPackageInstaller InstallOffice365
+        cChocoPackageInstaller WindowsTerminal
         {
-            Name = 'microsoft-office-deployment'
+            Name = 'microsoft-windows-terminal'
             Ensure = 'Present'
-            AutoUpgrade = $false
-            Params = '/Product=O365ProPlusRetail /64Bit'
+            AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
         #endregion
@@ -202,7 +213,7 @@ Configuration SetupAipScannerCore
         xRemoteFile DownloadBginfo
 		{
 			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/aippc.bgi?raw=true'
+			Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/BgInfo/aippc.bgi"
             DependsOn = '[Computer]JoinDomain'
 		}
         
@@ -378,22 +389,22 @@ Configuration SetupAipScannerCore
         }
         #endregion
 
-        
         #region AipClient
-        xRemoteFile GetAipClient
-        {
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi?raw=true"
-            DestinationPath = 'C:\LabTools\AIP_UL_Preview.msi'
-            DependsOn = '[Computer]JoinDomain'
-        }
-
-		xMsiPackage InstallAipClient
-		{
-            Ensure = 'Present'
-            Path = 'C:\LabTools\AIP_UL_Preview.msi'
-            ProductId = '{B6328B23-18FD-4475-902E-C1971E318F8B}'
-            DependsOn = '[xRemoteFile]GetAipClient'
-        }
+        # xRemoteFile DownloadAipClient
+		# {
+		# 	DestinationPath = 'C:\LabData\aip_client.msi'
+		# 	Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
+        #     DependsOn = '[Computer]JoinDomain'
+		# }
+		# xMsiPackage InstallAipClient
+		# {
+        #     Ensure = 'Present'
+        #     Path = 'C:\LabData\aip_client.msi'
+        #     Arguments = '/quiet'
+        #     IgnoreReboot = $true
+        #     ProductId = 'B6328B23-18FD-4475-902E-C1971E318F8B'
+        #     DependsOn = '[xRemoteFile]DownloadAipClient'
+        # }
         #endregion
 
         Registry DisableSmartScreen
@@ -410,8 +421,8 @@ Configuration SetupAipScannerCore
         xRemoteFile GetMcasData
         {
             DestinationPath = 'C:\LabData\McasData.zip'
-            Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/MCAS/Demo%20files.zip?raw=true'
-            DependsOn = @('[Computer]JoinDomain')
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/v1.5/Downloads/MCAS/Demo%20files.zip"
+            DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 
         # Place on all Users Desktops; can't put in LisaV's else her profile changes since she never logged in yet...

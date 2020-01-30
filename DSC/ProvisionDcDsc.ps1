@@ -48,7 +48,7 @@ Configuration CreateADForest
 		# Branch
         ## Useful when have multiple for testing
         [Parameter(Mandatory=$false)]
-        [String]$Branch='master'
+        [String]$Branch
 	)
 	
 	Import-DscResource -ModuleName xActiveDirectory -ModuleVersion 3.0.0.0
@@ -73,11 +73,20 @@ Configuration CreateADForest
 			RebootNodeIfNeeded = $true
 		}
 
-		Service DisableWindowsUpdate
+        Service DisableWindowsUpdate
         {
             Name = 'wuauserv'
             State = 'Stopped'
             StartupType = 'Disabled'
+            Ensure = 'Present'
+        }
+
+        Service WmiMgt
+        {
+            Name = 'WinRM'
+            State = 'Running'
+            StartupType = 'Automatic'
+            Ensure = 'Present'
         }
 		
 		WindowsFeature DNS
@@ -201,6 +210,22 @@ Configuration CreateADForest
         {
 			InstallDir = 'C:\choco'
 			DependsOn = @('[xADForestProperties]ForestProps', '[xWaitForADDomain]DscForestWait')
+		}
+		
+        cChocoPackageInstaller EdgeBrowser
+        {
+            Name = 'microsoft-edge'
+            Ensure = 'Present'
+            AutoUpgrade = $true
+            DependsOn = '[cChocoInstaller]InstallChoco'
+        }
+		
+		cChocoPackageInstaller WindowsTerminal
+        {
+            Name = 'microsoft-windows-terminal'
+            Ensure = 'Present'
+            AutoUpgrade = $true
+            DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
         cChocoPackageInstaller InstallSysInternals
