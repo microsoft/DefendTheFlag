@@ -524,67 +524,67 @@ Configuration SetupVictimPc
         #endregion
 
         #region HackTools
-        xRemoteFile GetMimikatz
-        {
-            DestinationPath = 'C:\Tools\Backup\Mimikatz.zip'
-            Uri = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200104/mimikatz_trunk.zip'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
-        }
-        xRemoteFile GetPowerSploit
-        {
-            DestinationPath = 'C:\Tools\Backup\PowerSploit.zip'
-            Uri = 'https://github.com/PowerShellMafia/PowerSploit/archive/master.zip'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
-        }
-        xRemoteFile GetKekeo
-        {
-            DestinationPath = 'C:\Tools\Backup\kekeo.zip'
-            Uri = 'https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
-        }
-        xRemoteFile GetNetSess
-        {
-            DestinationPath = 'C:\Tools\Backup\NetSess.zip'
-            # needs to be updated or removed eventually...
-            Uri = 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true'
-            DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
-        }
+        # xRemoteFile GetMimikatz
+        # {
+        #     DestinationPath = 'C:\Tools\Backup\Mimikatz.zip'
+        #     Uri = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200104/mimikatz_trunk.zip'
+        #     DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
+        # }
+        # xRemoteFile GetPowerSploit
+        # {
+        #     DestinationPath = 'C:\Tools\Backup\PowerSploit.zip'
+        #     Uri = 'https://github.com/PowerShellMafia/PowerSploit/archive/master.zip'
+        #     DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
+        # }
+        # xRemoteFile GetKekeo
+        # {
+        #     DestinationPath = 'C:\Tools\Backup\kekeo.zip'
+        #     Uri = 'https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip'
+        #     DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
+        # }
+        # xRemoteFile GetNetSess
+        # {
+        #     DestinationPath = 'C:\Tools\Backup\NetSess.zip'
+        #     # needs to be updated or removed eventually...
+        #     Uri = 'https://github.com/ciberesponce/AatpAttackSimulationPlaybook/blob/master/Downloads/NetSess.zip?raw=true'
+        #     DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
+        # }
 
-        Archive UnzipMimikatz
-        {
-            Path = 'C:\Tools\Backup\Mimikatz.zip'
-            Destination = 'C:\Tools\Mimikatz'
-            Ensure = 'Present'
-            Force = $true
-            DependsOn = '[xRemoteFile]GetMimikatz'
-        }
+        # Archive UnzipMimikatz
+        # {
+        #     Path = 'C:\Tools\Backup\Mimikatz.zip'
+        #     Destination = 'C:\Tools\Mimikatz'
+        #     Ensure = 'Present'
+        #     Force = $true
+        #     DependsOn = '[xRemoteFile]GetMimikatz'
+        # }
 
-        Archive UnzipPowerSploit
-        {
-            Path = 'C:\Tools\Backup\PowerSploit.zip'
-            Destination = 'C:\Tools\PowerSploit'
-            Ensure = 'Present'
-            Force = $true
-            DependsOn = '[xRemoteFile]GetPowerSploit'
-        }
+        # Archive UnzipPowerSploit
+        # {
+        #     Path = 'C:\Tools\Backup\PowerSploit.zip'
+        #     Destination = 'C:\Tools\PowerSploit'
+        #     Ensure = 'Present'
+        #     Force = $true
+        #     DependsOn = '[xRemoteFile]GetPowerSploit'
+        # }
 
-        Archive UnzipKekeo
-        {
-            Path = 'C:\Tools\Backup\kekeo.zip'
-            Destination = 'C:\Tools\Kekeo'
-            Ensure = 'Present'
-            Force = $true
-            DependsOn = '[xRemoteFile]GetKekeo'
-        }
+        # Archive UnzipKekeo
+        # {
+        #     Path = 'C:\Tools\Backup\kekeo.zip'
+        #     Destination = 'C:\Tools\Kekeo'
+        #     Ensure = 'Present'
+        #     Force = $true
+        #     DependsOn = '[xRemoteFile]GetKekeo'
+        # }
 
-        Archive UnzipNetSess
-        {
-            Path = 'C:\Tools\Backup\NetSess.zip'
-            Destination = 'C:\Tools\NetSess'
-            Ensure = 'Present'
-            Force = $true
-            DependsOn = '[xRemoteFile]GetNetSess'
-        }
-        #endregion
+        # Archive UnzipNetSess
+        # {
+        #     Path = 'C:\Tools\Backup\NetSess.zip'
+        #     Destination = 'C:\Tools\NetSess'
+        #     Ensure = 'Present'
+        #     Force = $true
+        #     DependsOn = '[xRemoteFile]GetNetSess'
+        # }
+        # #endregion
     }
 }
