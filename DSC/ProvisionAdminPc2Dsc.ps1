@@ -412,7 +412,7 @@ Configuration SetupAdminPc2
         xRemoteFile GetBgInfo
         {
             DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/BgInfo/adminpc.bgi"
+            Uri = "https://github.com/humestc/DefendTheFlag/raw/master/Downloads/BgInfo/adminpc.bgi"
             DependsOn = '[cChocoPackageInstaller]InstallSysInternals'
         }
 
@@ -549,7 +549,7 @@ Configuration SetupAdminPc2
         # xRemoteFile DownloadAipClient
 		# {
 		# 	DestinationPath = 'C:\LabData\aip_client.msi'
-		# 	Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
+		# 	Uri = "https://github.com/humestc/DefendTheFlag/raw/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
         #     DependsOn = '[Computer]JoinDomain'
 		# }
 		# xMsiPackage InstallAipClient
@@ -566,14 +566,14 @@ Configuration SetupAdminPc2
         xRemoteFile GetAipData
         {
             DestinationPath = 'C:\PII\data.zip'
-            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/docs.zip"
+            Uri = "https://github.com/humestc/DefendTheFlag/raw/master/Downloads/AIP/docs.zip"
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
         
         xRemoteFile GetAipScripts
         {
             DestinationPath = 'C:\Scripts\Scripts.zip'
-            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Scripts.zip"
+            Uri = "https://github.com/humestc/DefendTheFlag/raw/master/Downloads/AIP/Scripts.zip"
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 

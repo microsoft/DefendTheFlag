@@ -210,7 +210,7 @@ Configuration SetupVictimPc
         xRemoteFile DownloadBginfo
 		{
 			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-			Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/BgInfo/victimpc.bgi"
+			Uri = "https://github.com/humestc/DefendTheFlag/raw/master/Downloads/BgInfo/victimpc.bgi"
             DependsOn = '[Computer]JoinDomain'
 		}
         
@@ -467,7 +467,7 @@ Configuration SetupVictimPc
         xRemoteFile GetCtfA
         {
             DestinationPath = 'C:\LabScripts\Backup\ctf-a.zip'
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AATP/ctf-a.zip?raw=true"
+            Uri = "https://github.com/humestc/DefendTheFlag/blob/master/Downloads/AATP/ctf-a.zip?raw=true"
             DependsOn = '[Computer]JoinDomain'
         }
         Archive UnzipCtfA
@@ -482,7 +482,7 @@ Configuration SetupVictimPc
         xRemoteFile GetAatpSaPlaybook
         {
             DestinationPath = 'C:\LabScripts\Backup\aatpsaplaybook.zip'
-            Uri = "https://github.com/microsoft/DefendTheFlag/blob/$Branch/Downloads/AATP/aatpsaplaybook.zip?raw=true"
+            Uri = "https://github.com/humestc/DefendTheFlag/blob/master/Downloads/AATP/aatpsaplaybook.zip?raw=true"
             DependsOn = '[Computer]JoinDomain'
         }
 
@@ -509,7 +509,7 @@ Configuration SetupVictimPc
         # xRemoteFile DownloadAipClient
 		# {
 		# 	DestinationPath = 'C:\LabData\aip_client.msi'
-		# 	Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
+		# 	Uri = "https://github.com/humestc/DefendTheFlag/raw/master/Downloads/AIP/Client/AzInfoProtection_UL_Preview_MSI_for_central_deployment.msi"
         #     DependsOn = '[Computer]JoinDomain'
 		# }
 		# xMsiPackage InstallAipClient
@@ -585,6 +585,6 @@ Configuration SetupVictimPc
         #     Force = $true
         #     DependsOn = '[xRemoteFile]GetNetSess'
         # }
-        # #endregion
+        #endregion
     }
 }

@@ -240,7 +240,7 @@ Configuration CreateADForest
 		xRemoteFile DownloadBginfo
 		{
 			DestinationPath = 'C:\BgInfo\BgInfoConfig.bgi'
-			Uri = 'https://github.com/microsoft/DefendTheFlag/blob/master/Downloads/BgInfo/contosodc.bgi?raw=true'
+			Uri = 'https://github.com/humestc/DefendTheFlag/blob/master/Downloads/BgInfo/contosodc.bgi?raw=true'
 			DependsOn = '[xWaitForADDomain]DscForestWait'
 		}
 
