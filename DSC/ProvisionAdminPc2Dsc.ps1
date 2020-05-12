@@ -400,6 +400,14 @@ Configuration SetupAdminPc2
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
 
+        cChocoPackageInstaller Office365
+        {
+            Name = 'office365proplus'
+            Ensure = 'Present'
+            AutoUpgrade = $true
+            DependsOn = '[cChocoInstaller]InstallChoco'
+        }
+
         cChocoPackageInstaller WindowsTerminal
         {
             Name = 'microsoft-windows-terminal'

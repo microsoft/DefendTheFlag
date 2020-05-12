@@ -142,6 +142,14 @@ Configuration SetupAipScannerCore
             AutoUpgrade = $true
             DependsOn = '[cChocoInstaller]InstallChoco'
         }
+
+        cChocoPackageInstaller Office365
+        {
+            Name = 'office365proplus'
+            Ensure = 'Present'
+            AutoUpgrade = $true
+            DependsOn = '[cChocoInstaller]InstallChoco'
+        }
         #endregion
 
         #region Enable TLS1.2
