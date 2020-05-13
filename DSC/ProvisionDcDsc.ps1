@@ -430,6 +430,7 @@ Configuration CreateADForest
 			Surname = 'Valentine'
 			Password =  $LisaVCreds
 			Ensure = 'Present'
+			DisplayName = 'Lisa Valentine'
 			PasswordNeverExpires = $true
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
