@@ -362,6 +362,7 @@ Configuration CreateADForest
 		{
 			DomainName = $DomainName
 			UserName = 'SamiraA'
+			UserPrincipalName = "$UserPrincipalName"
 			Password = $SamiraACreds
 			Ensure = 'Present'
 			GivenName = 'Samira'
@@ -375,6 +376,7 @@ Configuration CreateADForest
 		{
 			DomainName = $DomainName
 			UserName = $AipServiceCreds.UserName
+			UserPrincipalName = "$UserPrincipalName"
 			Password = $AipServiceCreds
 			Ensure = 'Present'
 			GivenName = 'AipService'
@@ -389,6 +391,7 @@ Configuration CreateADForest
 			UserName = 'RonHD'
 			Password = $RonHdCreds
 			Ensure = 'Present'
+			UserPrincipalName = "$UserPrincipalName"
 			GivenName = 'Ron'
 			Surname = 'HD'
 			PasswordNeverExpires = $true
@@ -413,6 +416,7 @@ Configuration CreateADForest
 		{
 			DomainName = $DomainName
 			UserName = 'JeffL'
+			UserPrincipalName = "$UserPrincipalName"
 			GivenName = 'Jeff'
 			Surname = 'Leatherman'
 			Password = $JeffLCreds
@@ -429,6 +433,7 @@ Configuration CreateADForest
 			GivenName = 'Lisa'
 			Surname = 'Valentine'
 			Password =  $LisaVCreds
+			UserPrincipalName = "$UserPrincipalName"
 			Ensure = 'Present'
 			DisplayName = 'Lisa Valentine'
 			PasswordNeverExpires = $true
