@@ -445,6 +445,17 @@ Configuration CreateADForest
 			DependsOn = @("[xADUser]SamiraA", "[xWaitForADDomain]DscForestWait")
 		}
 
+		xADGroup EnterpriseAdmins
+		{
+			GroupName = 'Enterprise Admins'
+			Category = 'Security'
+			GroupScope = 'Global'
+			MembershipAttribute = 'SamAccountName'
+			MembersToInclude = "SamiraA"
+			Ensure = 'Present'
+			DependsOn = @("[xADUser]SamiraA", "[xWaitForADDomain]DscForestWait")
+		}
+
 		xADGroup Helpdesk
 		{
 			GroupName = 'Helpdesk'
