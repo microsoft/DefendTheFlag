@@ -450,7 +450,7 @@ Configuration CreateADForest
 		{
 			GroupName = 'Enterprise Admins'
 			Category = 'Security'
-			GroupScope = 'Global'
+			GroupScope = 'Universal'
 			MembershipAttribute = 'SamAccountName'
 			MembersToInclude = "SamiraA"
 			Ensure = 'Present'
