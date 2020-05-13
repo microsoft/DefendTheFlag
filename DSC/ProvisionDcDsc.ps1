@@ -365,7 +365,8 @@ Configuration CreateADForest
 			Password = $SamiraACreds
 			Ensure = 'Present'
 			GivenName = 'Samira'
-			Surname = 'A'
+			Surname = 'Abbasi'
+			DisplayName = 'Samira Abbasi'
 			PasswordNeverExpires = $true
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
@@ -417,7 +418,7 @@ Configuration CreateADForest
 			Password = $JeffLCreds
 			Ensure = 'Present'
 			PasswordNeverExpires = $true
-			DisplayName = 'JeffL'
+			DisplayName = 'Jeff Leatherman'
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
 
