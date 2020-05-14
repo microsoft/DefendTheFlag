@@ -440,6 +440,50 @@ Configuration CreateADForest
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
 
+		xADUser JulianI
+		{
+			DomainName = $DomainName
+			UserName = 'JulianI'
+			GivenName = 'Julian'
+			Surname = 'Valentine'
+			Password =  $JulianICreds
+			UserPrincipalName = "JulianI@$UserPrincipalName"
+			Ensure = 'Present'
+			Description = 'MCAS demo account'
+			DisplayName = 'Julian Isla'
+			JobTitle = 'Marketing VP'
+			Department = 'Marketing'
+			Company = 'Contoso'
+			Manager = "JeffL@$UserPrincipalName"
+			PasswordNeverExpires = $true
+			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
+		}
+
+		xADUser MeganB
+		{
+			DomainName = $DomainName
+			UserName = 'meganb'
+			GivenName = 'Megan'
+			Surname = 'Bowens'
+			Password =  $MeganBCreds
+			UserPrincipalName = "MeganB@$UserPrincipalName"
+			Ensure = 'Present'
+			DisplayName = 'Megan Bowens'
+			Description = 'MCAS demo account'
+			EmailAddress = "MeganB@$UserPrincipalName"
+			StreetAddress = '30 Isabella St., Second Floor'
+			City = 'Pittsburgh'
+			State = 'PA'
+			PostalCode = '15212'
+			Country = 'United States'
+			PasswordNeverExpires = $true
+			JobTitle = 'Marketing Manager'
+			Department = 'Marketing'
+			Company = 'Contoso'
+			Manager = "JulianI@$UserPrincipalName"
+			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
+		}
+
 		xADGroup DomainAdmins
 		{
 			GroupName = 'Domain Admins'
