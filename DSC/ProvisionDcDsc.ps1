@@ -33,6 +33,14 @@ Configuration CreateADForest
 		[ValidateNotNullOrEmpty()]
 		[PSCredential]$LisaVCreds,
 
+		[Parameter(Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[PSCredential]$JulianICreds,
+
+		[Parameter(Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[PSCredential]$MeganBCreds,
+
 		# AATP: used for AATP Service
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
@@ -462,7 +470,7 @@ Configuration CreateADForest
 		xADUser MeganB
 		{
 			DomainName = $DomainName
-			UserName = 'meganb'
+			UserName = 'MeganB'
 			GivenName = 'Megan'
 			Surname = 'Bowens'
 			Password =  $MeganBCreds
