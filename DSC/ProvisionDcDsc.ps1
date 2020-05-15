@@ -462,7 +462,7 @@ Configuration CreateADForest
 			JobTitle = 'Marketing VP'
 			Department = 'Marketing'
 			Company = 'Contoso'
-			Manager = "JeffL@$UserPrincipalName"
+			Manager = 'CN=JeffL,CN=Users,DC=Contoso,DC=Azure'
 			PasswordNeverExpires = $true
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
@@ -483,12 +483,12 @@ Configuration CreateADForest
 			City = 'Pittsburgh'
 			State = 'PA'
 			PostalCode = '15212'
-			Country = 'United States'
+			Country = 'US'
 			PasswordNeverExpires = $true
 			JobTitle = 'Marketing Manager'
 			Department = 'Marketing'
 			Company = 'Contoso'
-			Manager = "JulianI@$UserPrincipalName"
+			Manager = 'CN=JulianI,CN=Users,DC=Contoso,DC=Azure'
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
 
