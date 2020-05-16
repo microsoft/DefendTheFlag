@@ -33,6 +33,14 @@ Configuration CreateADForest
 		[ValidateNotNullOrEmpty()]
 		[PSCredential]$LisaVCreds,
 
+		[Parameter(Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[PSCredential]$JulianICreds,
+
+		[Parameter(Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[PSCredential]$MeganBCreds,
+
 		# AATP: used for AATP Service
 		[Parameter(Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
@@ -437,6 +445,50 @@ Configuration CreateADForest
 			Ensure = 'Present'
 			DisplayName = 'Lisa Valentine'
 			PasswordNeverExpires = $true
+			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
+		}
+
+		xADUser JulianI
+		{
+			DomainName = $DomainName
+			UserName = 'JulianI'
+			GivenName = 'Julian'
+			Surname = 'Valentine'
+			Password =  $JulianICreds
+			UserPrincipalName = "JulianI@$UserPrincipalName"
+			Ensure = 'Present'
+			Description = 'MCAS demo account'
+			DisplayName = 'Julian Isla'
+			JobTitle = 'Marketing VP'
+			Department = 'Marketing'
+			Company = 'Contoso'
+			Manager = 'CN=JeffL,CN=Users,DC=Contoso,DC=Azure'
+			PasswordNeverExpires = $true
+			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
+		}
+
+		xADUser MeganB
+		{
+			DomainName = $DomainName
+			UserName = 'MeganB'
+			GivenName = 'Megan'
+			Surname = 'Bowens'
+			Password =  $MeganBCreds
+			UserPrincipalName = "MeganB@$UserPrincipalName"
+			Ensure = 'Present'
+			DisplayName = 'Megan Bowens'
+			Description = 'MCAS demo account'
+			EmailAddress = "MeganB@$UserPrincipalName"
+			StreetAddress = '30 Isabella St., Second Floor'
+			City = 'Pittsburgh'
+			State = 'PA'
+			PostalCode = '15212'
+			Country = 'US'
+			PasswordNeverExpires = $true
+			JobTitle = 'Marketing Manager'
+			Department = 'Marketing'
+			Company = 'Contoso'
+			Manager = 'CN=JulianI,CN=Users,DC=Contoso,DC=Azure'
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
 

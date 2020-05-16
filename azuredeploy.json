@@ -64,6 +64,20 @@
       "metadata": {
         "description": "LisaV's password. By default it is 'HighImpactUser1!'  LisaV has access to High Impact data and will be used in future labs."
       }
+    },    
+    "JulianIPassword": {
+      "type": "securestring",
+      "defaultValue": "Password$fun",
+      "metadata": {
+        "description": "JulianI's password. By default it is 'Password$fun'  JulianI is part of the MCAS demo experience: Proxy, data exfiltration, Flow"
+      }
+    },    
+    "MeganBPassword": {
+      "type": "securestring",
+      "defaultValue": "Password$fun",
+      "metadata": {
+        "description": "MeganB's password. By default it is 'Password$fun'  MeganB MCAS demo experience: Proxy, data exfiltration"
+      }
     },
     "AATPServicePassword": {
       "type": "securestring",
@@ -276,6 +290,14 @@
                 "LisaVCreds": {
                   "UserName": "LisaV",
                   "Password": "[parameters('LisaVPassword')]"
+                },
+                "JulianICreds": {
+                  "UserName": "JulianI",
+                  "Password": "[parameters('JulianIPassword')]"
+                },
+                "MeganBCreds": {
+                  "UserName": "MeganB",
+                  "Password": "[parameters('MeganBPassword')]"
                 },
                 "AipServiceCreds": {
                   "UserName": "[variables('AipDomainServiceAccount')]",
