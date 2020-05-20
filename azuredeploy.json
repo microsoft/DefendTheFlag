@@ -126,7 +126,8 @@
     "McasDscUrl": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionClient01.zip?raw=true')]",
     "AipDomainServiceAccount": "AipScanner",
     "AipDomainServiceAccountPassword": "Somepass1",
-    "AscLinuxName": "Ubuntu-Katoolin"
+    "AscLinuxName": "Ubuntu-Katoolin",
+    "customData": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionKatoolin.yaml?raw=true')]"
 
   },
   "resources": [
@@ -751,13 +752,14 @@
         "osProfile": {
           "computerName": "[concat(variables('AscLinuxName'))]",
           "adminusername": "[parameters('builtinAdministratorAccount')]",
-          "adminpassword": "[parameters('builtinAdministratorPassword')]"
+          "adminpassword": "[parameters('builtinAdministratorPassword')]",
+          "customData": "[base64(variables('customData'))]"
         },
         "storageProfile": {
           "imageReference": {
             "publisher": "Canonical",
             "offer": "UbuntuServer",
-            "sku": "16.04-LTS",
+            "sku": "18.04-LTS",
             "version": "latest"
           },
           "osdisk": {
