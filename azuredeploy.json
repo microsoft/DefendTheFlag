@@ -127,8 +127,8 @@
     "AipDomainServiceAccount": "AipScanner",
     "AipDomainServiceAccountPassword": "Somepass1",
     "AscLinuxName": "Ubuntu-Katoolin",
-    "customData": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionKatoolin.yaml?raw=true')]"
-
+    "customData": "[concat('#include\n',
+                concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionKatoolin.yaml?raw=true'))]"
   },
   "resources": [
     {
