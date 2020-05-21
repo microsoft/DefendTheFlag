@@ -84,7 +84,7 @@
       "defaultValue": "Password123!@#",
       "metadata": {
         "description": "Password for the AATP Service ('AATPService').  This is an unprivileged user-account used for LDAP and SAMR purposes."
-      },
+      }
     }
   },
   "variables": {
