@@ -84,7 +84,10 @@
       "defaultValue": "Password123!@#",
       "metadata": {
         "description": "Password for the AATP Service ('AATPService').  This is an unprivileged user-account used for LDAP and SAMR purposes."
-      }
+      },
+    "stringData": {
+      "type": "string",
+    }
     }
   },
   "variables": {
@@ -127,7 +130,7 @@
     "AipDomainServiceAccount": "AipScanner",
     "AipDomainServiceAccountPassword": "Somepass1",
     "AscLinuxName": "Ubuntu-Katoolin",
-    "customData": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionKatoolinSL.txt?raw=true')]"
+    "customData": "[base64(parameters('stringData'))]"
 
   },
   "resources": [
