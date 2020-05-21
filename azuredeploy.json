@@ -127,7 +127,7 @@
     "AipDomainServiceAccount": "AipScanner",
     "AipDomainServiceAccountPassword": "Somepass1",
     "AscLinuxName": "Ubuntu-Katoolin",
-    "customData": "[concat('https://github.com/microsoft/DefendTheFlag/blob/', variables('GithubBranch'), '/DSC/ProvisionKatoolinSL.txt?raw=true')]"
+    "customData": "I2Nsb3VkLWNvbmZpZw0KDQojIHJ1biBjb21tYW5kcw0KIyBkZWZhdWx0OiBub25lDQojIHJ1bmNtZCBjb250YWlucyBhIGxpc3Qgb2YgZWl0aGVyIGxpc3RzIG9yIGEgc3RyaW5nDQojIGVhY2ggaXRlbSB3aWxsIGJlIGV4ZWN1dGVkIGluIG9yZGVyIGF0IHJjLmxvY2FsIGxpa2UgbGV2ZWwgd2l0aA0KIyBvdXRwdXQgdG8gdGhlIGNvbnNvbGUNCiMgLSBydW5jbWQgb25seSBydW5zIGR1cmluZyB0aGUgZmlyc3QgYm9vdA0KIyAtIGlmIHRoZSBpdGVtIGlzIGEgbGlzdCwgdGhlIGl0ZW1zIHdpbGwgYmUgcHJvcGVybHkgZXhlY3V0ZWQgYXMgaWYNCiMgICBwYXNzZWQgdG8gZXhlY3ZlKDMpICh3aXRoIHRoZSBmaXJzdCBhcmcgYXMgdGhlIGNvbW1hbmQpLg0KIyAtIGlmIHRoZSBpdGVtIGlzIGEgc3RyaW5nLCBpdCB3aWxsIGJlIHNpbXBseSB3cml0dGVuIHRvIHRoZSBmaWxlIGFuZA0KIyAgIHdpbGwgYmUgaW50ZXJwcmV0ZWQgYnkgJ3NoJw0KIw0KIyBOb3RlLCB0aGF0IHRoZSBsaXN0IGhhcyB0byBiZSBwcm9wZXIgeWFtbCwgc28geW91IGhhdmUgdG8gcXVvdGUNCiMgYW55IGNoYXJhY3RlcnMgeWFtbCB3b3VsZCBlYXQgKCc6JyBjYW4gYmUgcHJvYmxlbWF0aWMpDQpydW5jbWQ6DQogLSBlY2hvICJTdGFydGVkIHNjcmlwdCBhdCAkKGRhdGUpIiA+IC9TdGFydC50eHQNCiAtIGFwdCAtZiBpbnN0YWxsIHppcCB1bnppcA0KIC0gYXB0IC1mIGluc3RhbGwgcmRhdGUNCiAtIGFwdCAtZiBpbnN0YWxsIHB5dGhvbi1weWZ0cGRsaWINCiAtIGFwdCAtZiBpbnN0YWxsIGltcGFja2V0DQogLSBnaXQgY2xvbmUgImh0dHBzOi8vZ2l0aHViLmNvbS9taWNyb3NvZnQvRGVmZW5kVGhlRmxhZy5naXQiIC91c3IvYmluL0RlZmVuZFRoZUZsYWcNCiAtIHVuemlwIC91c3IvYmluL0RlZmVuZFRoZUZsYWcvRG93bmxvYWRzL1VidW50dS1LYXRvb2xpbi9rYWxpLnppcCAtZCAvZXRjL2R0Zi8NCiAtIGdpdCBjbG9uZSAiaHR0cHM6Ly9naXRodWIuY29tL0xpb25TZWMva2F0b29saW4uZ2l0IiAmJiBjcCBrYXRvb2xpbi9rYXRvb2xpbi5weSAvdXNyL2Jpbi9rYXRvb2xpbg0KIC0gY2htb2QgK3ggL3Vzci9iaW4va2F0b29saW4NCiAtIGVjaG8gIkVuZGVkIHNjcmlwdCBhdCAkKGRhdGUpIiA+IC9FbmQudHh0DQoNCiANCiMgQWRkIGdyb3VwcyB0byB0aGUgc3lzdGVtDQojIFRoZSBmb2xsb3dpbmcgZXhhbXBsZSBhZGRzIHRoZSB1YnVudHUgZ3JvdXAgd2l0aCBtZW1iZXJzICdyb290JyBhbmQgJ3N5cycNCiMgYW5kIHRoZSBlbXB0eSBncm91cCBjbG91ZC11c2Vycy4NCmdyb3VwczoNCiAgLSB1YnVudHU6IFtyb290LHN5c10NCiAgLSBkZW1vLXVzZXJzDQoNCiMgQWRkIHVzZXJzIHRvIHRoZSBzeXN0ZW0uIFVzZXJzIGFyZSBhZGRlZCBhZnRlciBncm91cHMgYXJlIGFkZGVkLg0KdXNlcnM6DQogIC0gZGVmYXVsdA0KICAtIG5hbWU6IHNhbWlyYWENCiAgICBnZWNvczogU2FtaXJhIEFiYmFzaQ0KICAgIHByaW1hcnlfZ3JvdXA6IGRlbW8tdXNlcnMNCiAgICBncm91cHM6IHVzZXJzLCBzdWRvDQogICAgbG9ja19wYXNzd2Q6IGZhbHNlDQogICAgc3VkbzogQUxMPShBTEwpIE5PUEFTU1dEOkFMTA0KICAgIHBsYWluX3RleHRfcGFzc3dkOiAnTmluamFDYXQxMjMhQCMn"
 
   },
   "resources": [
@@ -753,7 +753,10 @@
           "computerName": "[concat(variables('AscLinuxName'))]",
           "adminusername": "[parameters('builtinAdministratorAccount')]",
           "adminpassword": "[parameters('builtinAdministratorPassword')]",
-          "customData": "[base64(variables('customData'))]"
+          "customData": {
+            "type": "string",
+            "value": "[base64(variables('customData'))]"
+          }
         },
         "storageProfile": {
           "imageReference": {
