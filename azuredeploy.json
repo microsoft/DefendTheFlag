@@ -87,7 +87,7 @@
       },
     "stringData": {
       "type": "string",
-      "defaultValue": "https://github.com/microsoft/DefendTheFlag/blob/Cloud-initKatoolin/DSC/ProvisionKatoolinSL.txt?raw=true"
+      "defaultValue": "'https://github.com/microsoft/DefendTheFlag/blob/Cloud-initKatoolin/DSC/ProvisionKatoolinSL.txt?raw=true'"
     }
     }
   },
