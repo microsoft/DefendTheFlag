@@ -76,7 +76,7 @@ Want to skip Phase 0?  Feel free to grab our VHDs from an open Azure Storage acc
 * Ubuntu-Katoolin: https://publicdefendtheflag.blob.core.windows.net/public-v1/Ubuntu-Katoolind.vhd
 
 > NOTE:
-> Ubuntu-Katoolin will leverage Ubuntu since it supports ```cloud-init``` and the [Katoolin](https://github.com/LionSec/katoolin) project.  No work has been done to automate on top of this **yet**, however, scripts exist in the ```Downloads``` > ```Katoolin``` folder.  Until automation exists, grabbing the VHD for Ubuntu-Katoolin adds very little.  The scripts are more important here as grabbing the necessary files is fairly easy with the right distro.
+> Ubuntu-Katoolin is leveraging [cloud-init](https://cloud-init.io/) which is pulling the DSC ```ProvisionKatoolin.yaml``` configuration.
 
 Don't want to download them?  See guidance on ```Phase 2```; those commands automatically pull from these public Azure Storage Containers; total deployment time is usually ~2 minutes.
 
