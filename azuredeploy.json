@@ -85,6 +85,20 @@
       "metadata": {
         "description": "Password for the AATP Service ('AATPService').  This is an unprivileged user-account used for LDAP and SAMR purposes."
       }
+    },
+    "LinuxAdminAccount": {
+      "type": "string",
+      "defaultValue": "Attacker",
+      "metadata": {
+        "description": "Builtin\\Administrator account's name for the Virtual Machines. This is not a domain account."
+      }
+    },
+    "LinuxAdminPassword": {
+      "type": "securestring",
+      "defaultValue": "Password123!@#",
+      "metadata": {
+        "description": "Password for the Builtin Administrator account. Default is 'Password123!@#'"
+      }
     }
   },
   "variables": {
@@ -751,8 +765,8 @@
         },
         "osProfile": {
           "computerName": "[concat(variables('AscLinuxName'))]",
-          "adminusername": "[parameters('builtinAdministratorAccount')]",
-          "adminpassword": "[parameters('builtinAdministratorPassword')]",
+          "adminusername": "[parameters('LinuxAdminAccount')]",
+          "adminpassword": "[parameters('LinuxAdminPassword')]",
           "customData": "[base64(variables('customData'))]"
         },
         "storageProfile": {
