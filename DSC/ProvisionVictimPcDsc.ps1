@@ -535,7 +535,7 @@ Configuration SetupVictimPc
         xRemoteFile GetMimikatz
         {
             DestinationPath = 'C:\Tools\Backup\Mimikatz.zip'
-            Uri = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200104/mimikatz_trunk.zip'
+            Uri = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200519/mimikatz_trunk.zip'
             DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
 
