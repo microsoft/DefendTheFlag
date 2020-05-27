@@ -538,18 +538,21 @@ Configuration SetupVictimPc
             Uri = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200104/mimikatz_trunk.zip'
             DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
+
         xRemoteFile GetPowerSploit
         {
             DestinationPath = 'C:\Tools\Backup\PowerSploit.zip'
             Uri = 'https://github.com/PowerShellMafia/PowerSploit/archive/master.zip'
             DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
+
         xRemoteFile GetKekeo
         {
             DestinationPath = 'C:\Tools\Backup\kekeo.zip'
             Uri = 'https://github.com/gentilkiwi/kekeo/releases/download/2.2.0-20190407/kekeo.zip'
             DependsOn = @('[xMpPreference]DefenderSettings', '[Registry]DisableSmartScreen', '[Registry]SchUseStrongCrypto64', '[Registry]SchUseStrongCrypto')
         }
+        
         xRemoteFile GetNetSess
         {
             DestinationPath = 'C:\Tools\Backup\NetSess.zip'

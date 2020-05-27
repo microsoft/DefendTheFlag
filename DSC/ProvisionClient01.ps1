@@ -429,7 +429,7 @@ Configuration SetupAipScannerCore
         xRemoteFile GetMcasData
         {
             DestinationPath = 'C:\LabData\McasData.zip'
-            Uri = "https://github.com/microsoft/DefendTheFlag/raw/v1.5/Downloads/MCAS/Demo%20files.zip"
+            Uri = "https://github.com/microsoft/DefendTheFlag/raw/$Branch/Downloads/MCAS/Demo%20files.zip"
             DependsOn = @('[Computer]JoinDomain','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64')
         }
 
