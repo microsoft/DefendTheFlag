@@ -20,7 +20,7 @@ runcmd:
  - apt -f install rdate
  - apt -f install python-pyftpdlib
  - git clone "https://github.com/microsoft/DefendTheFlag.git" /usr/bin/DefendTheFlag
- - unzip /usr/bin/DefendTheFlag/Downloads/Ubuntu-Katoolin/kali.zip -d /home/ContosoAdmin
+ - unzip /usr/bin/DefendTheFlag/Downloads/Ubuntu-Katoolin/kali.zip -d /home/Cookies
  - git clone "https://github.com/s-h-3-l-l/katoolin3"
  - cd katoolin3/
  - chmod +x ./install.sh

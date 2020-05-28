@@ -88,7 +88,7 @@
     },
     "LinuxAdminAccount": {
       "type": "string",
-      "defaultValue": "Attacker",
+      "defaultValue": "Cookies",
       "metadata": {
         "description": "Builtin\\Administrator account's name for the Virtual Machines. This is not a domain account."
       }
