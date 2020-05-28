@@ -35,13 +35,13 @@ runcmd:
  - 22
  - 14
  - 9
- - sudo apt -f install python3-impacket
  - echo "Ended script at $(date)" > /End.txt
+ - sudo reboot
 
 bootcmd:
+ - echo "Boot script at $(date)" > /Boot.txt
  - cd katoolin3/
  - chmod +x ./update.sh
  - sudo ./update.sh
  - sudo apt -f install python3-impacket
  - sudo apt -f install hydra
- - sudo apt -f install python3-impacket
