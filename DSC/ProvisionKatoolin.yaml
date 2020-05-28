@@ -26,22 +26,14 @@ runcmd:
  - chmod +x ./install.sh
  - sudo ./install.sh
  - sudo katoolin3
- - 0
- - 5
- - 12
- - 34
- - 0
- - 0
- - 22
- - 14
- - 9
  - echo "Ended script at $(date)" > /End.txt
  - sudo reboot
 
 bootcmd:
- - echo "Boot script at $(date)" > /Boot.txt
+ - echo "Started Boot script at $(date)" > /Boot.txt
  - cd katoolin3/
  - chmod +x ./update.sh
  - sudo ./update.sh
  - sudo apt -f install python3-impacket
  - sudo apt -f install hydra
+ - echo "Ended Boot script at $(date)" > /Boot.txt
