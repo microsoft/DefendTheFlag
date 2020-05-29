@@ -16,24 +16,23 @@
 runcmd:
  - echo "Started script at $(date)" > /Start.txt
  - apt add-apt-repository universe 
- - apt -f install zip unzip
- - apt -f install rdate
- - apt -f install python-pyftpdlib
+ - apt -f install zip unzip rdate python-pyftpdlib
  - git clone "https://github.com/microsoft/DefendTheFlag.git" /usr/bin/DefendTheFlag
  - unzip /usr/bin/DefendTheFlag/Downloads/Ubuntu-Katoolin/kali.zip -d /home/Cookies
- - git clone "https://github.com/s-h-3-l-l/katoolin3"
- - cd katoolin3/
- - chmod +x ./install.sh
- - sudo ./install.sh
- - sudo katoolin3
+ # add Kali repo to Ubuntu
+ - echo "deb [trusted=yes] http://http.kali.org/kali kali-rolling main contrib non-free" >> /etc/apt/sources.list
+ #- git clone "https://github.com/s-h-3-l-l/katoolin3"
+ #- cd katoolin3/
+ #- chmod +x ./install.sh
+ #- sudo ./install.sh
+ #- sudo katoolin3
  - echo "Ended script at $(date)" > /End.txt
  - sudo reboot
 
 bootcmd:
- - echo "Started Boot script at $(date)" > /Boot.txt
- - cd katoolin3/
- - chmod +x ./update.sh
- - sudo ./update.sh
- - sudo apt -f install python3-impacket
- - sudo apt -f install hydra
+#  - echo "Started Boot script at $(date)" > /Boot.txt
+#  - cd katoolin3/
+#  - chmod +x ./update.sh
+#  - sudo ./update.sh
+ - sudo apt -f install python3-impacket hydra armitage
  - echo "Ended Boot script at $(date)" > /Boot.txt
