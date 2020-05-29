@@ -26,6 +26,7 @@ runcmd:
  #- chmod +x ./install.sh
  #- sudo ./install.sh
  #- sudo katoolin3
+ - sudo apt -y update && sudo apt -y upgrade
  - echo "Ended script at $(date)" > /End.txt
  - sudo reboot
 
@@ -34,5 +35,5 @@ bootcmd:
 #  - cd katoolin3/
 #  - chmod +x ./update.sh
 #  - sudo ./update.sh
- - sudo apt -f install python3-impacket hydra armitage
+ - sudo apt -y install python3-impacket hydra armitage
  - echo "Ended Boot script at $(date)" > /Boot.txt
