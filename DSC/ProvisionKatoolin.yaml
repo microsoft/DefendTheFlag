@@ -15,14 +15,22 @@
 # any characters yaml would eat (':' can be problematic)
 runcmd:
  - echo "Started runcmd script at $(date)" >> /Runcmd.txt
- - apt add-apt-repository universe 
- - apt -y install zip unzip rdate python-pyftpdlib
+ - apt add-apt-repository universe
+ - echo "Completed 'apt add-apt-repository universe' runcmd script at $(date)" >> /Runcmd.txt
+ - apt -y install zip unzip
+ - echo "Completed 'apt -y install zip unzip' runcmd script at $(date)" >> /Runcmd.txt  
+ - apt -y install rdate python-pyftpdlib
+ - echo "Completed 'apt -y install rdate python-pyftpdlib' runcmd script at $(date)" >> /Runcmd.txt 
  - git clone "https://github.com/microsoft/DefendTheFlag.git" /usr/bin/DefendTheFlag
+ - echo "Completed 'git clone "https://github.com/microsoft/DefendTheFlag.git" /usr/bin/DefendTheFlag' runcmd script at $(date)" >> /Runcmd.txt 
  - unzip /usr/bin/DefendTheFlag/Downloads/Ubuntu-Katoolin/kali.zip -d /home/Cookies
+ - echo "Completed 'unzip /usr/bin/DefendTheFlag/Downloads/Ubuntu-Katoolin/kali.zip -d /home/Cookies' runcmd script at $(date)" >> /Runcmd.txt 
  # add Kali repo to Ubuntu
  - echo "deb [trusted=yes] http://http.kali.org/kali kali-rolling main contrib non-free" >> /etc/apt/sources.list
  - sudo apt -y update && sudo apt -y upgrade
+ - echo "Completed 'added Kali.org to sources.list and update/upgrade' runcmd script at $(date)" >> /Runcmd.txt 
  - sudo apt -y install python3-impacket hydra armitage
+ - echo "Completed 'sudo apt -y install python3-impacket hydra armitage' runcmd script at $(date)" >> /Runcmd.txt 
  - echo "Ended runcmd script at $(date)" >> /Runcmd.txt
 # boot commands
 # default: none
