@@ -16,7 +16,7 @@
 runcmd:
  - echo "Started script at $(date)" > /Start.txt
  - apt add-apt-repository universe 
- - apt -f install zip unzip rdate python-pyftpdlib
+ - apt -y install zip unzip rdate python-pyftpdlib
  - git clone "https://github.com/microsoft/DefendTheFlag.git" /usr/bin/DefendTheFlag
  - unzip /usr/bin/DefendTheFlag/Downloads/Ubuntu-Katoolin/kali.zip -d /home/Cookies
  # add Kali repo to Ubuntu
