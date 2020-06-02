@@ -85,6 +85,20 @@
       "metadata": {
         "description": "Password for the AATP Service ('AATPService').  This is an unprivileged user-account used for LDAP and SAMR purposes."
       }
+    },
+    "LinuxAdminAccount": {
+      "type": "string",
+      "defaultValue": "Cookies",
+      "metadata": {
+        "description": "Builtin\\Administrator account's name for the Virtual Machines. This is not a domain account."
+      }
+    },
+    "LinuxAdminPassword": {
+      "type": "securestring",
+      "defaultValue": "Password123!@#",
+      "metadata": {
+        "description": "Password for the Builtin Administrator account. Default is 'Password123!@#'"
+      }
     }
   },
   "variables": {
@@ -751,15 +765,15 @@
         },
         "osProfile": {
           "computerName": "[concat(variables('AscLinuxName'))]",
-          "adminusername": "[parameters('builtinAdministratorAccount')]",
-          "adminpassword": "[parameters('builtinAdministratorPassword')]",
+          "adminusername": "[parameters('LinuxAdminAccount')]",
+          "adminpassword": "[parameters('LinuxAdminPassword')]",
           "customData": "[base64(variables('customData'))]"
         },
         "storageProfile": {
           "imageReference": {
             "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "18.04-LTS",
+            "offer": "0001-com-ubuntu-server-focal",
+            "sku": "20_04-lts",
             "version": "latest"
           },
           "osdisk": {
