@@ -376,7 +376,17 @@ Configuration CreateADForest
 			GivenName = 'Samira'
 			Surname = 'Abbasi'
 			DisplayName = 'Samira Abbasi'
+			Description = 'Global Admin'
+			EmailAddress = "SamiraA@$UserPrincipalName"
+			StreetAddress = '9900 Corporate Campus Dr., Suite 3000'
+			City = 'Louisville'
+			State = 'KY'
+			PostalCode = '40223'
+			Country = 'US'
 			PasswordNeverExpires = $true
+			JobTitle = 'Infrastructure Administrator'
+			Department = 'IT'
+			Company = 'Contoso'
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
 
@@ -402,8 +412,19 @@ Configuration CreateADForest
 			UserPrincipalName = "RonHD@$UserPrincipalName"
 			GivenName = 'Ron'
 			Surname = 'HD'
+			Description = 'Support IT Team'
+			EmailAddress = "RonHD@$UserPrincipalName"
+			StreetAddress = '9256 Towne Center Dr., Suite 400'
+			City = 'San Diego'
+			State = 'CA'
+			PostalCode = '92121'
+			Country = 'US'
 			PasswordNeverExpires = $true
 			DisplayName = 'RonHD'
+			JobTitle = 'Systems Support Analyst'
+			Department = 'IT'
+			Company = 'Contoso'
+			Manager = 'CN=SamiraA,CN=Users,DC=Contoso,DC=Azure'
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
 
@@ -429,8 +450,18 @@ Configuration CreateADForest
 			Surname = 'Leatherman'
 			Password = $JeffLCreds
 			Ensure = 'Present'
+			Description = 'Compromised User Profile'
+			EmailAddress = "JeffL@$UserPrincipalName"
+			StreetAddress = '7633 E. 63rd Place, Suite 300'
+			City = 'Tulsa'
+			State = 'OK'
+			PostalCode = '74133'
+			Country = 'US'
 			PasswordNeverExpires = $true
 			DisplayName = 'Jeff Leatherman'
+			JobTitle = 'Director'
+			Department = 'Marketing'
+			Company = 'Contoso'
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
 
@@ -443,7 +474,17 @@ Configuration CreateADForest
 			Password =  $LisaVCreds
 			UserPrincipalName = "LisaV@$UserPrincipalName"
 			Ensure = 'Present'
+			Description = 'Research Lead (High Value Asset Data Owner)'
+			EmailAddress = "LisaV@$UserPrincipalName"
+			StreetAddress = 'One Microsoft Way'
+			City = 'Redmond'
+			State = 'WA'
+			PostalCode = '98052'
+			Country = 'US'
 			DisplayName = 'Lisa Valentine'
+			JobTitle = 'HR Manager'
+			Department = 'Human Resources'
+			Company = 'Contoso'
 			PasswordNeverExpires = $true
 			DependsOn = @("[xADForestProperties]ForestProps", "[xWaitForADDomain]DscForestWait")
 		}
@@ -458,6 +499,12 @@ Configuration CreateADForest
 			UserPrincipalName = "JulianI@$UserPrincipalName"
 			Ensure = 'Present'
 			Description = 'MCAS demo account'
+			EmailAddress = "JulianI@$UserPrincipalName"
+			StreetAddress = '3535 Gradview Parkway Suite 335'
+			City = 'Birmingham'
+			State = 'AL'
+			PostalCode = '35243'
+			Country = 'US'
 			DisplayName = 'Julian Isla'
 			JobTitle = 'Marketing VP'
 			Department = 'Marketing'

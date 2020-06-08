@@ -31,6 +31,11 @@ runcmd:
  - echo "Completed 'added Kali.org to sources.list and update/upgrade' runcmd script at $(date)" >> /Runcmd.txt 
  - sudo apt -y install python3-impacket hydra armitage
  - echo "Completed 'sudo apt -y install python3-impacket hydra armitage' runcmd script at $(date)" >> /Runcmd.txt 
+ - sudo apt -y install lxde
+ - echo "Completed 'sudo apt -y install lxde" >> /Runcmd.txt 
+ - sudo apt -y install xrdp
+ - echo "sudo apt -y install xrdp" >> /Runcmd.txt
+ - sudo /etc/init.d/xrdp start
  - echo "Ended runcmd script at $(date)" >> /Runcmd.txt
 # boot commands
 # default: none
@@ -44,7 +49,21 @@ runcmd:
 # - you can use 'cloud-init-per' command to help only run once
 bootcmd:
 - echo "Started Bootcmd script at $(date)" >> /Boot.txt
-#  - cd katoolin3/
+- echo "Started xrdp script at $(date)" >> /Boot.txt
+- sudo /etc/init.d/xrdp start
 #  - chmod +x ./update.sh
 #  - sudo ./update.sh
 - echo "Ended Bootcmd script at $(date)" >> /Boot.txt
+# vim: syntax=yaml
+#
+# This is the configuration syntax that the write_files module
+# will know how to understand. encoding can be given b64 or gzip or (gz+b64).
+# The content will be decoded accordingly and then written to the path that is
+# provided. 
+#
+# Note: Content strings here are truncated for example purposes.
+write_files:
+    - owner: root:root
+      path: /etc/cron.d/dtfcronjob
+      content: |
+      0 0 * * 1-5 Cookies bash /home/Cookies/CTF/FullAttackScript.sh
