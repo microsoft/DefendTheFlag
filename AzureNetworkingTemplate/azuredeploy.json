@@ -95,6 +95,9 @@
     "NIC-Name1": "Nic1",
     "NIC-Name2": "Nic2",
     "NIC-Name3": "Nic3",
+    "NIC-Name1Ipaddress": "10.0.27.68",
+    "NIC-Name2Ipaddress": "10.0.27.4",
+    "NIC-Name3Ipaddress": "10.0.28.4",
     "VM-Name1": "VM-Win10",
     "VM-Name2": "VM-Kali",
     "VM-Name3": "VM-Win2019",
@@ -311,7 +314,7 @@
         "useRemoteGateways": false,
         "remoteAddressSpace": {
           "addressPrefixes": [
-            "10.0.27.0/24"
+            "[variables('VN-Name2Prefix')]"
           ]
         }
       }
@@ -336,7 +339,7 @@
         "useRemoteGateways": false,
         "remoteAddressSpace": {
           "addressPrefixes": [
-            "10.0.28.0/24"
+            "[variables('VN-Name3Prefix')]"
           ]
         }
       }
@@ -361,7 +364,7 @@
         "useRemoteGateways": false,
         "remoteAddressSpace": {
           "addressPrefixes": [
-            "10.0.25.0/24"
+            "[variables('VN-Name1Prefix')]"
           ]
         }
       }
@@ -386,7 +389,7 @@
         "useRemoteGateways": false,
         "remoteAddressSpace": {
           "addressPrefixes": [
-            "10.0.25.0/24"
+            "[variables('VN-Name1Prefix')]"
           ]
         }
       }
@@ -589,7 +592,7 @@
                   ],
                   "ruleConditionType": "NetworkRuleCondition"
                 },
-                "translatedAddress": "10.0.25.70",
+                "translatedAddress": "[variables('AppGateway_IPAddress')]",
                 "translatedPort": "443"
               },
               {
@@ -615,7 +618,7 @@
                   ],
                   "ruleConditionType": "NetworkRuleCondition"
                 },
-                "translatedAddress": "10.0.27.4",
+                "translatedAddress": "[variables('NIC-Name2Ipaddress')]",
                 "translatedPort": "3389"
               },
               {
@@ -641,7 +644,7 @@
                   ],
                   "ruleConditionType": "NetworkRuleCondition"
                 },
-                "translatedAddress": "10.0.27.68",
+                "translatedAddress": "[variables('NIC-Name1Ipaddress')]",
                 "translatedPort": "22"
               },
               {
@@ -667,7 +670,7 @@
                   ],
                   "ruleConditionType": "NetworkRuleCondition"
                 },
-                "translatedAddress": "10.0.28.4",
+                "translatedAddress": "[variables('NIC-Name3Ipaddress')]",
                 "translatedPort": "3389"
               }
             ]
@@ -702,14 +705,14 @@
                       "445"
                     ],
                     "sourceAddresses": [
-                      "10.0.27.4",
-                      "10.0.28.4",
-                      "10.0.27.68"
+                      "[variables('NIC-Name2Ipaddress')]",
+                      "[variables('NIC-Name3Ipaddress')]",
+                      "[variables('NIC-Name1Ipaddress')]"
                     ],
                     "destinationAddresses": [
-                      "10.0.27.4",
-                      "10.0.28.4",
-                      "10.0.27.68"
+                      "[variables('NIC-Name2Ipaddress')]",
+                      "[variables('NIC-Name3Ipaddress')]",
+                      "[variables('NIC-Name1Ipaddress')]"
                     ],
                     "ruleConditionType": "NetworkRuleCondition"
                   },
@@ -722,14 +725,14 @@
                       "3389"
                     ],
                     "sourceAddresses": [
-                      "10.0.27.4",
-                      "10.0.28.4",
-                      "10.0.27.68"
+                      "[variables('NIC-Name2Ipaddress')]",
+                      "[variables('NIC-Name3Ipaddress')]",
+                      "[variables('NIC-Name1Ipaddress')]"
                     ],
                     "destinationAddresses": [
-                      "10.0.27.4",
-                      "10.0.28.4",
-                      "10.0.27.68"
+                      "[variables('NIC-Name2Ipaddress')]",
+                      "[variables('NIC-Name3Ipaddress')]",
+                      "[variables('NIC-Name1Ipaddress')]"
                     ],
                     "ruleConditionType": "NetworkRuleCondition"
                   },
@@ -742,11 +745,11 @@
                       "22"
                     ],
                     "sourceAddresses": [
-                      "10.0.27.4",
-                      "10.0.28.4"
+                      "[variables('NIC-Name2Ipaddress')]",
+                      "[variables('NIC-Name3Ipaddress')]"
                     ],
                     "destinationAddresses": [
-                      "10.0.27.68"
+                      "[variables('NIC-Name1Ipaddress')]"
                     ],
                     "ruleConditionType": "NetworkRuleCondition"
                   }
@@ -1176,7 +1179,7 @@
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",
-              "sourceAddressPrefix": "10.0.28.0/24",
+              "sourceAddressPrefix": "[variables('VN-Name3Prefix')]",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
               "priority": 100,
@@ -1194,7 +1197,7 @@
               "sourcePortRange": "*",
               "destinationPortRange": "*",
               "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "10.0.28.0/24",
+              "destinationAddressPrefix": "[variables('VN-Name3Prefix')]",
               "access": "Allow",
               "priority": 100,
               "direction": "Outbound",
@@ -1243,7 +1246,7 @@
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "*",
-              "sourceAddressPrefix": "10.0.27.0/24",
+              "sourceAddressPrefix": "[variables('VN-Name2Prefix')]",
               "destinationAddressPrefix": "VirtualNetwork",
               "access": "Allow",
               "priority": 100,
@@ -1261,7 +1264,7 @@
               "sourcePortRange": "*",
               "destinationPortRange": "*",
               "sourceAddressPrefix": "VirtualNetwork",
-              "destinationAddressPrefix": "10.0.27.0/24",
+              "destinationAddressPrefix": "[variables('VN-Name2Prefix')]",
               "access": "Allow",
               "priority": 100,
               "direction": "Outbound",
@@ -1354,7 +1357,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "10.0.27.68",
+              "privateIPAddress": "[variables('NIC-Name1Ipaddress')]",
               "subnet": {
                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('VN-Name2')), '/subnets/',variables('VN-Name2Subnet2Name'))]"
               },
@@ -1375,7 +1378,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "10.0.27.4",
+              "privateIPAddress": "[variables('NIC-Name2Ipaddress')]",
               "subnet": {
                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('VN-Name2')), '/subnets/',variables('VN-Name2Subnet1Name'))]"
               },
@@ -1396,7 +1399,7 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAddress": "10.0.28.4",
+              "privateIPAddress": "[variables('NIC-Name3Ipaddress')]",
               "subnet": {
                 "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('VN-Name3')), '/subnets/',variables('VN-Name3Subnet1Name'))]"
               },
